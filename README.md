@@ -1,16 +1,16 @@
 Test bundle for the AutoGrid
 =================
-This bundle contains demo controllers and entities for the [AutoGrid](https://github.com/f0ska/auto-grid-bundle) bundle.
+This repository serves as a collection of practical examples for the [AutoGrid](https://github.com/f0ska/auto-grid-bundle) bundle.
 
-You need to load fixtures to generate demo data, for example: `php bin/console doctrine:fixtures:load`.
+To generate demo data, you need to load fixtures. For example, run: `php bin/console doctrine:fixtures:load`.
 
-Add AutoGridTest route into your `./config/routes.yaml`
+Next, add the AutoGridTest route to your `./config/routes.yaml`
 ```yaml
 f0ska_auto_grid_test:
     resource: '@F0skaAutoGridTestBundle/config/routes.yaml'
 ```
 
-Use the `/auto-grid` route path to access the demo application.
+You can access the demo application via the `/auto-grid` route path.
 
 Bundle Installation
 ===================

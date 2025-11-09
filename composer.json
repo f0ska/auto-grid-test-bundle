@@ -1,6 +1,6 @@
 {
     "name": "f0ska/auto-grid-test-bundle",
-    "description": "Test bundle for the AutoGrid bundle",
+    "description": "This repository serves as a collection of practical examples for the AutoGrid bundle.",
     "license": "MIT",
     "autoload": {
         "psr-4": {
