@@ -1,0 +1,22 @@
+{
+    "name": "f0ska/auto-grid-test-bundle",
+    "description": "Test bundle for the AutoGrid bundle",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "F0ska\\AutoGridTestBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "F0ska\\AutoGridTestBundle\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=8.2.0",
+        "symfony/framework-bundle": ">=7",
+        "doctrine/doctrine-fixtures-bundle": "*",
+        "fakerphp/faker": "*",
+        "f0ska/auto-grid-bundle": "*"
+    }
+}

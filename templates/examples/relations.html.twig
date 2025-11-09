@@ -1,0 +1,18 @@
+{% extends '@F0skaAutoGridTest/base.html.twig' %}
+
+{% block title %}Basic example{% endblock %}
+
+{% block content %}
+    <div class="card mb-5">
+        <div class="card-body">{{ agRender(articles) }}</div>
+    </div>
+    <div class="card mb-5">
+        <div class="card-body">{{ agRender(comments) }}</div>
+    </div>
+    <div class="card mb-5">
+        <div class="card-body">{{ agRender(users) }}</div>
+    </div>
+    <div class="card mb-5">
+        <div class="card-body">{{ agRender(tags) }}</div>
+    </div>
+{% endblock %}

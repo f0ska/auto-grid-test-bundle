@@ -1,0 +1,18 @@
+{% extends '@F0skaAutoGridTest/base.html.twig' %}
+
+{% block title %}Field types example{% endblock %}
+
+{% block content %}
+    <div class="card mb-5">
+        <div class="card-body">{{ agRender(main) }}</div>
+    </div>
+    <div class="card mb-5">
+        <div class="card-body">{{ agRender(array) }}</div>
+    </div>
+    <div class="card mb-5">
+        <div class="card-body">{{ agRender(dates) }}</div>
+    </div>
+    <div class="card mb-5">
+        <div class="card-body">{{ agRender(other) }}</div>
+    </div>
+{% endblock %}

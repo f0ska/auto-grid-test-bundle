@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: false
+        autowire: false
+        autoconfigure: false
+
+    F0ska\AutoGridTestBundle\:
+        resource: '../src/{Controller/*,DataFixtures/*,Repository/*,Service/*,Twig/*}'
+        autowire: true
+        autoconfigure: true
