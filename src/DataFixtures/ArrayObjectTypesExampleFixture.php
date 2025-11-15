@@ -22,7 +22,7 @@ class ArrayObjectTypesExampleFixture extends Fixture
     {
 
         $generator = Factory::create();
-        $populator = new Populator($generator, $manager);
+        $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
         $randArray = function () use ($generator) {
             $arr = [];
             for ($i = 0; $i < $generator->numberBetween(2, 10); ++$i) {
@@ -42,7 +42,7 @@ class ArrayObjectTypesExampleFixture extends Fixture
                     }
                     return $arr;
                 },
-                'binaryType' => function () use ($generator) {
+                'binaryType' => function () {
                     return hash('sha1', uniqid(), true);
                 },
                 'blobType' => function () use ($generator, $binArray) {

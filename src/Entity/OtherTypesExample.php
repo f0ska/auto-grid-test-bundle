@@ -10,11 +10,11 @@
 
 namespace F0ska\AutoGridTestBundle\Entity;
 
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use F0ska\AutoGridTestBundle\Config\ExampleEnum;
 use F0ska\AutoGridTestBundle\Repository\OtherTypesExampleRepository;
-use Symfony\Component\Clock\DatePoint;
 
 #[ORM\Entity(repositoryClass: OtherTypesExampleRepository::class)]
 class OtherTypesExample
@@ -34,7 +34,7 @@ class OtherTypesExample
     private ?string $guidType = null;
 
     #[ORM\Column(type: 'date_point')]
-    private ?DatePoint $datePointType = null;
+    private ?DateTimeInterface $datePointType = null;
 
     public function getId(): ?int
     {
@@ -77,12 +77,12 @@ class OtherTypesExample
         return $this;
     }
 
-    public function getDatePointType(): ?DatePoint
+    public function getDatePointType(): ?DateTimeInterface
     {
         return $this->datePointType;
     }
 
-    public function setDatePointType(DatePoint $datePointType): static
+    public function setDatePointType(DateTimeInterface $datePointType): static
     {
         $this->datePointType = $datePointType;
 

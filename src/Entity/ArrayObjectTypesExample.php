@@ -24,18 +24,19 @@ class ArrayObjectTypesExample
     private ?int $id = null;
 
     #[ORM\Column(type: Types::ARRAY)]
-    #[GridTruncate(30)]
+    #[GridTruncate(20)]
     private array $arrayType = [];
 
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
+    #[GridTruncate(20)]
     private array $simpleArray = [];
 
     #[ORM\Column]
-    #[GridTruncate(30)]
+    #[GridTruncate(20)]
     private array $jsonType = [];
 
     #[ORM\Column(type: Types::OBJECT)]
-    #[GridTruncate(30)]
+    #[GridTruncate(20)]
     private ?object $objectType = null;
 
     #[ORM\Column(type: Types::BINARY)]

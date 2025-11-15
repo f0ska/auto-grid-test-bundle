@@ -22,7 +22,7 @@ class DateTimeTypesExampleFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
         $generator = Factory::create();
-        $populator = new Populator($generator, $manager);
+        $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
         $populator->addEntity(
             DateTimeTypesExample::class,
             100,

@@ -21,7 +21,7 @@ class BasicExampleFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
         $generator = Factory::create();
-        $populator = new Populator($generator, $manager);
+        $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
         $populator->addEntity(BasicExample::class, $generator->numberBetween(9000, 10000));
         $populator->execute();
     }

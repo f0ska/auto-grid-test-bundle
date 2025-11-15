@@ -24,7 +24,7 @@ class OtherTypesExampleFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
         $generator = Factory::create();
-        $populator = new Populator($generator, $manager);
+        $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
         $populator->addEntity(
             OtherTypesExample::class,
             100,

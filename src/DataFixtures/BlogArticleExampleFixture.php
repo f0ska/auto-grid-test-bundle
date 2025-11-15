@@ -25,7 +25,7 @@ class BlogArticleExampleFixture extends Fixture implements DependentFixtureInter
     public function load(ObjectManager $manager): void
     {
         $generator = Factory::create();
-        $populator = new Populator($generator, $manager);
+        $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
 
         $users = $manager->getRepository(BlogUserExample::class)->findAll();
         $tags = $manager->getRepository(BlogArticleTagExample::class)->findAll();
@@ -40,10 +40,10 @@ class BlogArticleExampleFixture extends Fixture implements DependentFixtureInter
                 'tags' => function () use ($generator, $tags) {
                     return new ArrayCollection($generator->randomElements($tags));
                 },
-                'title' => function () use ($generator, $tags) {
+                'title' => function () use ($generator) {
                     return $generator->text(64);
                 },
-                'content' => function () use ($generator, $tags) {
+                'content' => function () use ($generator) {
                     return $generator->paragraph(10);
                 },
             ]

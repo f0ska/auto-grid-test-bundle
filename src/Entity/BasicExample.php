@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace F0ska\AutoGridTestBundle\Entity;
 
-use App\Repository\BasicExampleRepository;
+use F0ska\AutoGridTestBundle\Repository\BasicExampleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 

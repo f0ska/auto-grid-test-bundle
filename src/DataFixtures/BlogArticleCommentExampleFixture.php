@@ -24,7 +24,7 @@ class BlogArticleCommentExampleFixture extends Fixture implements DependentFixtu
     public function load(ObjectManager $manager): void
     {
         $generator = Factory::create();
-        $populator = new Populator($generator, $manager);
+        $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
 
         $users = $manager->getRepository(BlogUserExample::class)->findAll();
         $articles = $manager->getRepository(BlogArticleExample::class)->findAll();
@@ -39,7 +39,7 @@ class BlogArticleCommentExampleFixture extends Fixture implements DependentFixtu
                 'article' => function () use ($generator, $articles) {
                     return $generator->randomElement($articles);
                 },
-                'comment' => function () use ($generator, $articles) {
+                'comment' => function () use ($generator) {
                     return $generator->sentence();
                 },
             ]
