@@ -18,45 +18,84 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
+use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
+use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
+use F0ska\AutoGridBundle\Attribute\Entity\ViewTemplate;
+use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
+use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
+use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
+use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
+use F0ska\AutoGridBundle\Attribute\EntityField\Position;
+use F0ska\AutoGridBundle\Attribute\Permission\Allow;
+use F0ska\AutoGridBundle\Attribute\Permission\AllowAll;
+use F0ska\AutoGridBundle\Attribute\Permission\DisallowActionsByDefault;
+use F0ska\AutoGridBundle\Attribute\Permission\DisallowFieldsByDefault;
 use F0ska\AutoGridBundle\Attribute\Permission\Forbid;
-use F0ska\AutoGridTestBundle\Repository\BlogArticleExampleRepository;
+use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 
-#[ORM\Entity(repositoryClass: BlogArticleExampleRepository::class)]
+#[ORM\Entity(repositoryClass: AdvancedArticleExampleRepository::class)]
+#[ORM\Index(name: 'adv_article_title_idx', columns: ['title'])]
+#[ORM\Index(name: 'adv_article_published_idx', columns: ['published'])]
 #[HasLifecycleCallbacks]
-class BlogArticleExample
+#[DisallowActionsByDefault]
+#[DisallowFieldsByDefault]
+#[Allow('grid')]
+#[Allow('view')]
+#[Allow('advanced_filter')]
+#[AdvancedFilter(true)]
+
+#[Fieldset(name: 'Some')]
+#[Fieldset(name: 'Things', fields: ['createdAt', 'updatedAt'])]
+#[Fieldset(name: 'Here', class: 'col-12', fields: ['content'])]
+class AdvancedArticleExample
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 64)]
+    #[ORM\Column(length: 80)]
+    #[CanFilter(true)]
+    #[CanSort(true)]
+    #[AllowAll]
+    #[AddToFieldset('Some')]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[AllowAll]
+    #[GridTruncate(100)]
     private ?string $content = null;
 
     #[ORM\Column]
+    #[CanFilter(true)]
+    #[AllowAll]
+    #[Forbid('grid')]
+    #[AddToFieldset('Some')]
     private ?bool $published = null;
 
     #[ORM\Column]
-    #[Forbid('create')]
-    #[Forbid('edit')]
-    private ?\DateTimeImmutable $createdAt = null;
+    #[Allow('view')]
+    private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    #[Forbid('create')]
-    #[Forbid('edit')]
-    private ?\DateTimeImmutable $updatedAt = null;
+    #[Allow('view')]
+    private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?BlogUserExample $author = null;
+    #[Allow('view')]
+    #[AddToFieldset('Some')]
+    #[Position(-1)]
+    #[ViewTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
+    private ?AdvancedUserExample $author = null;
 
     /**
      * @var Collection<int, BlogArticleTagExample>
      */
     #[ORM\ManyToMany(targetEntity: BlogArticleTagExample::class)]
+    #[Allow('view')]
+    #[AddToFieldset('Things')]
+    #[ViewTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
     private Collection $tags;
 
     public function __construct()
@@ -105,7 +144,7 @@ class BlogArticleExample
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -118,7 +157,7 @@ class BlogArticleExample
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -132,12 +171,12 @@ class BlogArticleExample
         return $this;
     }
 
-    public function getAuthor(): ?BlogUserExample
+    public function getAuthor(): ?AdvancedUserExample
     {
         return $this->author;
     }
 
-    public function setAuthor(?BlogUserExample $author): static
+    public function setAuthor(?AdvancedUserExample $author): static
     {
         $this->author = $author;
 

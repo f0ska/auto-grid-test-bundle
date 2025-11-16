@@ -1,0 +1,10 @@
+{% set choices = agFieldValue(entity, field) %}
+{% if (choices is empty) %}
+    -
+{% else %}
+    {% set label = agChoiceLabels(choices, field)|first %}
+    {% set value = agChoiceValues(choices, field)|first %}
+    <ul class="list-group list-group-flush">
+        <a href="{{ path('auto_grid_test_advanced_2', {id: value}) }}">{{ label }}</a>
+    </ul>
+{% endif %}

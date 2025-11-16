@@ -11,36 +11,40 @@
 namespace F0ska\AutoGridTestBundle\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use F0ska\AutoGridTestBundle\Entity\BlogArticleCommentExample;
-use F0ska\AutoGridTestBundle\Entity\BlogArticleExample;
-use F0ska\AutoGridTestBundle\Entity\BlogUserExample;
+use F0ska\AutoGridTestBundle\Entity\AdvancedArticleExample;
+use F0ska\AutoGridTestBundle\Entity\AdvancedUserExample;
+use F0ska\AutoGridTestBundle\Entity\BlogArticleTagExample;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
 
-class BlogArticleCommentExampleFixture extends Fixture implements DependentFixtureInterface
+class AdvancedArticleExampleFixture extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         $generator = Factory::create();
         $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
 
-        $users = $manager->getRepository(BlogUserExample::class)->findAll();
-        $articles = $manager->getRepository(BlogArticleExample::class)->findAll();
+        $users = $manager->getRepository(AdvancedUserExample::class)->findAll();
+        $tags = $manager->getRepository(BlogArticleTagExample::class)->findAll();
 
         $populator->addEntity(
-            BlogArticleCommentExample::class,
-            100,
+            AdvancedArticleExample::class,
+            50,
             [
                 'author' => function () use ($generator, $users) {
                     return $generator->randomElement($users);
                 },
-                'article' => function () use ($generator, $articles) {
-                    return $generator->randomElement($articles);
+                'tags' => function () use ($generator, $tags) {
+                    return new ArrayCollection($generator->randomElements($tags, 3));
                 },
-                'comment' => function () use ($generator) {
-                    return $generator->sentence();
+                'title' => function () use ($generator) {
+                    return $generator->text(40);
+                },
+                'content' => function () use ($generator) {
+                    return $generator->paragraph(50);
                 },
             ]
         );
@@ -53,8 +57,8 @@ class BlogArticleCommentExampleFixture extends Fixture implements DependentFixtu
     public function getDependencies(): array
     {
         return [
-            BlogArticleExampleFixture::class,
-            BlogUserExampleFixture::class,
+            BlogArticleTagExampleFixture::class,
+            AdvancedUserExampleFixture::class,
         ];
     }
 }

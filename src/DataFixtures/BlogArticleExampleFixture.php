@@ -51,6 +51,9 @@ class BlogArticleExampleFixture extends Fixture implements DependentFixtureInter
         $populator->execute();
     }
 
+    /**
+     * @return class-string[]
+     */
     public function getDependencies(): array
     {
         return [

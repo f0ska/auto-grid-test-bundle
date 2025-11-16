@@ -5,6 +5,6 @@ services:
         autoconfigure: false
 
     F0ska\AutoGridTestBundle\:
-        resource: '../src/{Controller/*,DataFixtures/*,Repository/*,Service/*,Twig/*}'
+        resource: '../src/{Controller/*,DataFixtures/*,EventSubscriber/*,Repository/*,Service/*,Twig/*}'
         autowire: true
         autoconfigure: true
