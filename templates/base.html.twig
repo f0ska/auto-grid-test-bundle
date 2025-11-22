@@ -44,11 +44,19 @@
                     {{ _self.navLink('Relations', 'auto_grid_test_relations') }}
                     {{ _self.navLink('Advanced #1', 'auto_grid_test_advanced_1') }}
                     {{ _self.navLink('Advanced #2', 'auto_grid_test_advanced_2') }}
+                    {{ _self.navLink('Custom Actions', 'auto_grid_test_custom_action') }}
                 </ul>
             </div>
         </div>
     </nav>
     <div class="container mt-5">
+        {% for type, messages in app.flashes(['success', 'info', 'warning', 'danger', 'primary', 'secondary']) %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% block content %}{% endblock %}
     </div>
 {% endblock %}

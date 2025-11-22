@@ -12,26 +12,17 @@ namespace F0ska\AutoGridTestBundle\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use F0ska\AutoGridTestBundle\Entity\BlogArticleTagExample;
+use F0ska\AutoGridTestBundle\Entity\CustomActionExample;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
-use function Symfony\Component\String\u;
 
-class BlogArticleTagExampleFixture extends Fixture
+class CustomActionExampleFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
         $generator = Factory::create();
         $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
-        $populator->addEntity(
-            BlogArticleTagExample::class,
-            10,
-            [
-                'name' => function () use ($generator) {
-                    return u($generator->slug(2))->truncate(30);
-                },
-            ]
-        );
+        $populator->addEntity(CustomActionExample::class, 50);
         $populator->execute();
     }
 }
