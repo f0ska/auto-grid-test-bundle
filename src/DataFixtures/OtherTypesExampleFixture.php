@@ -10,14 +10,17 @@
 
 namespace F0ska\AutoGridTestBundle\DataFixtures;
 
-use DateTimeInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use F0ska\AutoGridTestBundle\Config\ExampleEnum;
 use F0ska\AutoGridTestBundle\Entity\OtherTypesExample;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
+
+/* Symfony7 only *
+use DateTimeInterface;
 use Symfony\Component\Clock\DatePoint;
+*/
 
 class OtherTypesExampleFixture extends Fixture
 {
@@ -38,9 +41,11 @@ class OtherTypesExampleFixture extends Fixture
                 'guidType' => function () use ($generator) {
                     return $generator->uuid();
                 },
+                /* Symfony7 only *
                 'datePointType' => function () use ($generator) {
                     return new DatePoint($generator->dateTime()->format(DateTimeInterface::ATOM));
                 },
+                */
             ]
         );
         $populator->execute();

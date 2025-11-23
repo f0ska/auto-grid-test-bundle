@@ -13,8 +13,8 @@
         }
     },
     "require": {
-        "php": ">=8.2.0",
-        "symfony/framework-bundle": ">=7",
+        "php": ">=8.1",
+        "symfony/framework-bundle": ">=6.4",
         "doctrine/doctrine-fixtures-bundle": "*",
         "fakerphp/faker": "*",
         "f0ska/auto-grid-bundle": "*"

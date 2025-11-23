@@ -33,8 +33,10 @@ class OtherTypesExample
     #[ORM\Column(type: Types::GUID)]
     private ?string $guidType = null;
 
+    /* Symfony7 only *
     #[ORM\Column(type: 'date_point')]
     private ?DateTimeInterface $datePointType = null;
+    */
 
     public function getId(): ?int
     {
@@ -77,6 +79,7 @@ class OtherTypesExample
         return $this;
     }
 
+    /* Symfony7 only *
     public function getDatePointType(): ?DateTimeInterface
     {
         return $this->datePointType;
@@ -88,4 +91,5 @@ class OtherTypesExample
 
         return $this;
     }
+    */
 }
