@@ -2,7 +2,9 @@ Test bundle for the AutoGrid
 =================
 This repository serves as a collection of practical examples for the [AutoGrid](https://github.com/f0ska/auto-grid-bundle) bundle.
 
-To generate demo data, you need to load fixtures. For example, run: `php bin/console doctrine:fixtures:load`.
+Run `doctrine:schema:update -f` to create test entities in data in the database.
+
+To generate demo data, you need to load fixtures. For example, run: `php bin/console doctrine:fixtures:load --append`.
 
 Next, add the AutoGridTest route to your `./config/routes.yaml`
 ```yaml
