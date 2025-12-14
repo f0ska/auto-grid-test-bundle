@@ -14,6 +14,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\Entity\MassAction;
 use F0ska\AutoGridBundle\Attribute\Entity\RouteCreate;
 use F0ska\AutoGridBundle\Attribute\Entity\RouteDelete;
 use F0ska\AutoGridBundle\Attribute\Entity\RouteEdit;
@@ -28,6 +29,8 @@ use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 #[RouteEdit]
 #[RouteView]
 #[RouteDelete]
+#[MassAction('Custom Mass Action')]
+#[MassAction('Another Custom Mass Action')]
 class CustomActionExample
 {
     #[ORM\Id]

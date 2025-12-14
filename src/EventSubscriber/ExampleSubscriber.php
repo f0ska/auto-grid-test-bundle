@@ -12,12 +12,14 @@ declare(strict_types=1);
 
 namespace F0ska\AutoGridTestBundle\EventSubscriber;
 
+use F0ska\AutoGridBundle\Event\MassEvent;
 use F0ska\AutoGridBundle\Event\SaveEvent;
 use F0ska\AutoGridTestBundle\Entity\BlogUserExample;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 
-class AdvancedExampleSubscriber implements EventSubscriberInterface
+class ExampleSubscriber implements EventSubscriberInterface
 {
     private RequestStack $requestStack;
 
@@ -30,6 +32,7 @@ class AdvancedExampleSubscriber implements EventSubscriberInterface
     {
         return [
             SaveEvent::EVENT_NAME . '.advanced2' => 'onAdvanced2Save',
+            MassEvent::EVENT_NAME => 'onMassAction',
         ];
     }
 
@@ -39,5 +42,15 @@ class AdvancedExampleSubscriber implements EventSubscriberInterface
         $entity = $event->getEntity();
         $entity->setLastIp($this->requestStack->getCurrentRequest()->getClientIp());
         $entity->setBanned($entity->isBanned() ?? false);
+    }
+
+    public function onMassAction(MassEvent $event): void
+    {
+        /** @var FlashBagAwareSessionInterface $session */
+        $session = $this->requestStack->getSession();
+        $session->getFlashBag()->add(
+            'warning',
+            sprintf('Greetings from the "%s", ids: [%s]', $event->getCode(), implode(', ', $event->getIds()))
+        );
     }
 }
