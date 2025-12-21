@@ -18,14 +18,17 @@ use F0ska\AutoGridTestBundle\Entity\BlogUserExample;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ExampleSubscriber implements EventSubscriberInterface
 {
     private RequestStack $requestStack;
+    private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator)
     {
         $this->requestStack = $requestStack;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public static function getSubscribedEvents(): array
@@ -33,6 +36,7 @@ class ExampleSubscriber implements EventSubscriberInterface
         return [
             SaveEvent::EVENT_NAME . '.advanced2' => 'onAdvanced2Save',
             MassEvent::EVENT_NAME => 'onMassAction',
+            MassEvent::EVENT_NAME . '.custom_action_redirect' => ['onCustomRedirectMassAction', 10],
         ];
     }
 
@@ -52,5 +56,11 @@ class ExampleSubscriber implements EventSubscriberInterface
             'warning',
             sprintf('Greetings from the "%s", ids: [%s]', $event->getCode(), implode(', ', $event->getIds()))
         );
+    }
+
+    public function onCustomRedirectMassAction(MassEvent $event): void
+    {
+        $url = $this->urlGenerator->generate('auto_grid_test_basic');
+        $event->setRedirectUrl($url);
     }
 }

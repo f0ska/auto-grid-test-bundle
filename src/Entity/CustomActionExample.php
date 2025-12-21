@@ -31,6 +31,7 @@ use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 #[RouteDelete]
 #[MassAction('Custom Mass Action')]
 #[MassAction('Another Custom Mass Action')]
+#[MassAction(name: 'Custom Action with Custom Redirect', code: 'custom_action_redirect')]
 class CustomActionExample
 {
     #[ORM\Id]
