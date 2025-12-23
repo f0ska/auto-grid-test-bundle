@@ -58,7 +58,6 @@ class CustomActionExample
     #[ORM\Column]
     #[CanSort(true)]
     #[CanFilter((true))]
-    #[RangeFilter(true)]
     private ?\DateTimeImmutable $publishAt = null;
 
     public function getId(): ?int
