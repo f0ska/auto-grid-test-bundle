@@ -1,0 +1,6 @@
+{% set value = agFieldValue(entity, field) %}
+{% if (value is null) %}
+    -
+{% else %}
+    <img src="data:image;base64,{{ value }}" class="img-fluid">
+{% endif %}

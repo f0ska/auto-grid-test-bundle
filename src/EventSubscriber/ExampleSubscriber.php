@@ -16,6 +16,7 @@ use F0ska\AutoGridBundle\Event\MassEvent;
 use F0ska\AutoGridBundle\Event\SaveEvent;
 use F0ska\AutoGridTestBundle\Entity\BlogUserExample;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -35,6 +36,7 @@ class ExampleSubscriber implements EventSubscriberInterface
     {
         return [
             SaveEvent::EVENT_NAME . '.advanced2' => 'onAdvanced2Save',
+            SaveEvent::EVENT_NAME . '.my-custom-form-example' => 'onMyCustomFormExample',
             MassEvent::EVENT_NAME => 'onMassAction',
             MassEvent::EVENT_NAME . '.custom_action_redirect' => ['onCustomRedirectMassAction', 10],
         ];
@@ -56,6 +58,19 @@ class ExampleSubscriber implements EventSubscriberInterface
             'warning',
             sprintf('Greetings from the "%s", ids: [%s]', $event->getCode(), implode(', ', $event->getIds()))
         );
+    }
+
+    public function onMyCustomFormExample(SaveEvent $event): void
+    {
+        $entity = $event->getEntity();
+        $form = $event->getForm();
+        $file = $form->get('file')->getData();
+        if ($file instanceof UploadedFile) {
+            $entity->setFile($file->getContent());
+        }
+        if ($form->has('delete') && $form->get('delete')->getData()) {
+            $entity->setFile(null);
+        }
     }
 
     public function onCustomRedirectMassAction(MassEvent $event): void
