@@ -23,10 +23,6 @@ class ArrayObjectTypesExample
     #[ORM\Column]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
-    #[ORM\Column(type: Types::ARRAY)]
-    #[GridTruncate(20)]
-    private array $arrayType = [];
-
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
     #[GridTruncate(20)]
     private array $simpleArray = [];
@@ -34,10 +30,6 @@ class ArrayObjectTypesExample
     #[ORM\Column]
     #[GridTruncate(20)]
     private array $jsonType = [];
-
-    #[ORM\Column(type: Types::OBJECT)]
-    #[GridTruncate(20)]
-    private ?object $objectType = null;
 
     #[ORM\Column(type: Types::BINARY)]
     private $binaryType = null;
@@ -48,18 +40,6 @@ class ArrayObjectTypesExample
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getArrayType(): array
-    {
-        return $this->arrayType;
-    }
-
-    public function setArrayType(array $arrayType): static
-    {
-        $this->arrayType = $arrayType;
-
-        return $this;
     }
 
     public function getSimpleArray(): array
@@ -82,18 +62,6 @@ class ArrayObjectTypesExample
     public function setJsonType(array $jsonType): static
     {
         $this->jsonType = $jsonType;
-
-        return $this;
-    }
-
-    public function getObjectType(): ?object
-    {
-        return $this->objectType;
-    }
-
-    public function setObjectType(object $objectType): static
-    {
-        $this->objectType = $objectType;
 
         return $this;
     }

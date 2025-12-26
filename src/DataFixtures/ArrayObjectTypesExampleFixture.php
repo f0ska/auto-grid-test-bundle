@@ -48,11 +48,7 @@ class ArrayObjectTypesExampleFixture extends Fixture
                 'blobType' => function () use ($generator, $binArray) {
                     return $generator->randomElement($binArray);
                 },
-                'arrayType' => $randArray,
                 'jsonType' => $randArray,
-                'objectType' => function () use ($randArray) {
-                    return (object) $randArray();
-                },
             ]
         );
         $populator->execute();
