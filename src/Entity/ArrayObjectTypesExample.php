@@ -31,7 +31,7 @@ class ArrayObjectTypesExample
     #[GridTruncate(20)]
     private array $jsonType = [];
 
-    #[ORM\Column(type: Types::BINARY)]
+    #[ORM\Column(type: Types::BINARY, length: 255)]
     private $binaryType = null;
 
     #[ORM\Column(type: Types::BLOB)]
