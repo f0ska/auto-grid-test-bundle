@@ -14,6 +14,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\Entity\ExportAction;
 use F0ska\AutoGridBundle\Attribute\Entity\MassAction;
 use F0ska\AutoGridBundle\Attribute\Entity\RouteCreate;
 use F0ska\AutoGridBundle\Attribute\Entity\RouteDelete;
@@ -21,6 +22,7 @@ use F0ska\AutoGridBundle\Attribute\Entity\RouteEdit;
 use F0ska\AutoGridBundle\Attribute\Entity\RouteView;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
+use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHeaderClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\RangeFilter;
 use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 
@@ -32,6 +34,7 @@ use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 #[MassAction('Custom Mass Action')]
 #[MassAction('Another Custom Mass Action')]
 #[MassAction(name: 'Custom Action with Custom Redirect', code: 'custom_action_redirect')]
+#[ExportAction(name: 'Export Action Example', code: 'export_example')]
 class CustomActionExample
 {
     #[ORM\Id]
@@ -43,11 +46,13 @@ class CustomActionExample
     #[ORM\Column(length: 32)]
     #[CanSort(true)]
     #[CanFilter((true))]
+    #[ColumnHeaderClass('col-2')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[CanSort(true)]
     #[CanFilter((true))]
+    #[ColumnHeaderClass('col-4')]
     private ?string $description = null;
 
     #[ORM\Column]

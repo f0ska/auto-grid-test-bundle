@@ -16,6 +16,7 @@ use F0ska\AutoGridBundle\Factory\AutoGridFactory;
 use F0ska\AutoGridTestBundle\Entity\CustomActionExample;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class CustomActionController extends AbstractController
@@ -56,5 +57,15 @@ class CustomActionController extends AbstractController
     {
         $this->addFlash('danger', "Greetings from the \"DELETE\" action #$id");
         return $this->redirectToRoute('auto_grid_test_custom_action');
+    }
+
+    #[Route('/custom-action-download/{hash<[0-9a-f]{40}>}', name: 'auto_grid_test_custom_action_download', methods: ['GET'])]
+    public function download(string $hash): Response
+    {
+        $file = '/tmp/' . $hash;
+        if (!is_file($file) || !is_readable($file)) {
+            throw new NotFoundHttpException('File not found');
+        }
+        return $this->file($file, 'export.csv');
     }
 }

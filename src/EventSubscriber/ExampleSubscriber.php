@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace F0ska\AutoGridTestBundle\EventSubscriber;
 
+use DateTimeInterface;
+use F0ska\AutoGridBundle\Event\ExportEvent;
 use F0ska\AutoGridBundle\Event\MassEvent;
 use F0ska\AutoGridBundle\Event\SaveEvent;
 use F0ska\AutoGridTestBundle\Entity\BlogUserExample;
@@ -39,6 +41,7 @@ class ExampleSubscriber implements EventSubscriberInterface
             SaveEvent::EVENT_NAME . '.my-custom-form-example' => 'onMyCustomFormExample',
             MassEvent::EVENT_NAME => 'onMassAction',
             MassEvent::EVENT_NAME . '.custom_action_redirect' => ['onCustomRedirectMassAction', 10],
+            ExportEvent::EVENT_NAME . '.export_example' => 'onExportExample',
         ];
     }
 
@@ -76,6 +79,47 @@ class ExampleSubscriber implements EventSubscriberInterface
     public function onCustomRedirectMassAction(MassEvent $event): void
     {
         $url = $this->urlGenerator->generate('auto_grid_test_basic');
+        $event->setRedirectUrl($url);
+    }
+
+    public function onExportExample(ExportEvent $event): void
+    {
+        $headerWritten = false;
+        $limit = 5;
+        $offset = 0;
+
+        $builder = $event->getQueryBuilder();
+        $builder->select('customActionExample');
+        $builder->setMaxResults($limit);
+        $hash = sha1($builder->getDQL() . uniqid());
+        $resource = fopen('/tmp/' . $hash, 'w');
+
+        do {
+            $result = $builder->setFirstResult($offset)->getQuery()->getScalarResult();
+            foreach ($result as $item) {
+                if (!$headerWritten) {
+                    $headerWritten = true;
+                    fputcsv($resource, array_keys($item));
+                }
+
+                $item = array_map(
+                    function ($value) {
+                        if ($value instanceof DateTimeInterface) {
+                            return $value->format(DateTimeInterface::ATOM);
+                        }
+                        return $value;
+                    },
+                    $item
+                );
+
+                fputcsv($resource, $item);
+            }
+            $offset += $limit;
+        } while (!empty($result));
+
+        fclose($resource);
+
+        $url = $this->urlGenerator->generate('auto_grid_test_custom_action_download', ['hash' => $hash]);
         $event->setRedirectUrl($url);
     }
 }
