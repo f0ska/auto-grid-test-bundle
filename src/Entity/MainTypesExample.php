@@ -25,7 +25,7 @@ class MainTypesExample
     #[ORM\Column(length: 255)]
     private ?string $stringType = null;
 
-    #[ORM\Column(type: Types::ASCII_STRING)]
+    #[ORM\Column(type: Types::ASCII_STRING, length: 255)]
     private $asciiStringType = null;
 
     #[ORM\Column(type: Types::TEXT)]
