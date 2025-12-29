@@ -11,7 +11,7 @@
 namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use F0ska\AutoGridBundle\Attribute\Entity\FormType;
+use F0ska\AutoGridBundle\Attribute\Entity\ActionFormType;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormOptions;
 use F0ska\AutoGridBundle\Attribute\EntityField\Label;
 use F0ska\AutoGridBundle\Attribute\Permission\Allow;
@@ -31,7 +31,7 @@ class AdvancedUserExample
 
     #[ORM\Column(length: 255)]
     #[Email]
-    #[FormType(EmailType::class)]
+    #[ActionFormType(EmailType::class)]
     #[FormOptions(['required' => true, 'help' => 'Enter your real email please!'])]
     private ?string $email = null;
 

@@ -20,10 +20,10 @@ use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
 use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
-use F0ska\AutoGridBundle\Attribute\Entity\ViewTemplate;
 use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
+use F0ska\AutoGridBundle\Attribute\EntityField\FieldTemplate;
 use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
 use F0ska\AutoGridBundle\Attribute\EntityField\Position;
 use F0ska\AutoGridBundle\Attribute\Permission\Allow;
@@ -43,7 +43,6 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[Allow('view')]
 #[Allow('advanced_filter')]
 #[AdvancedFilter(true)]
-
 #[Fieldset(name: 'Some')]
 #[Fieldset(name: 'Things', fields: ['createdAt', 'updatedAt'])]
 #[Fieldset(name: 'Here', class: 'col-12', fields: ['content'])]
@@ -86,7 +85,7 @@ class AdvancedArticleExample
     #[Allow('view')]
     #[AddToFieldset('Some')]
     #[Position(-1)]
-    #[ViewTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
+    #[FieldTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
     private ?AdvancedUserExample $author = null;
 
     /**
@@ -95,7 +94,7 @@ class AdvancedArticleExample
     #[ORM\ManyToMany(targetEntity: BlogArticleTagExample::class)]
     #[Allow('view')]
     #[AddToFieldset('Things')]
-    #[ViewTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
+    #[FieldTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
     private Collection $tags;
 
     public function __construct()

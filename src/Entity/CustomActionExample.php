@@ -14,12 +14,9 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\Entity\ActionRoute;
 use F0ska\AutoGridBundle\Attribute\Entity\ExportAction;
 use F0ska\AutoGridBundle\Attribute\Entity\MassAction;
-use F0ska\AutoGridBundle\Attribute\Entity\RouteCreate;
-use F0ska\AutoGridBundle\Attribute\Entity\RouteDelete;
-use F0ska\AutoGridBundle\Attribute\Entity\RouteEdit;
-use F0ska\AutoGridBundle\Attribute\Entity\RouteView;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHeaderClass;
@@ -27,10 +24,10 @@ use F0ska\AutoGridBundle\Attribute\EntityField\RangeFilter;
 use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 
 #[ORM\Entity(repositoryClass: CustomActionExampleRepository::class)]
-#[RouteCreate]
-#[RouteEdit]
-#[RouteView]
-#[RouteDelete]
+#[ActionRoute('create')]
+#[ActionRoute('edit')]
+#[ActionRoute('view')]
+#[ActionRoute('delete')]
 #[MassAction('Custom Mass Action')]
 #[MassAction('Another Custom Mass Action')]
 #[MassAction(name: 'Custom Action with Custom Redirect', code: 'custom_action_redirect')]

@@ -12,14 +12,14 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use F0ska\AutoGridBundle\Attribute\Entity\FormType;
-use F0ska\AutoGridBundle\Attribute\Entity\ViewTemplate;
+use F0ska\AutoGridBundle\Attribute\Entity\ActionFormType;
+use F0ska\AutoGridBundle\Attribute\EntityField\FieldTemplate;
 use F0ska\AutoGridBundle\Attribute\Permission\Forbid;
 use F0ska\AutoGridTestBundle\Form\CustomFormExampleType;
 use F0ska\AutoGridTestBundle\Repository\CustomFormExampleRepository;
 
 #[ORM\Entity(repositoryClass: CustomFormExampleRepository::class)]
-#[FormType(CustomFormExampleType::class)]
+#[ActionFormType(CustomFormExampleType::class)]
 class CustomFormExample
 {
     #[ORM\Id]
@@ -28,7 +28,7 @@ class CustomFormExample
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
-    #[ViewTemplate('@F0skaAutoGridTest/customization/image.html.twig')]
+    #[FieldTemplate('@F0skaAutoGridTest/customization/image.html.twig')]
     #[Forbid('grid')]
     /**
      * @var string|resource|null $file
