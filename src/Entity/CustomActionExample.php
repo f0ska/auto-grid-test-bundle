@@ -19,7 +19,7 @@ use F0ska\AutoGridBundle\Attribute\Entity\ExportAction;
 use F0ska\AutoGridBundle\Attribute\Entity\MassAction;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
-use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHeaderClass;
+use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\RangeFilter;
 use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 
@@ -43,13 +43,13 @@ class CustomActionExample
     #[ORM\Column(length: 32)]
     #[CanSort(true)]
     #[CanFilter((true))]
-    #[ColumnHeaderClass('col-2')]
+    #[ColumnHtmlClass(headerClass: 'col-2')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[CanSort(true)]
     #[CanFilter((true))]
-    #[ColumnHeaderClass('col-4')]
+    #[ColumnHtmlClass(headerClass: 'col-4')]
     private ?string $description = null;
 
     #[ORM\Column]
