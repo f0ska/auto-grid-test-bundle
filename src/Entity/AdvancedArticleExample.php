@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
 use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
+use F0ska\AutoGridBundle\Attribute\Entity\PageLimits;
 use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
@@ -46,6 +47,7 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[Fieldset(name: 'Some')]
 #[Fieldset(name: 'Things', fields: ['createdAt', 'updatedAt'])]
 #[Fieldset(name: 'Here', class: 'col-12', fields: ['content'])]
+#[PageLimits([13, 21, 34, 55])]
 class AdvancedArticleExample
 {
     #[ORM\Id]

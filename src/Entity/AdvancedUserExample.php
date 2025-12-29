@@ -12,6 +12,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use F0ska\AutoGridBundle\Attribute\Entity\ActionFormType;
+use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormOptions;
 use F0ska\AutoGridBundle\Attribute\EntityField\Label;
 use F0ska\AutoGridBundle\Attribute\Permission\Allow;
@@ -38,6 +39,7 @@ class AdvancedUserExample
     #[ORM\Column(length: 255)]
     #[Length(min: 3)]
     #[Label('Nickname')]
+    #[ColumnHtmlClass(headerClass: 'table-success', valueClass: 'table-success')]
     private ?string $userName = null;
 
     #[ORM\Column(length: 15)]

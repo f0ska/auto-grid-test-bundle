@@ -1,0 +1,5 @@
+{% extends '@F0skaAutoGrid/bootstrap_5/grid/column_value_action.html.twig' %}
+
+{% block autogrid_grid_row_custom_action %}
+<button class="btn btn-sm btn-success" onclick="alert('{{ entity.name }}')"><i class="bi bi-emoji-smile-fill"></i></button>
+{% endblock %}

@@ -16,7 +16,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use F0ska\AutoGridBundle\Attribute\Entity\ActionRoute;
 use F0ska\AutoGridBundle\Attribute\Entity\ExportAction;
+use F0ska\AutoGridBundle\Attribute\Entity\HtmlClass;
 use F0ska\AutoGridBundle\Attribute\Entity\MassAction;
+use F0ska\AutoGridBundle\Attribute\Entity\Template;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
@@ -32,6 +34,8 @@ use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 #[MassAction('Another Custom Mass Action')]
 #[MassAction(name: 'Custom Action with Custom Redirect', code: 'custom_action_redirect')]
 #[ExportAction(name: 'Export Action Example', code: 'export_example')]
+#[Template(code: 'grid.column_value_action', templatePath: '@F0skaAutoGridTest/customization/grid_action.html.twig')]
+#[HtmlClass(table: 'table-striped')]
 class CustomActionExample
 {
     #[ORM\Id]
