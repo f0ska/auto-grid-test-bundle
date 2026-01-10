@@ -14,6 +14,8 @@ f0ska_auto_grid_test:
 
 You can access the demo application via the `/auto-grid` route path.
 
+---
+
 Bundle Installation
 ===================
 
