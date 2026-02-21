@@ -8,3 +8,9 @@ services:
         resource: '../src/{Controller/*,DataFixtures/*,EventSubscriber/*,Repository/*,Service/*,Twig/*}'
         autowire: true
         autoconfigure: true
+
+    F0ska\AutoGridTestBundle\Customization\:
+        resource: '../src/Customization/*'
+        tags: [ 'autogrid.customization' ]
+        autowire: true
+        public: true

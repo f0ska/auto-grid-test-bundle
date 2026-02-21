@@ -24,7 +24,11 @@ class CustomActionController extends AbstractController
     #[Route('/custom-action', name: 'auto_grid_test_custom_action')]
     public function index(AutoGridFactory $factory): Response
     {
-        $grid = $factory->create(CustomActionExample::class, routePrefix: 'auto_grid_test_custom_action_');
+        $grid = $factory->create(
+            CustomActionExample::class,
+            'random-field-order',
+            routePrefix: 'auto_grid_test_custom_action_'
+        );
         return $grid->getResponse() ?? $this->render(
             '@F0skaAutoGridTest/examples/custom_action.html.twig',
             ['grid' => $grid]
