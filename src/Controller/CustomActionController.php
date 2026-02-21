@@ -26,7 +26,6 @@ class CustomActionController extends AbstractController
     {
         $grid = $factory->create(
             CustomActionExample::class,
-            'random-field-order',
             routePrefix: 'auto_grid_test_custom_action_'
         );
         return $grid->getResponse() ?? $this->render(

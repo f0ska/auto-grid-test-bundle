@@ -20,7 +20,7 @@ class CustomizationExample implements CustomizationInterface
 {
     public function execute(AutoGrid $autoGrid, Parameters $parameters): void
     {
-        if ($autoGrid->getId() === 'random-field-order') {
+        if ($autoGrid->getId() === 'random-column-order') {
             $fields = [];
             $keys = array_keys($parameters->fields);
             shuffle($keys);
@@ -28,6 +28,8 @@ class CustomizationExample implements CustomizationInterface
                 $fields[$key] = $parameters->fields[$key];
             }
             $parameters->fields = $fields;
+
+            $parameters->attributes['title'] = 'The order of the columns is random on each reload 😁';
         }
     }
 
