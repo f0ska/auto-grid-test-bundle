@@ -24,7 +24,7 @@ final class CustomizationServiceController extends AbstractController
     {
         $grid = $factory->create(BasicExample::class, 'random-column-order');
         return $grid->getResponse() ?? $this->render(
-            '@F0skaAutoGridTest/examples/basic.html.twig',
+            '@F0skaAutoGridTest/examples/customization_service.html.twig',
             ['grid' => $grid]
         );
     }
