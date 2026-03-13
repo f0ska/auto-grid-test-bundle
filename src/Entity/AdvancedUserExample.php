@@ -12,12 +12,16 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use F0ska\AutoGridBundle\Attribute\Entity\ActionFormType;
+use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
+use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormOptions;
+use F0ska\AutoGridBundle\Attribute\EntityField\FormType;
 use F0ska\AutoGridBundle\Attribute\EntityField\Label;
 use F0ska\AutoGridBundle\Attribute\Permission\Allow;
 use F0ska\AutoGridBundle\Attribute\Permission\ForbidAll;
 use F0ska\AutoGridTestBundle\Repository\AdvancedUserExampleRepository;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -49,6 +53,13 @@ class AdvancedUserExample
 
     #[ORM\Column]
     private ?bool $banned = false;
+
+    #[ORM\Column(type: 'json', nullable: true)]
+    #[FormType(ChoiceType::class)]
+    #[FormOptions(['choices' => ['One' => 1, 'Two' => 2, 'Three' => 3], 'multiple' => true, 'required' => false])]
+    #[CanFilter(true)]
+    #[CanSort(true)]
+    private ?array $multipleChoices = null;
 
     public function getId(): ?int
     {
@@ -99,6 +110,18 @@ class AdvancedUserExample
     public function setBanned(?bool $banned): static
     {
         $this->banned = $banned;
+
+        return $this;
+    }
+
+    public function getMultipleChoices(): ?array
+    {
+        return $this->multipleChoices;
+    }
+
+    public function setMultipleChoices(?array $multipleChoices): static
+    {
+        $this->multipleChoices = $multipleChoices;
 
         return $this;
     }
