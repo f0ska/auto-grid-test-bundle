@@ -7,7 +7,7 @@
             {% set label = agChoiceLabels(choice, field)|first %}
             {% set value = agChoiceValues(choice, field)|first %}
             <li class="ms-3">
-                <a href="{{ agRun(agActionUrl, 'grid', {'filter': {'tags': [value]}}) }}">{{ label }}</a>
+                <a href="{{ agRun(agActionUrl, 'grid', {'filter': {'tags': value}}) }}">{{ label }}</a>
             </li>
         {% endfor %}
     </ul>
