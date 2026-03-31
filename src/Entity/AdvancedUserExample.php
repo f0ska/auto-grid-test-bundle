@@ -18,8 +18,7 @@ use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormOptions;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormType;
 use F0ska\AutoGridBundle\Attribute\EntityField\Label;
-use F0ska\AutoGridBundle\Attribute\Permission\Allow;
-use F0ska\AutoGridBundle\Attribute\Permission\ForbidAll;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Repository\AdvancedUserExampleRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -36,7 +35,7 @@ class AdvancedUserExample
 
     #[ORM\Column(length: 255)]
     #[Email]
-    #[ActionFormType(EmailType::class)]
+    #[FormType(EmailType::class)]
     #[FormOptions(['required' => true, 'help' => 'Enter your real email please!'])]
     private ?string $email = null;
 
@@ -47,8 +46,8 @@ class AdvancedUserExample
     private ?string $userName = null;
 
     #[ORM\Column(length: 15)]
-    #[ForbidAll]
-    #[Allow('view')]
+    #[Permission(allow: false)]
+    #[Permission('view')]
     private ?string $lastIp = null;
 
     #[ORM\Column]

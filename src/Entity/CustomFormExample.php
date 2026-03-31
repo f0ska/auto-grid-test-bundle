@@ -14,7 +14,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use F0ska\AutoGridBundle\Attribute\Entity\ActionFormType;
 use F0ska\AutoGridBundle\Attribute\EntityField\FieldTemplate;
-use F0ska\AutoGridBundle\Attribute\Permission\Forbid;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Form\CustomFormExampleType;
 use F0ska\AutoGridTestBundle\Repository\CustomFormExampleRepository;
 
@@ -29,7 +29,7 @@ class CustomFormExample
 
     #[ORM\Column(type: Types::BLOB, nullable: true)]
     #[FieldTemplate('@F0skaAutoGridTest/customization/image.html.twig')]
-    #[Forbid('grid')]
+    #[Permission('grid', allow: false)]
     /**
      * @var string|resource|null $file
      */

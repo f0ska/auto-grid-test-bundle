@@ -23,6 +23,7 @@ use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\RangeFilter;
+use F0ska\AutoGridBundle\ValueObject\TemplateArea;
 use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 
 #[ORM\Entity(repositoryClass: CustomActionExampleRepository::class)]
@@ -34,7 +35,7 @@ use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 #[MassAction('Another Custom Mass Action')]
 #[MassAction(name: 'Custom Action with Custom Redirect', code: 'custom_action_redirect')]
 #[ExportAction(name: 'Export Action Example', code: 'export_example')]
-#[Template(code: 'grid.column_value_action', templatePath: '@F0skaAutoGridTest/customization/grid_action.html.twig')]
+#[Template(area: TemplateArea::GRID_COLUMN_VALUE_ACTION, templatePath: '@F0skaAutoGridTest/customization/grid_action.html.twig')]
 #[HtmlClass(table: 'table-striped')]
 class CustomActionExample
 {

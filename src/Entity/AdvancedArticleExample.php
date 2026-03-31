@@ -27,11 +27,9 @@ use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
 use F0ska\AutoGridBundle\Attribute\EntityField\FieldTemplate;
 use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
 use F0ska\AutoGridBundle\Attribute\EntityField\Position;
-use F0ska\AutoGridBundle\Attribute\Permission\Allow;
-use F0ska\AutoGridBundle\Attribute\Permission\AllowAll;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridBundle\Attribute\Permission\DisallowActionsByDefault;
 use F0ska\AutoGridBundle\Attribute\Permission\DisallowFieldsByDefault;
-use F0ska\AutoGridBundle\Attribute\Permission\Forbid;
 use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 
 #[ORM\Entity(repositoryClass: AdvancedArticleExampleRepository::class)]
@@ -40,13 +38,14 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[HasLifecycleCallbacks]
 #[DisallowActionsByDefault]
 #[DisallowFieldsByDefault]
-#[Allow('grid')]
-#[Allow('view')]
-#[Allow('advanced_filter')]
+#[Permission('grid')]
+#[Permission('view')]
+#[Permission('advanced_filter')]
+#[Permission('edit', gridId: 'specific_grid_id')]
 #[AdvancedFilter(true)]
 #[Fieldset(name: 'Some')]
-#[Fieldset(name: 'Things', fields: ['createdAt', 'updatedAt'])]
-#[Fieldset(name: 'Here', class: 'col-12', fields: ['content'])]
+#[Fieldset(name: 'Things')]
+#[Fieldset(name: 'Here', class: 'col-12')]
 #[PageLimits([13, 21, 34, 55])]
 class AdvancedArticleExample
 {
@@ -58,33 +57,37 @@ class AdvancedArticleExample
     #[ORM\Column(length: 80)]
     #[CanFilter(true)]
     #[CanSort(true)]
-    #[AllowAll]
+    #[Permission]
     #[AddToFieldset('Some')]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[AllowAll]
+    #[Permission]
     #[GridTruncate(100)]
+    #[AddToFieldset('Here')]
     private ?string $content = null;
 
     #[ORM\Column]
     #[CanFilter(true)]
-    #[AllowAll]
-    #[Forbid('grid')]
+    #[Permission]
+    #[Permission('grid', allow: false)]
+    #[Permission('edit', gridId: 'specific_grid_id')]
     #[AddToFieldset('Some')]
     private ?bool $published = null;
 
     #[ORM\Column]
-    #[Allow('view')]
+    #[Permission('view')]
+    #[AddToFieldset('Things')]
     private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    #[Allow('view')]
+    #[Permission('view')]
+    #[AddToFieldset('Things')]
     private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Allow('view')]
+    #[Permission('view')]
     #[AddToFieldset('Some')]
     #[Position(-1)]
     #[FieldTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
@@ -94,7 +97,7 @@ class AdvancedArticleExample
      * @var Collection<int, BlogArticleTagExample>
      */
     #[ORM\ManyToMany(targetEntity: BlogArticleTagExample::class)]
-    #[Allow('view')]
+    #[Permission('view')]
     #[AddToFieldset('Things')]
     #[FieldTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
     private Collection $tags;

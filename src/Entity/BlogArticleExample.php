@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
-use F0ska\AutoGridBundle\Attribute\Permission\Forbid;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Repository\BlogArticleExampleRepository;
 
 #[ORM\Entity(repositoryClass: BlogArticleExampleRepository::class)]
@@ -40,13 +40,13 @@ class BlogArticleExample
     private ?bool $published = null;
 
     #[ORM\Column]
-    #[Forbid('create')]
-    #[Forbid('edit')]
+    #[Permission('create', allow: false)]
+    #[Permission('edit', allow: false)]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    #[Forbid('create')]
-    #[Forbid('edit')]
+    #[Permission('create', allow: false)]
+    #[Permission('edit', allow: false)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne]
