@@ -23,7 +23,7 @@ use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
 use F0ska\AutoGridBundle\Attribute\Entity\PageLimits;
 use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
+use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\FieldTemplate;
 use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
 use F0ska\AutoGridBundle\Attribute\EntityField\Position;
@@ -56,7 +56,7 @@ class AdvancedArticleExample
 
     #[ORM\Column(length: 80)]
     #[CanFilter(true)]
-    #[CanSort(true)]
+    #[Sortable]
     #[Permission]
     #[AddToFieldset('Some')]
     private ?string $title = null;

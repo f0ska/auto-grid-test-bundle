@@ -20,7 +20,7 @@ use F0ska\AutoGridBundle\Attribute\Entity\HtmlClass;
 use F0ska\AutoGridBundle\Attribute\Entity\MassAction;
 use F0ska\AutoGridBundle\Attribute\Entity\Template;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
+use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\RangeFilter;
 use F0ska\AutoGridBundle\ValueObject\TemplateArea;
@@ -46,24 +46,24 @@ class CustomActionExample
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 32)]
-    #[CanSort(true)]
+    #[Sortable]
     #[CanFilter((true))]
     #[ColumnHtmlClass(headerClass: 'col-2')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[CanSort(true)]
+    #[Sortable]
     #[CanFilter((true))]
     #[ColumnHtmlClass(headerClass: 'col-4')]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[CanSort(true)]
+    #[Sortable]
     #[CanFilter((true))]
     private ?bool $enabled = null;
 
     #[ORM\Column]
-    #[CanSort(true)]
+    #[Sortable]
     #[CanFilter((true))]
     private ?\DateTimeImmutable $publishAt = null;
 

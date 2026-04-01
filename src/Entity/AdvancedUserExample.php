@@ -13,7 +13,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use F0ska\AutoGridBundle\Attribute\Entity\ActionFormType;
 use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
+use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormOptions;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormType;
@@ -57,7 +57,7 @@ class AdvancedUserExample
     #[FormType(ChoiceType::class)]
     #[FormOptions(['choices' => ['One' => 1, 'Two' => 2, 'Three' => 3], 'multiple' => true, 'required' => false])]
     #[CanFilter(true)]
-    #[CanSort(true)]
+    #[Sortable]
     private ?array $multipleChoices = null;
 
     public function getId(): ?int
