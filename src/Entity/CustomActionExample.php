@@ -19,10 +19,10 @@ use F0ska\AutoGridBundle\Attribute\Entity\ExportAction;
 use F0ska\AutoGridBundle\Attribute\Entity\HtmlClass;
 use F0ska\AutoGridBundle\Attribute\Entity\MassAction;
 use F0ska\AutoGridBundle\Attribute\Entity\Template;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
+use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
 use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
-use F0ska\AutoGridBundle\Attribute\EntityField\RangeFilter;
+use F0ska\AutoGridBundle\Condition\RangeCondition;
 use F0ska\AutoGridBundle\ValueObject\TemplateArea;
 use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 
@@ -42,29 +42,29 @@ class CustomActionExample
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[RangeFilter(true)]
+    #[Filterable(condition: RangeCondition::class)]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 32)]
     #[Sortable]
-    #[CanFilter((true))]
+    #[Filterable]
     #[ColumnHtmlClass(headerClass: 'col-2')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Sortable]
-    #[CanFilter((true))]
+    #[Filterable]
     #[ColumnHtmlClass(headerClass: 'col-4')]
     private ?string $description = null;
 
     #[ORM\Column]
     #[Sortable]
-    #[CanFilter((true))]
+    #[Filterable]
     private ?bool $enabled = null;
 
     #[ORM\Column]
     #[Sortable]
-    #[CanFilter((true))]
+    #[Filterable]
     private ?\DateTimeImmutable $publishAt = null;
 
     public function getId(): ?int

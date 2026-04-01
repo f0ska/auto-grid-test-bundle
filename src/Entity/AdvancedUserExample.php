@@ -12,7 +12,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use F0ska\AutoGridBundle\Attribute\Entity\ActionFormType;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
+use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
 use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormOptions;
@@ -56,7 +56,7 @@ class AdvancedUserExample
     #[ORM\Column(type: 'json', nullable: true)]
     #[FormType(ChoiceType::class)]
     #[FormOptions(['choices' => ['One' => 1, 'Two' => 2, 'Three' => 3], 'multiple' => true, 'required' => false])]
-    #[CanFilter(true)]
+    #[Filterable]
     #[Sortable]
     private ?array $multipleChoices = null;
 

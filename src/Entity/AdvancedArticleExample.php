@@ -22,7 +22,7 @@ use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
 use F0ska\AutoGridBundle\Attribute\Entity\PageLimits;
 use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
+use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
 use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\FieldTemplate;
 use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
@@ -55,7 +55,7 @@ class AdvancedArticleExample
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 80)]
-    #[CanFilter(true)]
+    #[Filterable]
     #[Sortable]
     #[Permission]
     #[AddToFieldset('Some')]
@@ -68,7 +68,7 @@ class AdvancedArticleExample
     private ?string $content = null;
 
     #[ORM\Column]
-    #[CanFilter(true)]
+    #[Filterable]
     #[Permission]
     #[Permission('grid', allow: false)]
     #[Permission('edit', gridId: 'specific_grid_id')]
