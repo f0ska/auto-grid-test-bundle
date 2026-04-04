@@ -1,71 +1,45 @@
-Test bundle for the AutoGrid
-=================
-This repository serves as a collection of practical examples for
-the [AutoGrid](https://github.com/f0ska/auto-grid-bundle) bundle.
+# AutoGridTestBundle: Demo & Functional Test Suite
 
-### Bundle initialization steps:
-
-1. Update doctrine schema
-
-```shell
-php bin/console doctrine:schema:update -f
-```
-
-2. Load fixtures
-
-```shell
-php bin/console doctrine:fixtures:load --append
-```
-
-3. Add the AutoGridTest route to your `./config/routes.yaml`
-
-```yaml
-f0ska_auto_grid_test:
-    resource: '@F0skaAutoGridTestBundle/config/routes.yaml'
-```
-
-4. Access the demo application via the `/auto-grid` route path.
+This repository serves as a collection of practical examples and the comprehensive functional test suite for the [AutoGridBundle](https://github.com/f0ska/auto-grid-bundle).
 
 ---
 
-Bundle Installation
-===================
+## Setup for Demos & Tests
 
-Make sure Composer is installed globally, as explained in the
-[installation chapter](https://getcomposer.org/doc/00-intro.md)
-of the Composer documentation.
+To run the demo application and execute the test suite, follow these steps:
 
-Applications that use Symfony Flex
-----------------------------------
+1.  **Update Test Database Schema**:
+    Ensure your test database (`var/test.db` for SQLite) has the latest schema.
+    ```shell
+    php bin/console doctrine:schema:update --force --env=test
+    ```
 
-Open a command console, enter your project directory and execute:
+2.  **Load Test Data (Fixtures)**:
+    Populate your test database with sample data for the demos and tests.
+    ```shell
+    php bin/console doctrine:fixtures:load --env=test --no-interaction
+    ```
 
-```console
-composer require f0ska/auto-grid-test-bundle
-```
+3.  **Add Demo Routes**:
+    Include the demo application's routes in your project's `./config/routes.yaml`:
+    ```yaml
+    f0ska_auto_grid_test:
+        resource: '@F0skaAutoGridTestBundle/config/routes.yaml'
+    ```
 
-Applications that don't use Symfony Flex
-----------------------------------------
+4.  **Access the Demo Application**:
+    Navigate to the `/auto-grid` route path in your browser (e.g., `http://localhost:8000/auto-grid`).
 
-### Step 1: Download the Bundle
+5.  **Run the Test Suite**:
+    Execute the functional tests to verify the bundle's features:
+    ```shell
+    composer test
+    ```
+    (This command uses the `test` script defined in `composer.json`, which runs `vendor/bin/phpunit`.)
 
-Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
+---
 
-```console
-composer require f0ska/auto-grid-test-bundle
-```
+## Important Notes:
 
-### Step 2: Enable the Bundle
-
-Then, enable the bundle by adding it to the list of registered bundles
-in the `config/bundles.php` file of your project:
-
-```php
-// config/bundles.php
-
-return [
-    // ...
-    F0ska\AutoGridTestBundle\F0skaAutoGridTestBundle::class => ['all' => true],
-];
-```
+*   This bundle is intended for demonstration and testing purposes within the `symfony-docker` project. It is not meant to be installed as a standalone Composer dependency in other projects.
+*   The test environment uses an SQLite database (`var/test.db`) for isolation and speed. Ensure your `phpunit.dist.xml` and `.env.test` are correctly configured as per the project's setup.

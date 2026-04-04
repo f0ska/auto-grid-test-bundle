@@ -59,6 +59,7 @@ class AdvancedArticleExample
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[ValuePrefix("#")]
+    #[Permission] // Explicitly allow ID so ValuePrefix can be tested in grid
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 80)]
@@ -84,17 +85,20 @@ class AdvancedArticleExample
     private ?bool $published = null;
 
     #[ORM\Column]
+    #[Permission('grid')]
     #[Permission('view')]
     #[AddToFieldset('Metatags')]
     private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
+    #[Permission('grid')]
     #[Permission('view')]
     #[AddToFieldset('Metatags')]
     private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Permission('grid')]
     #[Permission('view')]
     #[AddToFieldset('Content Info')]
     #[Position(-1)]
@@ -106,6 +110,7 @@ class AdvancedArticleExample
      * @var Collection<int, BlogArticleTagExample>
      */
     #[ORM\ManyToMany(targetEntity: BlogArticleTagExample::class)]
+    #[Permission('grid')]
     #[Permission('view')]
     #[AddToFieldset('Metatags')]
     #[FieldTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]

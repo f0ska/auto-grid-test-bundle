@@ -17,6 +17,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BasicExampleRepository::class)]
+#[ORM\Index(name: 'idx_basic_name', columns: ['name'])]
+#[ORM\Index(name: 'idx_basic_enabled', columns: ['enabled'])]
 class BasicExample
 {
     #[ORM\Id]

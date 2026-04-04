@@ -11,12 +11,13 @@
 namespace F0ska\AutoGridTestBundle\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use F0ska\AutoGridTestBundle\Entity\BasicExample;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
 
-class BasicExampleFixture extends Fixture
+class BasicExampleFixture extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -24,5 +25,10 @@ class BasicExampleFixture extends Fixture
         $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
         $populator->addEntity(BasicExample::class, $generator->numberBetween(9000, 10000));
         $populator->execute();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['basic_example'];
     }
 }
