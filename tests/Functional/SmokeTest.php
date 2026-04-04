@@ -10,13 +10,12 @@
 
 namespace F0ska\AutoGridTestBundle\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SmokeTest extends WebTestCase
 {
-    /**
-     * @dataProvider demoRoutesProvider
-     */
+    #[DataProvider('demoRoutesProvider')]
     public function testDemoRoutesLoadSuccessfully(string $url): void
     {
         $client = static::createClient();
