@@ -21,12 +21,17 @@ use Doctrine\ORM\Mapping\PreUpdate;
 use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
 use F0ska\AutoGridBundle\Attribute\Entity\PageLimits;
+use F0ska\AutoGridBundle\Attribute\Entity\RedirectOnSubmit;
+use F0ska\AutoGridBundle\Attribute\EntityField\AssociatedField;
+use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
 use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
 use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\FieldTemplate;
 use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
 use F0ska\AutoGridBundle\Attribute\EntityField\Position;
+use F0ska\AutoGridBundle\Attribute\EntityField\ValuePrefix;
+use F0ska\AutoGridBundle\Attribute\EntityField\ValueSuffix;
 use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridBundle\Attribute\Permission\DisallowActionsByDefault;
 use F0ska\AutoGridBundle\Attribute\Permission\DisallowFieldsByDefault;
@@ -43,28 +48,31 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[Permission('advanced_filter')]
 #[Permission('edit', gridId: 'specific_grid_id')]
 #[AdvancedFilter(true)]
-#[Fieldset(name: 'Some')]
-#[Fieldset(name: 'Things')]
-#[Fieldset(name: 'Here', class: 'col-12')]
+#[Fieldset(name: 'Content Info', class: 'col-md-8')]
+#[Fieldset(name: 'Metatags', class: 'col-md-4')]
+#[Fieldset(name: 'Full Content', class: 'col-12')]
 #[PageLimits([13, 21, 34, 55])]
+#[RedirectOnSubmit('grid')]
 class AdvancedArticleExample
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ValuePrefix("#")]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 80)]
     #[Filterable]
     #[Sortable]
     #[Permission]
-    #[AddToFieldset('Some')]
+    #[AddToFieldset('Content Info')]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Permission]
-    #[GridTruncate(100)]
-    #[AddToFieldset('Here')]
+    #[GridTruncate(50)]
+    #[ValueSuffix("...")]
+    #[AddToFieldset('Full Content')]
     private ?string $content = null;
 
     #[ORM\Column]
@@ -72,25 +80,26 @@ class AdvancedArticleExample
     #[Permission]
     #[Permission('grid', allow: false)]
     #[Permission('edit', gridId: 'specific_grid_id')]
-    #[AddToFieldset('Some')]
+    #[AddToFieldset('Content Info')]
     private ?bool $published = null;
 
     #[ORM\Column]
     #[Permission('view')]
-    #[AddToFieldset('Things')]
+    #[AddToFieldset('Metatags')]
     private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     #[Permission('view')]
-    #[AddToFieldset('Things')]
+    #[AddToFieldset('Metatags')]
     private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Permission('view')]
-    #[AddToFieldset('Some')]
+    #[AddToFieldset('Content Info')]
     #[Position(-1)]
     #[FieldTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
+    #[AssociatedField(name: 'email', label: 'Author contact', position: 5)]
     private ?AdvancedUserExample $author = null;
 
     /**
@@ -98,8 +107,9 @@ class AdvancedArticleExample
      */
     #[ORM\ManyToMany(targetEntity: BlogArticleTagExample::class)]
     #[Permission('view')]
-    #[AddToFieldset('Things')]
+    #[AddToFieldset('Metatags')]
     #[FieldTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
+    #[ColumnHtmlClass(valueClass: 'badge-container')]
     private Collection $tags;
 
     public function __construct()

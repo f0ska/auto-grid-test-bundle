@@ -25,7 +25,7 @@ final class RelationsController extends AbstractController
     #[Route('/relations', name: 'auto_grid_test_relations')]
     public function index(AutoGridFactory $factory): Response
     {
-        $articles = $factory->create(BlogArticleExample::class);
+        $articles = $factory->create(BlogArticleExample::class, gridId: 'articles');
         $tags = $factory->create(BlogArticleTagExample::class);
         $comments = $factory->create(BlogArticleCommentExample::class);
         $users = $factory->create(BlogUserExample::class);

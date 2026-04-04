@@ -11,6 +11,7 @@
 namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Repository\BlogUserExampleRepository;
 
 #[ORM\Entity(repositoryClass: BlogUserExampleRepository::class)]
@@ -22,10 +23,11 @@ class BlogUserExample
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 255)]
+    #[Permission(action: 'grid', allow: false, gridId: 'articles')]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $userName = null;
+    private ?string $username = null;
 
     #[ORM\Column(length: 15)]
     private ?string $lastIp = null;
@@ -50,14 +52,14 @@ class BlogUserExample
         return $this;
     }
 
-    public function getUserName(): ?string
+    public function getUsername(): ?string
     {
-        return $this->userName;
+        return $this->username;
     }
 
-    public function setUserName(string $userName): static
+    public function setUsername(string $username): static
     {
-        $this->userName = $userName;
+        $this->username = $username;
 
         return $this;
     }

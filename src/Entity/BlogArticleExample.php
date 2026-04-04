@@ -18,7 +18,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
+use F0ska\AutoGridBundle\Attribute\EntityField\AssociatedField;
+use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
+use F0ska\AutoGridBundle\Attribute\EntityField\Label;
+use F0ska\AutoGridBundle\Attribute\EntityField\Position;
+use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\Permission;
+use F0ska\AutoGridBundle\Condition\AssociationCondition; // Changed from InCondition
 use F0ska\AutoGridTestBundle\Repository\BlogArticleExampleRepository;
 
 #[ORM\Entity(repositoryClass: BlogArticleExampleRepository::class)]
@@ -28,35 +34,49 @@ class BlogArticleExample
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Position(-100)]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 64)]
+    #[Filterable]
+    #[Sortable]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Filterable]
+    #[Permission('grid', allow: false)] // Hide long text from grid, but keep in view/edit
     private ?string $content = null;
 
     #[ORM\Column]
+    #[Filterable]
+    #[Sortable]
     private ?bool $published = null;
 
     #[ORM\Column]
     #[Permission('create', allow: false)]
     #[Permission('edit', allow: false)]
+    #[Sortable(direction: 'desc')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     #[Permission('create', allow: false)]
     #[Permission('edit', allow: false)]
+    #[Permission('grid', allow: false)] // Hide from grid
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[AssociatedField(name: 'username', label: 'Author', position: 10)]
+    #[AssociatedField(name: 'email', label: 'Author Email', position: 11)]
+    #[Permission(allow: false)] // Hide the author object itself
     private ?BlogUserExample $author = null;
 
     /**
      * @var Collection<int, BlogArticleTagExample>
      */
     #[ORM\ManyToMany(targetEntity: BlogArticleTagExample::class)]
+    #[Label("Tags")]
+    #[Filterable(condition: AssociationCondition::class, formOptions: ['multiple' => true])] // Changed condition
     private Collection $tags;
 
     public function __construct()
