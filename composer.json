@@ -19,6 +19,6 @@
         "symfony/mime": "*",
         "doctrine/doctrine-fixtures-bundle": "*",
         "fakerphp/faker": "*",
-        "f0ska/auto-grid-bundle": "1.*"
+        "f0ska/auto-grid-bundle": "2.*"
     }
 }

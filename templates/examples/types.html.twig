@@ -1,18 +1,29 @@
 {% extends '@F0skaAutoGridTest/base.html.twig' %}
 
-{% block title %}Field types example{% endblock %}
+{% block title %}Field Types Example - AutoGrid{% endblock %}
 
 {% block content %}
-    <div class="card mb-5">
-        <div class="card-body">{{ agRender(main) }}</div>
+    <div class="alert alert-secondary border shadow-sm mb-4">
+        <p class="mb-2"><strong>Demonstrated features:</strong></p>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="mb-0">
+                    <li><strong>Enums</strong>: Automatic ChoiceType dropdowns</li>
+                    <li><strong>JSON/Objects</strong>: Formatted and truncated rendering</li>
+                    <li><strong>Decimals & GUIDs</strong>: Specialized handling and formatting</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="mb-0">
+                    <li><strong>Date Points</strong>: Support for Symfony Clock component</li>
+                    <li><strong>Booleans</strong>: Toggle UI or dropdown filters</li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <div class="card mb-5">
-        <div class="card-body">{{ agRender(array) }}</div>
-    </div>
-    <div class="card mb-5">
-        <div class="card-body">{{ agRender(dates) }}</div>
-    </div>
-    <div class="card mb-5">
-        <div class="card-body">{{ agRender(other) }}</div>
-    </div>
+
+    {{ agRender(main) }}
+    <div class="mt-5">{{ agRender(other) }}</div>
+    <div class="mt-5">{{ agRender(dates) }}</div>
+    <div class="mt-5">{{ agRender(array) }}</div>
 {% endblock %}

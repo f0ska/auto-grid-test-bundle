@@ -99,7 +99,7 @@ class ExampleSubscriber implements EventSubscriberInterface
             foreach ($result as $item) {
                 if (!$headerWritten) {
                     $headerWritten = true;
-                    fputcsv($resource, array_keys($item));
+                    fputcsv($resource, array_keys($item), escape: '');
                 }
 
                 $item = array_map(
@@ -112,7 +112,7 @@ class ExampleSubscriber implements EventSubscriberInterface
                     $item
                 );
 
-                fputcsv($resource, $item);
+                fputcsv($resource, $item, escape: '');
             }
             $offset += $limit;
         } while (!empty($result));

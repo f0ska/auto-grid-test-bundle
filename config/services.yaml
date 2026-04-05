@@ -11,6 +11,6 @@ services:
 
     F0ska\AutoGridTestBundle\Customization\:
         resource: '../src/Customization/*'
-        tags: [ 'autogrid.customization' ]
+        tags: [ { name: 'autogrid.customization', priority: 0 } ]
         autowire: true
         public: true

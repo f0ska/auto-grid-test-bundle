@@ -21,17 +21,20 @@ use Doctrine\ORM\Mapping\PreUpdate;
 use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
 use F0ska\AutoGridBundle\Attribute\Entity\PageLimits;
+use F0ska\AutoGridBundle\Attribute\Entity\RedirectOnSubmit;
+use F0ska\AutoGridBundle\Attribute\EntityField\AssociatedField;
+use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
+use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
+use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\FieldTemplate;
 use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
 use F0ska\AutoGridBundle\Attribute\EntityField\Position;
-use F0ska\AutoGridBundle\Attribute\Permission\Allow;
-use F0ska\AutoGridBundle\Attribute\Permission\AllowAll;
+use F0ska\AutoGridBundle\Attribute\EntityField\ValuePrefix;
+use F0ska\AutoGridBundle\Attribute\EntityField\ValueSuffix;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridBundle\Attribute\Permission\DisallowActionsByDefault;
 use F0ska\AutoGridBundle\Attribute\Permission\DisallowFieldsByDefault;
-use F0ska\AutoGridBundle\Attribute\Permission\Forbid;
 use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 
 #[ORM\Entity(repositoryClass: AdvancedArticleExampleRepository::class)]
@@ -40,63 +43,78 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[HasLifecycleCallbacks]
 #[DisallowActionsByDefault]
 #[DisallowFieldsByDefault]
-#[Allow('grid')]
-#[Allow('view')]
-#[Allow('advanced_filter')]
+#[Permission('grid')]
+#[Permission('view')]
+#[Permission('advanced_filter')]
+#[Permission('edit', gridId: 'specific_grid_id')]
 #[AdvancedFilter(true)]
-#[Fieldset(name: 'Some')]
-#[Fieldset(name: 'Things', fields: ['createdAt', 'updatedAt'])]
-#[Fieldset(name: 'Here', class: 'col-12', fields: ['content'])]
+#[Fieldset(name: 'Content Info', class: 'col-md-8')]
+#[Fieldset(name: 'Metatags', class: 'col-md-4')]
+#[Fieldset(name: 'Full Content', class: 'col-12')]
 #[PageLimits([13, 21, 34, 55])]
+#[RedirectOnSubmit('grid')]
 class AdvancedArticleExample
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ValuePrefix("#")]
+    #[Permission] // Explicitly allow ID so ValuePrefix can be tested in grid
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 80)]
-    #[CanFilter(true)]
-    #[CanSort(true)]
-    #[AllowAll]
-    #[AddToFieldset('Some')]
+    #[Filterable]
+    #[Sortable]
+    #[Permission]
+    #[AddToFieldset('Content Info')]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[AllowAll]
-    #[GridTruncate(100)]
+    #[Permission]
+    #[GridTruncate(50)]
+    #[ValueSuffix("...")]
+    #[AddToFieldset('Full Content')]
     private ?string $content = null;
 
     #[ORM\Column]
-    #[CanFilter(true)]
-    #[AllowAll]
-    #[Forbid('grid')]
-    #[AddToFieldset('Some')]
+    #[Filterable]
+    #[Permission]
+    #[Permission('grid', allow: false)]
+    #[Permission('edit', gridId: 'specific_grid_id')]
+    #[AddToFieldset('Content Info')]
     private ?bool $published = null;
 
     #[ORM\Column]
-    #[Allow('view')]
+    #[Permission('grid')]
+    #[Permission('view')]
+    #[AddToFieldset('Metatags')]
     private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    #[Allow('view')]
+    #[Permission('grid')]
+    #[Permission('view')]
+    #[AddToFieldset('Metatags')]
     private ?DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Allow('view')]
-    #[AddToFieldset('Some')]
+    #[Permission('grid')]
+    #[Permission('view')]
+    #[AddToFieldset('Content Info')]
     #[Position(-1)]
     #[FieldTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
+    #[AssociatedField(name: 'email', label: 'Author contact', position: 5)]
     private ?AdvancedUserExample $author = null;
 
     /**
      * @var Collection<int, BlogArticleTagExample>
      */
     #[ORM\ManyToMany(targetEntity: BlogArticleTagExample::class)]
-    #[Allow('view')]
-    #[AddToFieldset('Things')]
+    #[Permission('grid')]
+    #[Permission('view')]
+    #[AddToFieldset('Metatags')]
     #[FieldTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
+    #[ColumnHtmlClass(valueClass: 'badge-container')]
     private Collection $tags;
 
     public function __construct()

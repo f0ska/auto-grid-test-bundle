@@ -11,24 +11,23 @@
 namespace F0ska\AutoGridTestBundle\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use F0ska\AutoGridTestBundle\Entity\BasicExample;
+use F0ska\AutoGridTestBundle\Entity\CorporateClientExample;
 use Faker\Factory;
 use Faker\ORM\Doctrine\Populator;
 
-class BasicExampleFixture extends Fixture implements FixtureGroupInterface
+class CorporateClientExampleFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
         $generator = Factory::create();
         $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
-        $populator->addEntity(BasicExample::class, $generator->numberBetween(9000, 10000));
+        $populator->addEntity(CorporateClientExample::class, $generator->numberBetween(50, 100), [
+            'status' => fn() => $generator->randomElement(['active', 'pending', 'inactive', 'archived']),
+            'revenue' => fn() => (string) $generator->randomFloat(2, 100000, 999999999),
+            'name' => fn() => $generator->company(),
+            'contactEmail' => fn() => $generator->companyEmail(),
+        ]);
         $populator->execute();
-    }
-
-    public static function getGroups(): array
-    {
-        return ['basic_example'];
     }
 }

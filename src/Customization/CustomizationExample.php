@@ -32,9 +32,4 @@ class CustomizationExample implements CustomizationInterface
             $parameters->attributes['title'] = 'The order of the columns is random on each reload 😁';
         }
     }
-
-    public static function getPriority(): int
-    {
-        return 0;
-    }
 }

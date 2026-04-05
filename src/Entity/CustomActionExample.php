@@ -19,10 +19,11 @@ use F0ska\AutoGridBundle\Attribute\Entity\ExportAction;
 use F0ska\AutoGridBundle\Attribute\Entity\HtmlClass;
 use F0ska\AutoGridBundle\Attribute\Entity\MassAction;
 use F0ska\AutoGridBundle\Attribute\Entity\Template;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanFilter;
-use F0ska\AutoGridBundle\Attribute\EntityField\CanSort;
+use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
+use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
-use F0ska\AutoGridBundle\Attribute\EntityField\RangeFilter;
+use F0ska\AutoGridBundle\Condition\RangeCondition;
+use F0ska\AutoGridBundle\ValueObject\TemplateArea;
 use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 
 #[ORM\Entity(repositoryClass: CustomActionExampleRepository::class)]
@@ -34,36 +35,36 @@ use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 #[MassAction('Another Custom Mass Action')]
 #[MassAction(name: 'Custom Action with Custom Redirect', code: 'custom_action_redirect')]
 #[ExportAction(name: 'Export Action Example', code: 'export_example')]
-#[Template(code: 'grid.column_value_action', templatePath: '@F0skaAutoGridTest/customization/grid_action.html.twig')]
+#[Template(area: TemplateArea::GRID_COLUMN_VALUE_ACTION, templatePath: '@F0skaAutoGridTest/customization/grid_action.html.twig')]
 #[HtmlClass(table: 'table-striped')]
 class CustomActionExample
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[RangeFilter(true)]
+    #[Filterable(condition: RangeCondition::class)]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 32)]
-    #[CanSort(true)]
-    #[CanFilter((true))]
+    #[Sortable]
+    #[Filterable]
     #[ColumnHtmlClass(headerClass: 'col-2')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[CanSort(true)]
-    #[CanFilter((true))]
+    #[Sortable]
+    #[Filterable]
     #[ColumnHtmlClass(headerClass: 'col-4')]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[CanSort(true)]
-    #[CanFilter((true))]
+    #[Sortable]
+    #[Filterable]
     private ?bool $enabled = null;
 
     #[ORM\Column]
-    #[CanSort(true)]
-    #[CanFilter((true))]
+    #[Sortable]
+    #[Filterable]
     private ?\DateTimeImmutable $publishAt = null;
 
     public function getId(): ?int
