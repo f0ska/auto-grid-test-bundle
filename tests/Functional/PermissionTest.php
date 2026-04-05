@@ -32,13 +32,11 @@ class PermissionTest extends WebTestCase
         $this->assertResponseIsSuccessful();
 
         // Check for specific columns that SHOULD be visible
-        // We normalize to lowercase to avoid casing issues
         $headers = $crawler->filter('th')->each(fn($node) => strtolower(trim($node->text())));
 
         $this->assertContains('title', $headers);
         $this->assertContains('content', $headers);
         $this->assertContains('created at', $headers);
-        $this->assertContains('updated at', $headers);
         $this->assertContains('author', $headers);
         $this->assertContains('tags', $headers);
     }
@@ -49,8 +47,9 @@ class PermissionTest extends WebTestCase
         $crawler = $client->request('GET', '/auto-grid/advanced-1');
         $this->assertResponseIsSuccessful();
 
-        // AdvancedArticleExample has: #[Permission('grid', allow: false)] on 'published'
+        // AdvancedArticleExample has: #[Permission('grid', allow: false)] on 'published' and 'updatedAt'
         $headers = $crawler->filter('th')->each(fn($node) => strtolower(trim($node->text())));
         $this->assertNotContains('published', $headers, 'Published column should be hidden in grid.');
+        $this->assertNotContains('updated at', $headers, 'Updated At column should be hidden in grid.');
     }
 }

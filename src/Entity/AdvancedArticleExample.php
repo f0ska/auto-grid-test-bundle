@@ -59,7 +59,8 @@ class AdvancedArticleExample
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[ValuePrefix("#")]
-    #[Permission] // Explicitly allow ID so ValuePrefix can be tested in grid
+    #[Permission]
+    #[ColumnHtmlClass(headerClass: 'col-1', valueClass: 'col-1')]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 80)]
@@ -67,13 +68,14 @@ class AdvancedArticleExample
     #[Sortable]
     #[Permission]
     #[AddToFieldset('Content Info')]
+    #[ColumnHtmlClass(headerClass: 'col-3', valueClass: 'col-3')]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Permission]
     #[GridTruncate(50)]
-    #[ValueSuffix("...")]
     #[AddToFieldset('Full Content')]
+    #[ColumnHtmlClass(headerClass: 'col-4', valueClass: 'col-4')]
     private ?string $content = null;
 
     #[ORM\Column]
@@ -88,11 +90,12 @@ class AdvancedArticleExample
     #[Permission('grid')]
     #[Permission('view')]
     #[AddToFieldset('Metatags')]
+    #[ColumnHtmlClass(headerClass: 'col-2', valueClass: 'col-2')]
     private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
-    #[Permission('grid')]
     #[Permission('view')]
+    #[Permission('grid', allow: false)]
     #[AddToFieldset('Metatags')]
     private ?DateTimeImmutable $updatedAt = null;
 
@@ -104,6 +107,7 @@ class AdvancedArticleExample
     #[Position(-1)]
     #[FieldTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
     #[AssociatedField(name: 'email', label: 'Author contact', position: 5)]
+    #[ColumnHtmlClass(headerClass: 'col-1', valueClass: 'col-1')]
     private ?AdvancedUserExample $author = null;
 
     /**
@@ -114,7 +118,7 @@ class AdvancedArticleExample
     #[Permission('view')]
     #[AddToFieldset('Metatags')]
     #[FieldTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
-    #[ColumnHtmlClass(valueClass: 'badge-container')]
+    #[ColumnHtmlClass(headerClass: 'col-1', valueClass: 'col-1')]
     private Collection $tags;
 
     public function __construct()

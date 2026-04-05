@@ -1,14 +1,14 @@
-{% set choices = agFieldValue(entity, field) %}
-{% if (choices is empty) %}
+{% set tags = agFieldValue(entity, field) %}
+{% if (tags is empty) %}
     -
 {% else %}
-    <ul class="list-group list-group-flush">
-        {% for choice in choices %}
-            {% set label = agChoiceLabels(choice, field)|first %}
-            {% set value = agChoiceValues(choice, field)|first %}
-            <li class="ms-3">
-                <a href="{{ agRun(agActionUrl, 'grid', {'filter': {'tags': value}}) }}">{{ label }}</a>
-            </li>
+    <div class="d-flex flex-wrap gap-1">
+        {% for tag in tags %}
+            {% set label = agChoiceLabels(tag, field)|first %}
+            {% set value = agChoiceValues(tag, field)|first %}
+            <a href="{{ agRun(agActionUrl, 'grid', {'filter': {'tags': value}}) }}" class="badge bg-secondary text-decoration-none">
+                {{ label }}
+            </a>
         {% endfor %}
-    </ul>
+    </div>
 {% endif %}

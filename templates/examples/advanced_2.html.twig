@@ -5,12 +5,22 @@
 {% block content %}
     <div class="alert alert-secondary border shadow-sm mb-4">
         <p class="mb-2"><strong>Demonstrated features:</strong></p>
-        <ul class="mb-0">
-            <li>DQL-based hard-coded filters (<code>queryExpression</code>)</li>
-            <li>Pre-filled grid state (filters/sorting) from controller</li>
-            <li>Direct initial action state (start in <code>create</code> or <code>view</code> mode)</li>
-            <li>Instance-specific <code>gridId</code> for context-aware logic</li>
-        </ul>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="mb-0">
+                    <li>DQL hard-coded filters (<code>queryExpression</code>)</li>
+                    <li>Pre-filled grid state (filters/sorting) from controller</li>
+                    <li>Instance-specific <code>gridId</code> for context-aware logic</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="mb-0">
+                    <li>Custom column CSS (<code>table-success</code> on Nickname)</li>
+                    <li>Manual form field customization (Email/Nickname)</li>
+                    <li>JSON array handling with multi-select filtering</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     {{ agRender(grid) }}
