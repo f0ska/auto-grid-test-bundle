@@ -1,9 +1,17 @@
 {% extends '@F0skaAutoGridTest/base.html.twig' %}
 
-{% block title %}Basic example{% endblock %}
+{% block title %}Advanced Controller Features - AutoGrid{% endblock %}
 
 {% block content %}
-    <div class="card mb-5">
-        <div class="card-body">{{ agRender(grid) }}</div>
+    <div class="alert alert-secondary border shadow-sm mb-4">
+        <p class="mb-2"><strong>Demonstrated features:</strong></p>
+        <ul class="mb-0">
+            <li>DQL-based hard-coded filters (<code>queryExpression</code>)</li>
+            <li>Pre-filled grid state (filters/sorting) from controller</li>
+            <li>Direct initial action state (start in <code>create</code> or <code>view</code> mode)</li>
+            <li>Instance-specific <code>gridId</code> for context-aware logic</li>
+        </ul>
     </div>
+
+    {{ agRender(grid) }}
 {% endblock %}

@@ -1,18 +1,19 @@
 {% extends '@F0skaAutoGridTest/base.html.twig' %}
 
-{% block title %}Basic example{% endblock %}
+{% block title %}Relations Example - AutoGrid{% endblock %}
 
 {% block content %}
-    <div class="card mb-5">
-        <div class="card-body">{{ agRender(articles) }}</div>
+    <div class="alert alert-secondary border shadow-sm mb-4">
+        <p class="mb-2"><strong>Demonstrated features:</strong></p>
+        <ul class="mb-0">
+            <li>Automatic rendering and filtering for <strong>One-to-Many / Many-to-Many</strong> relations</li>
+            <li><strong>Associated Fields</strong>: Displaying properties from related entities directly</li>
+            <li><strong>Cross-Entity Permissions</strong>: Context-aware field visibility using <code>gridId</code></li>
+        </ul>
     </div>
-    <div class="card mb-5">
-        <div class="card-body">{{ agRender(comments) }}</div>
-    </div>
-    <div class="card mb-5">
-        <div class="card-body">{{ agRender(users) }}</div>
-    </div>
-    <div class="card mb-5">
-        <div class="card-body">{{ agRender(tags) }}</div>
-    </div>
+
+    {{ agRender(articles) }}
+    <div class="mt-5">{{ agRender(users) }}</div>
+    <div class="mt-5">{{ agRender(tags) }}</div>
+    <div class="mt-5">{{ agRender(comments) }}</div>
 {% endblock %}
