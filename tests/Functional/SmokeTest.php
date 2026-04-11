@@ -26,16 +26,33 @@ class SmokeTest extends WebTestCase
 
     public static function demoRoutesProvider(): array
     {
-        return [
-            ['/auto-grid/'],
-            ['/auto-grid/types'],
-            ['/auto-grid/relations'],
-            ['/auto-grid/advanced-1'],
-            ['/auto-grid/advanced-2'],
-            ['/auto-grid/custom-action'],
-            ['/auto-grid/custom-form'],
-            ['/auto-grid/corporate'],
-            ['/auto-grid/customization-service'],
+        $themes = [
+            'auto-grid',
+            'auto-grid-bootstrap4',
+            'auto-grid-bulma',
+            'auto-grid-foundation',
+            'auto-grid-flowbite'
         ];
+
+        $pages = [
+            '/',
+            '/types',
+            '/relations',
+            '/advanced-1',
+            '/advanced-2',
+            '/custom-action',
+            '/custom-form',
+            '/corporate',
+            '/customization-service',
+        ];
+
+        $routes = [];
+        foreach ($themes as $theme) {
+            foreach ($pages as $page) {
+                $routes[] = ["/$theme$page"];
+            }
+        }
+
+        return $routes;
     }
 }
