@@ -1,11 +1,8 @@
 {% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
 
 <nav class="bg-gray-900 text-white fixed w-full top-0 z-50">
-    <div class="max-w-screen-xl mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
-            <div class="flex items-center">
-                <span class="font-bold text-lg">AutoGrid Demo</span>
-            </div>
+    <div class="max-w-screen-2xl mx-auto px-4">
+        <div class="flex items-center justify-end h-16">
             <div class="hidden md:flex md:space-x-4">
                 {% for item in navItems %}
                     <a class="block py-2 px-3 rounded {{ agt_is_nav_active(item.route) ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}"
@@ -29,5 +26,8 @@
         width: 24px !important;
         height: 24px !important;
     }
+    body {
+        padding-top: 64px !important;
+    }
 </style>
-{% set mainContentClass = 'max-w-screen-xl mx-auto px-4 pt-20' %}
+

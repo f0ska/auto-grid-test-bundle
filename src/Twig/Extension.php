@@ -90,6 +90,7 @@ class Extension extends AbstractExtension
                 ['href' => 'https://cdn.jsdelivr.net/npm/foundation-sites@6.9.0/dist/css/foundation.min.css'],
             ],
             'js' => [
+                ['href' => 'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js'],
                 ['href' => 'https://cdn.jsdelivr.net/npm/foundation-sites@6.9.0/dist/js/foundation.min.js'],
             ],
             'infoBlock' => [
@@ -111,11 +112,10 @@ class Extension extends AbstractExtension
             'label' => 'Flowbite',
             'icon' => 'flowbite',
             'css' => [
-                ['href' => 'https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/css/flowbite.min.css'],
-                ['href' => 'https://cdn.jsdelivr.net/npm/tailwindcss@3.4.15/dist/tailwind.min.css'],
+                ['href' => 'https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.css'],
             ],
             'js' => [
-                ['href' => 'https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/js/flowbite.min.js'],
+                ['href' => 'https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js'],
             ],
             'infoBlock' => [
                 'wrapper' => 'bg-gray-100 border-l-4 border-blue-500 p-4 mb-4',

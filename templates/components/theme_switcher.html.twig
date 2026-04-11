@@ -88,6 +88,7 @@
                class="autogrid-theme-btn {{ isActive ? 'active' }}"
                title="{{ theme.label }}"
                data-theme="{{ key }}"
+               data-turbo="false"
             >
                 {{ _self.themeIcon(theme.icon) }}
                 <span class="autogrid-theme-label">{{ theme.label }}</span>

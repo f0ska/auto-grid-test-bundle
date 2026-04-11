@@ -10,6 +10,7 @@
     'auto-grid-flowbite': 'flowbite'
 } %}
 {% set themeToolbarTemplate = '@F0skaAutoGridTest/components/toolbar/' ~ (themeKeyMap[currentTheme] ?? 'bootstrap5') ~ '.html.twig' %}
+{% set mainContentClass = themeKeyMap[currentTheme] == 'foundation' ? 'grid-container mt-5' : (themeKeyMap[currentTheme] == 'flowbite' ? 'max-w-screen-2xl mx-auto px-6 pt-5' : 'container mt-5') %}
 
 {% set navItems = [
     { route: 'auto_grid_test_basic', label: 'Basic example' },
@@ -136,12 +137,13 @@
             {% if js.crossorigin is defined %}{% set jsAttrs = jsAttrs ~ ' crossorigin="' ~ js.crossorigin ~ '"' %}{% endif %}
             <script {{ jsAttrs|raw }}></script>
         {% endfor %}
+
     {% endblock %}
 </head>
 <body class="bg-body-tertiary pt-5">
 {{ agt.themeSwitcher() }}
 {% include themeToolbarTemplate with { navItems: navItems } %}
-<div class="{{ mainContentClass|default('container mt-5') }}">
+<div id="main-content-wrapper" class="{{ mainContentClass|default('container mt-5') }}">
     {% for type, messages in app.flashes(['success', 'info', 'warning', 'danger', 'primary', 'secondary']) %}
         {% for message in messages %}
             <div class="alert alert-{{ type }}">
