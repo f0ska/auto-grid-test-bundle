@@ -36,7 +36,6 @@ use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 #[MassAction(name: 'Custom Action with Custom Redirect', code: 'custom_action_redirect')]
 #[ExportAction(name: 'Export Action Example', code: 'export_example')]
 #[Template(area: TemplateArea::GRID_COLUMN_VALUE_ACTION, templatePath: '@F0skaAutoGridTest/customization/grid_action.html.twig')]
-#[HtmlClass(table: 'table-striped')]
 class CustomActionExample
 {
     #[ORM\Id]
