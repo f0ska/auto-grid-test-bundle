@@ -1,9 +1,9 @@
-{% set choices = agFieldValue(entity, field) %}
+{% set choices = ag_field_value(entity, field) %}
 {% if (choices is empty) %}
     -
 {% else %}
-    {% set label = agChoiceLabels(choices, field)|first %}
-    {% set value = agChoiceValues(choices, field)|first %}
+    {% set label = ag_choice_labels(choices, field)|first %}
+    {% set value = ag_choice_values(choices, field)|first %}
     {% set currentTheme = agt_current_theme()|default('auto-grid') %}
     
     {% if currentTheme == 'auto-grid-bulma' %}

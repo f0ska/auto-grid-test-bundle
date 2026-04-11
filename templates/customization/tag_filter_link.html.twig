@@ -1,4 +1,4 @@
-{% set tags = agFieldValue(entity, field) %}
+{% set tags = ag_field_value(entity, field) %}
 {% if (tags is empty) %}
     -
 {% else %}
@@ -19,9 +19,9 @@
 
     <div class="{{ containerClass }}">
         {% for tag in tags %}
-            {% set label = agChoiceLabels(tag, field)|first %}
-            {% set value = agChoiceValues(tag, field)|first %}
-            <a href="{{ agRun(agActionUrl, 'grid', {'filter': {'tags': value}}) }}" class="{{ badgeClass }}">
+            {% set label = ag_choice_labels(tag, field)|first %}
+            {% set value = ag_choice_values(tag, field)|first %}
+            <a href="{{ ag_run(agActionUrl, 'grid', {'filter': {'tags': value}}) }}" class="{{ badgeClass }}">
                 {{ label }}
             </a>
         {% endfor %}
