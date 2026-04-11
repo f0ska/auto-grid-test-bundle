@@ -1,5 +1,16 @@
-{% extends '@F0skaAutoGrid/bootstrap_5/grid/column_value_action.html.twig' %}
+{% extends agTemplate('grid.column_value_action') %}
 
 {% block autogrid_grid_row_custom_action %}
-<button class="btn btn-sm btn-success" onclick="alert('{{ entity.name }}')">&#128512;</button>
+    {% set customBtnClass = 'btn btn-sm btn-success' %}
+    {% set currentTheme = agt_current_theme()|default('auto-grid') %}
+    
+    {% if currentTheme == 'auto-grid-bulma' %}
+        {% set customBtnClass = 'button is-small is-success' %}
+    {% elseif currentTheme == 'auto-grid-foundation' %}
+        {% set customBtnClass = 'button small success' %}
+    {% elseif currentTheme == 'auto-grid-flowbite' %}
+        {% set customBtnClass = 'text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-xs px-2 py-1' %}
+    {% endif %}
+
+    <button class="{{ customBtnClass }}" onclick="alert('{{ entity.name|default(entity.title|default('Entity')) }}')">&#128512;</button>
 {% endblock %}

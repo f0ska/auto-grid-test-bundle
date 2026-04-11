@@ -2,11 +2,26 @@
 {% if (tags is empty) %}
     -
 {% else %}
-    <div class="d-flex flex-wrap gap-1">
+    {% set currentTheme = agt_current_theme()|default('auto-grid') %}
+    {% set containerClass = 'd-flex flex-wrap gap-1' %}
+    {% set badgeClass = 'badge bg-secondary text-decoration-none' %}
+
+    {% if currentTheme == 'auto-grid-bulma' %}
+        {% set containerClass = 'tags' %}
+        {% set badgeClass = 'tag is-info' %}
+    {% elseif currentTheme == 'auto-grid-foundation' %}
+        {% set containerClass = 'flex-container' %}
+        {% set badgeClass = 'label secondary' %}
+    {% elseif currentTheme == 'auto-grid-flowbite' %}
+        {% set containerClass = 'flex flex-wrap gap-1' %}
+        {% set badgeClass = 'bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300' %}
+    {% endif %}
+
+    <div class="{{ containerClass }}">
         {% for tag in tags %}
             {% set label = agChoiceLabels(tag, field)|first %}
             {% set value = agChoiceValues(tag, field)|first %}
-            <a href="{{ agRun(agActionUrl, 'grid', {'filter': {'tags': value}}) }}" class="badge bg-secondary text-decoration-none">
+            <a href="{{ agRun(agActionUrl, 'grid', {'filter': {'tags': value}}) }}" class="{{ badgeClass }}">
                 {{ label }}
             </a>
         {% endfor %}

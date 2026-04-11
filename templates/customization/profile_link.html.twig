@@ -4,7 +4,15 @@
 {% else %}
     {% set label = agChoiceLabels(choices, field)|first %}
     {% set value = agChoiceValues(choices, field)|first %}
-    <ul class="list-group list-group-flush">
+    {% set currentTheme = agt_current_theme()|default('auto-grid') %}
+    
+    {% if currentTheme == 'auto-grid-bulma' %}
+        <a href="{{ path('auto_grid_test_advanced_2', {id: value}) }}" class="is-link">{{ label }}</a>
+    {% elseif currentTheme == 'auto-grid-foundation' %}
+        <a href="{{ path('auto_grid_test_advanced_2', {id: value}) }}" class="secondary">{{ label }}</a>
+    {% elseif currentTheme == 'auto-grid-flowbite' %}
+        <a href="{{ path('auto_grid_test_advanced_2', {id: value}) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ label }}</a>
+    {% else %}
         <a href="{{ path('auto_grid_test_advanced_2', {id: value}) }}">{{ label }}</a>
-    </ul>
+    {% endif %}
 {% endif %}

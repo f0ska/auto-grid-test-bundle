@@ -42,7 +42,6 @@ class AdvancedUserExample
     #[ORM\Column(length: 255)]
     #[Length(min: 3)]
     #[Label('Nickname')]
-    #[ColumnHtmlClass(headerClass: 'table-success', valueClass: 'table-success')]
     private ?string $userName = null;
 
     #[ORM\Column(length: 15)]
