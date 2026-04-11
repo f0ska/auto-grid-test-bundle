@@ -19,11 +19,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/auto-grid')]
 final class AdvancedController extends AbstractController
 {
-    #[Route('/advanced-1/{tagId}', name: 'auto_grid_test_advanced_1')]
-    public function one(AutoGridFactory $factory, ?int $tagId = null): Response
+    #[Route('/advanced-1/{tagId}', name: 'auto_grid_test_advanced_1', requirements: ['tagId' => '[a-zA-Z0-9_-]+'])]
+    public function one(AutoGridFactory $factory, ?string $tagId = null): Response
     {
         $params = $tagId ? ['filter' => ['tags' => $tagId]] : [];
         $grid = $factory->create(AdvancedArticleExample::class, initialParameters: $params);
@@ -33,12 +32,12 @@ final class AdvancedController extends AbstractController
         );
     }
 
-    #[Route('/advanced-2/{id}', name: 'auto_grid_test_advanced_2')]
+    #[Route('/advanced-2/{id}', name: 'auto_grid_test_advanced_2', requirements: ['id' => '\d+'])]
     public function two(AutoGridFactory $factory, ?int $id = null): Response
     {
         $action = 'create';
         $params = [];
-        if ($id) {
+        if ($id !== null) {
             $action = 'view';
             $params['id'] = $id;
         }

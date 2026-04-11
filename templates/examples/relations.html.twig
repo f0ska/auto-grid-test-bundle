@@ -1,16 +1,14 @@
 {% extends '@F0skaAutoGridTest/base.html.twig' %}
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
 
 {% block title %}Relations Example - AutoGrid{% endblock %}
 
 {% block content %}
-    <div class="alert alert-secondary border shadow-sm mb-4">
-        <p class="mb-2"><strong>Demonstrated features:</strong></p>
-        <ul class="mb-0">
-            <li>Automatic rendering and filtering for <strong>One-to-Many / Many-to-Many</strong> relations</li>
-            <li><strong>Associated Fields</strong>: Displaying properties from related entities directly</li>
-            <li><strong>Cross-Entity Permissions</strong>: Context-aware field visibility using <code>gridId</code></li>
-        </ul>
-    </div>
+    {{ agt.infoBlock('Demonstrated features:', [
+        'Automatic rendering and filtering for <strong>One-to-Many / Many-to-Many</strong> relations',
+        '<strong>Associated Fields</strong>: Displaying properties from related entities directly',
+        '<strong>Cross-Entity Permissions</strong>: Context-aware field visibility using <code>gridId</code>'
+    ]) }}
 
     {{ agRender(articles) }}
     <div class="mt-5">{{ agRender(users) }}</div>

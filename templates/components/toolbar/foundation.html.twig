@@ -1,0 +1,26 @@
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
+
+<div class="top-bar" id="example-menu" data-responsive-toggle="example-menu" data-hide-for="medium">
+    <div class="top-bar-left">
+        <button class="menu-icon" type="button" data-toggle="example-menu"></button>
+        <div class="top-bar-right">
+            <ul class="menu">
+                {% for item in navItems %}
+                    <li>
+                        <a class="{{ agt_is_nav_active(item.route) ? 'is-active' }}"
+                           href="{{ agt_theme_url(null, item.route) }}">
+                            {{ item.label }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<style>
+    .autogrid-theme-btn svg {
+        width: 24px !important;
+        height: 24px !important;
+    }
+</style>
+{% set mainContentClass = 'grid-container full mt-5' %}

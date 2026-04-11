@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/auto-grid')]
 class CustomActionController extends AbstractController
 {
     #[Route('/custom-action', name: 'auto_grid_test_custom_action')]
