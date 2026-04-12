@@ -113,7 +113,7 @@ class AdvancedArticleExample
     #[Permission('view')]
     #[AddToFieldset('Metatags')]
     #[FieldTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
-    #[ColumnHtmlClass(headerClass: 'col-1', valueClass: 'col-1')]
+    #[ColumnHtmlClass('col-1')]
     private Collection $tags;
 
     public function __construct()

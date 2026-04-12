@@ -21,8 +21,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AdvancedController extends AbstractController
 {
-    #[Route('/advanced-1/{tagId}', name: 'auto_grid_test_advanced_1', requirements: ['tagId' => '[a-zA-Z0-9_-]+'])]
-    public function one(AutoGridFactory $factory, ?string $tagId = null): Response
+    #[Route('/advanced-1/{tagId}', name: 'auto_grid_test_advanced_1', requirements: ['id' => '\d+'])]
+    public function one(AutoGridFactory $factory, ?int $tagId = null): Response
     {
         $params = $tagId ? ['filter' => ['tags' => $tagId]] : [];
         $grid = $factory->create(AdvancedArticleExample::class, initialParameters: $params);
