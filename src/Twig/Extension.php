@@ -112,6 +112,7 @@ class Extension extends AbstractExtension
             'label' => 'Flowbite',
             'icon' => 'flowbite',
             'css' => [
+                ['href' => 'https://cdn.jsdelivr.net/npm/tailwindcss@4.0.17/index.min.css'],
                 ['href' => 'https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.css'],
             ],
             'js' => [
@@ -173,11 +174,11 @@ class Extension extends AbstractExtension
         $request = $this->requestStack->getCurrentRequest();
         $route = $route ?? $request->attributes->get('_route') ?? 'auto_grid_test_basic';
         $targetTheme = $theme ?? $this->getCurrentTheme();
-        
+
         $routeParams = $request->attributes->get('_route_params', []);
         $routeParams['_theme'] = $targetTheme;
         $routeParams = array_merge($routeParams, $params);
-        
+
         return $this->generateUrl($route, $routeParams);
     }
 
