@@ -48,9 +48,9 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[Permission('advanced_filter')]
 #[Permission('edit', gridId: 'specific_grid_id')]
 #[AdvancedFilter(true)]
-#[Fieldset(name: 'Content Info', class: 'col-md-8')]
-#[Fieldset(name: 'Metatags', class: 'col-md-4')]
-#[Fieldset(name: 'Full Content', class: 'col-12')]
+#[Fieldset(name: 'Content Info')]
+#[Fieldset(name: 'Metatags')]
+#[Fieldset(name: 'Full Content')]
 #[PageLimits([13, 21, 34, 55])]
 #[RedirectOnSubmit('grid')]
 class AdvancedArticleExample
@@ -60,7 +60,6 @@ class AdvancedArticleExample
     #[ORM\Column]
     #[ValuePrefix("#")]
     #[Permission]
-    #[ColumnHtmlClass(headerClass: 'col-1', valueClass: 'col-1')]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 80)]
@@ -68,14 +67,12 @@ class AdvancedArticleExample
     #[Sortable]
     #[Permission]
     #[AddToFieldset('Content Info')]
-    #[ColumnHtmlClass(headerClass: 'col-3', valueClass: 'col-3')]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Permission]
     #[GridTruncate(50)]
     #[AddToFieldset('Full Content')]
-    #[ColumnHtmlClass(headerClass: 'col-4', valueClass: 'col-4')]
     private ?string $content = null;
 
     #[ORM\Column]
@@ -90,7 +87,6 @@ class AdvancedArticleExample
     #[Permission('grid')]
     #[Permission('view')]
     #[AddToFieldset('Metatags')]
-    #[ColumnHtmlClass(headerClass: 'col-2', valueClass: 'col-2')]
     private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
@@ -107,7 +103,6 @@ class AdvancedArticleExample
     #[Position(-1)]
     #[FieldTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
     #[AssociatedField(name: 'email', label: 'Author contact', position: 5)]
-    #[ColumnHtmlClass(headerClass: 'col-1', valueClass: 'col-1')]
     private ?AdvancedUserExample $author = null;
 
     /**
@@ -118,7 +113,7 @@ class AdvancedArticleExample
     #[Permission('view')]
     #[AddToFieldset('Metatags')]
     #[FieldTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
-    #[ColumnHtmlClass(headerClass: 'col-1', valueClass: 'col-1')]
+    #[ColumnHtmlClass('col-1')]
     private Collection $tags;
 
     public function __construct()

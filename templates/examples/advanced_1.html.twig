@@ -1,29 +1,19 @@
 {% extends '@F0skaAutoGridTest/base.html.twig' %}
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
 
 {% block title %}Advanced Article Example - AutoGrid{% endblock %}
 
 {% block content %}
-    <div class="alert alert-secondary border shadow-sm mb-4">
-        <p class="mb-2"><strong>Demonstrated features:</strong></p>
-        <div class="row">
-            <div class="col-md-6">
-                <ul class="mb-0">
-                    <li>Secure-by-default access control (<code>DisallowActions</code>/<code>Fields</code>)</li>
-                    <li>Granular <strong>Permissions</strong> based on roles or context</li>
-                    <li>Organized forms using <strong>Fieldsets</strong></li>
-                    <li>Multi-criteria <strong>Advanced Filter</strong></li>
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <ul class="mb-0">
-                    <li><strong>Value Decoration</strong> (Prefix on ID)</li>
-                    <li>Grid truncation for long text fields</li>
-                    <li><strong>Responsive Column Sizing</strong> (<code>col-*</code> classes on columns)</li>
-                    <li>Custom field templates & Associated fields</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    {{ agt.infoBlock('Demonstrated features:', [
+        'Secure-by-default access control (<code>DisallowActions</code>/<code>Fields</code>)',
+        'Granular <strong>Permissions</strong> based on roles or context',
+        'Organized forms using <strong>Fieldsets</strong>',
+        'Multi-criteria <strong>Advanced Filter</strong>',
+        '<strong>Value Decoration</strong> (Prefix on ID)',
+        'Grid truncation for long text fields',
+        '<strong>Responsive Column Sizing</strong> (<code>col-*</code> classes on columns)',
+        'Custom field templates & Associated fields'
+    ]) }}
 
-    {{ agRender(grid) }}
+    {{ ag_render(grid) }}
 {% endblock %}

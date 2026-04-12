@@ -1,17 +1,18 @@
 {% extends '@F0skaAutoGridTest/base.html.twig' %}
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
 
 {% block title %}Custom Actions & Export - AutoGrid{% endblock %}
 
 {% block content %}
-    <div class="alert alert-secondary border shadow-sm mb-4">
-        <p class="mb-2"><strong>Demonstrated features:</strong></p>
-        <ul class="mb-0">
-            <li>Overriding default action URLs with <strong>Custom Routes</strong></li>
-            <li>Bulk operations using <strong>Mass Actions</strong></li>
-            <li>Data export functionality (e.g. CSV generation)</li>
-            <li>Event-driven logic processing via <code>EventSubscriber</code></li>
-        </ul>
-    </div>
+    {% set config = agt_theme_config() %}
+    <div class="{{ config.navbar.containerClass|default('container') }}">
+        {{ agt.infoBlock('Demonstrated features:', [
+            'Overriding default action URLs with <strong>Custom Routes</strong>',
+            'Bulk operations using <strong>Mass Actions</strong>',
+            'Data export functionality (e.g. CSV generation)',
+            'Event-driven logic processing via <code>EventSubscriber</code>'
+        ]) }}
 
-    {{ agRender(grid) }}
+        {{ ag_render(grid) }}
+    </div>
 {% endblock %}

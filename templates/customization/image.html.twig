@@ -1,6 +1,17 @@
-{% set value = agFieldValue(entity, field) %}
+{% set value = ag_field_value(entity, field) %}
 {% if (value is null) %}
     -
 {% else %}
-    <img src="data:image;base64,{{ value }}" class="img-fluid">
+    {% set currentTheme = agt_current_theme()|default('auto-grid') %}
+    {% set imgClass = 'img-fluid' %}
+
+    {% if currentTheme == 'auto-grid-bulma' %}
+        {% set imgClass = 'image' %}
+    {% elseif currentTheme == 'auto-grid-foundation' %}
+        {% set imgClass = 'thumbnail' %}
+    {% elseif currentTheme == 'auto-grid-flowbite' %}
+        {% set imgClass = 'max-w-full h-auto rounded-lg' %}
+    {% endif %}
+
+    <img src="data:image;base64,{{ value }}" class="{{ imgClass }}">
 {% endif %}

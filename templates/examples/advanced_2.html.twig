@@ -1,27 +1,16 @@
 {% extends '@F0skaAutoGridTest/base.html.twig' %}
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
 
 {% block title %}Advanced Controller Features - AutoGrid{% endblock %}
 
 {% block content %}
-    <div class="alert alert-secondary border shadow-sm mb-4">
-        <p class="mb-2"><strong>Demonstrated features:</strong></p>
-        <div class="row">
-            <div class="col-md-6">
-                <ul class="mb-0">
-                    <li>DQL hard-coded filters (<code>queryExpression</code>)</li>
-                    <li>Pre-filled grid state (filters/sorting) from controller</li>
-                    <li>Instance-specific <code>gridId</code> for context-aware logic</li>
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <ul class="mb-0">
-                    <li>Custom column CSS (<code>table-success</code> on Nickname)</li>
-                    <li>Manual form field customization (Email/Nickname)</li>
-                    <li>JSON array handling with multi-select filtering</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    {{ agt.infoBlock('Demonstrated features:', [
+        'DQL hard-coded filters (<code>queryExpression</code>)',
+        'Pre-filled grid state (filters/sorting) from controller',
+        'Instance-specific <code>gridId</code> for context-aware logic',
+        'Manual form field customization (Email/Nickname)',
+        'JSON array handling with multi-select filtering'
+    ]) }}
 
-    {{ agRender(grid) }}
+    {{ ag_render(grid) }}
 {% endblock %}

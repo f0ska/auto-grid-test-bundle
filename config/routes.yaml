@@ -1,3 +1,6 @@
 controllers:
     resource: '../src/Controller/'
     type: attribute
+    prefix: /{_theme}
+    defaults:
+        _theme: auto-grid

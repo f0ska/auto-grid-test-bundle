@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/auto-grid')]
 final class CustomizationServiceController extends AbstractController
 {
     #[Route('/customization-service', name: 'auto_grid_test_customization_service')]

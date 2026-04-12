@@ -1,21 +1,19 @@
 {% extends '@F0skaAutoGridTest/base.html.twig' %}
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
 
 {% block title %}Clean UI Dashboard - AutoGrid{% endblock %}
 
 {% block content %}
-    <div class="alert alert-secondary border shadow-sm mb-4">
-        <p class="mb-2"><strong>Demonstrated features:</strong></p>
-        <ul class="mb-0">
-            <li>Refining UI with custom <strong>Labels</strong> and field <strong>Positions</strong></li>
-            <li>Applying compact table styles via <code>#[HtmlClass]</code></li>
-            <li>Automatic currency formatting using <code>#[ValuePrefix]</code></li>
-            <li>Setting grid display names with <code>#[Title]</code></li>
-        </ul>
-    </div>
+    {{ agt.infoBlock('Demonstrated features:', [
+        'Refining UI with custom <strong>Labels</strong> and field <strong>Positions</strong>',
+        'Applying compact table styles via <code>#[HtmlClass]</code>',
+        'Automatic currency formatting using <code>#[ValuePrefix]</code>',
+        'Setting grid display names with <code>#[Title]</code>'
+    ]) }}
 
     <div class="card shadow-sm border-0">
         <div class="card-body p-0">
-            {{ agRender(grid) }}
+            {{ ag_render(grid) }}
         </div>
     </div>
 {% endblock %}

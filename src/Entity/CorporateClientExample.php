@@ -26,7 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 #[ORM\Entity(repositoryClass: CorporateClientExampleRepository::class)]
 #[Title("Corporate Clients Dashboard")]
-#[HtmlClass(table: "table-sm table-hover")]
+#[HtmlClass('table-sm is-narrow')]
 class CorporateClientExample
 {
     private const STATUSES = [

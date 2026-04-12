@@ -1,0 +1,30 @@
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
+
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark fixed-top">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                {% for item in navItems %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ agt_is_nav_active(item.route) ? 'active' }}"
+                           href="{{ agt_theme_url(null, item.route) }}">
+                            {{ item.label }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<style>
+    .autogrid-theme-btn svg {
+        width: 24px !important;
+        height: 24px !important;
+    }
+</style>
+{% set mainContentClass = 'container mt-5' %}

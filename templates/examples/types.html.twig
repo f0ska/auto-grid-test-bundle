@@ -1,29 +1,19 @@
 {% extends '@F0skaAutoGridTest/base.html.twig' %}
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
 
 {% block title %}Field Types Example - AutoGrid{% endblock %}
 
 {% block content %}
-    <div class="alert alert-secondary border shadow-sm mb-4">
-        <p class="mb-2"><strong>Demonstrated features:</strong></p>
-        <div class="row">
-            <div class="col-md-6">
-                <ul class="mb-0">
-                    <li><strong>Enums</strong>: Automatic ChoiceType dropdowns</li>
-                    <li><strong>JSON/Objects</strong>: Formatted and truncated rendering</li>
-                    <li><strong>Decimals & GUIDs</strong>: Specialized handling and formatting</li>
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <ul class="mb-0">
-                    <li><strong>DateTime</strong>: Native support for all core PHP date types</li>
-                    <li><strong>Booleans</strong>: Toggle UI or dropdown filters</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    {{ agt.infoBlock('Demonstrated features:', [
+        '<strong>Enums</strong>: Automatic ChoiceType dropdowns',
+        '<strong>JSON/Objects</strong>: Formatted and truncated rendering',
+        '<strong>Decimals & GUIDs</strong>: Specialized handling and formatting',
+        '<strong>DateTime</strong>: Native support for all core PHP date types',
+        '<strong>Booleans</strong>: Toggle UI or dropdown filters'
+    ]) }}
 
-    {{ agRender(main) }}
-    <div class="mt-5">{{ agRender(other) }}</div>
-    <div class="mt-5">{{ agRender(dates) }}</div>
-    <div class="mt-5">{{ agRender(array) }}</div>
+    {{ ag_render(main) }}
+    <div class="mt-5">{{ ag_render(other) }}</div>
+    <div class="mt-5">{{ ag_render(dates) }}</div>
+    <div class="mt-5">{{ ag_render(array) }}</div>
 {% endblock %}

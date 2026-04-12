@@ -1,0 +1,56 @@
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
+
+<nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation" style="width: 100%;">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-burger" role="button" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                {% for item in navItems %}
+                    <a class="navbar-item {{ agt_is_nav_active(item.route) ? 'is-active' }}"
+                           href="{{ agt_theme_url(null, item.route) }}">
+                        {{ item.label }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</nav>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+    if ($navbarBurgers.length > 0) {
+        $navbarBurgers.forEach(el => {
+            el.addEventListener('click', () => {
+                const target = el.dataset.target;
+                const $target = document.getElementById(target);
+                el.classList.toggle('is-active');
+                $target.classList.toggle('is-active');
+            });
+        });
+    }
+});
+</script>
+<style>
+    body {
+        padding-top: 3.25rem !important;
+    }
+    body > .container {
+        padding-top: 1.5rem;
+    }
+    .navbar-item.is-active {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+    .autogrid-theme-btn svg {
+        width: 24px !important;
+        height: 24px !important;
+    }
+</style>
+{% set mainContentClass = 'container' %}

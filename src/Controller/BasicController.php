@@ -17,7 +17,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/auto-grid')]
 final class BasicController extends AbstractController
 {
     #[Route('/', name: 'auto_grid_test_basic')]
