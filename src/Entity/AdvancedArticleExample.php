@@ -22,16 +22,15 @@ use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
 use F0ska\AutoGridBundle\Attribute\Entity\PageLimits;
 use F0ska\AutoGridBundle\Attribute\Entity\RedirectOnSubmit;
+use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
 use F0ska\AutoGridBundle\Attribute\EntityField\AssociatedField;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
-use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
 use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
-use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
-use F0ska\AutoGridBundle\Attribute\EntityField\FieldTemplate;
 use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
 use F0ska\AutoGridBundle\Attribute\EntityField\Position;
+use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\ValuePrefix;
-use F0ska\AutoGridBundle\Attribute\EntityField\ValueSuffix;
+use F0ska\AutoGridBundle\Attribute\EntityField\ViewTemplate;
 use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridBundle\Attribute\Permission\DisallowActionsByDefault;
 use F0ska\AutoGridBundle\Attribute\Permission\DisallowFieldsByDefault;
@@ -101,7 +100,7 @@ class AdvancedArticleExample
     #[Permission('view')]
     #[AddToFieldset('Content Info')]
     #[Position(-1)]
-    #[FieldTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
+    #[ViewTemplate('@F0skaAutoGridTest/customization/profile_link.html.twig')]
     #[AssociatedField(name: 'email', label: 'Author contact', position: 5)]
     private ?AdvancedUserExample $author = null;
 
@@ -112,7 +111,7 @@ class AdvancedArticleExample
     #[Permission('grid')]
     #[Permission('view')]
     #[AddToFieldset('Metatags')]
-    #[FieldTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
+    #[ViewTemplate('@F0skaAutoGridTest/customization/tag_filter_link.html.twig')]
     #[ColumnHtmlClass('col-1')]
     private Collection $tags;
 

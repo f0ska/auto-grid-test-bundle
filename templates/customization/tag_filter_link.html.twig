@@ -1,5 +1,4 @@
-{% set tags = ag_field_value(entity, field) %}
-{% if (tags is empty) %}
+{% if (value is empty) %}
     -
 {% else %}
     {% set currentTheme = agt_current_theme()|default('auto-grid') %}
@@ -10,18 +9,17 @@
         {% set containerClass = 'tags' %}
         {% set badgeClass = 'tag is-info' %}
     {% elseif currentTheme == 'auto-grid-foundation' %}
-        {% set containerClass = 'flex-container' %}
-        {% set badgeClass = 'label secondary' %}
+        {% set containerClass = 'flex-container button-group tiny' %}
+        {% set badgeClass = 'button secondary tiny' %}
     {% elseif currentTheme == 'auto-grid-flowbite' %}
         {% set containerClass = 'flex flex-wrap gap-1' %}
         {% set badgeClass = 'bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300' %}
     {% endif %}
 
     <div class="{{ containerClass }}">
-        {% for tag in tags %}
-            {% set label = ag_choice_labels(tag, field)|first %}
-            {% set value = ag_choice_values(tag, field)|first %}
-            <a href="{{ ag_run(agActionUrl, 'grid', {'filter': {'tags': value}}) }}" class="{{ badgeClass }}">
+        {% for key, id in values %}
+            {% set label = attribute(labels, key) %}
+            <a href="{{ ag_run(agActionUrl, 'grid', {'filter': {'tags': id}}) }}" class="{{ badgeClass }}">
                 {{ label }}
             </a>
         {% endfor %}
