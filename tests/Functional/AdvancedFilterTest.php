@@ -20,7 +20,7 @@ class AdvancedFilterTest extends WebTestCase
         $client = static::createClient();
 
         // 1. Load grid with Advanced Filter enabled
-        $crawler = $client->request('GET', '/auto-grid/advanced-1');
+        $crawler = $client->request('GET', '/auto-grid/advanced');
         $this->assertResponseIsSuccessful();
 
         // 2. Find the advanced filter form (starting with 'filter-')

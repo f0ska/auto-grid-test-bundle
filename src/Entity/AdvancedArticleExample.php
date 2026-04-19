@@ -50,7 +50,7 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[Fieldset(name: 'Content Info')]
 #[Fieldset(name: 'Metatags')]
 #[Fieldset(name: 'Full Content')]
-#[PageLimits([13, 21, 34, 55])]
+#[PageLimits([5])]
 #[RedirectOnSubmit('grid')]
 class AdvancedArticleExample
 {

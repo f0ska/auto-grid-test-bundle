@@ -17,7 +17,7 @@ class PermissionTest extends WebTestCase
     public function testActionsAreDisallowedByDefault(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/auto-grid/advanced-1');
+        $crawler = $client->request('GET', '/auto-grid/advanced');
         $this->assertResponseIsSuccessful();
 
         // AdvancedArticleExample uses DisallowActionsByDefault
@@ -28,7 +28,7 @@ class PermissionTest extends WebTestCase
     public function testFieldsAreDisallowedByDefault(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/auto-grid/advanced-1');
+        $crawler = $client->request('GET', '/auto-grid/advanced');
         $this->assertResponseIsSuccessful();
 
         // Check for specific columns that SHOULD be visible
@@ -44,7 +44,7 @@ class PermissionTest extends WebTestCase
     public function testSpecificFieldPermission(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/auto-grid/advanced-1');
+        $crawler = $client->request('GET', '/auto-grid/advanced');
         $this->assertResponseIsSuccessful();
 
         // AdvancedArticleExample has: #[Permission('grid', allow: false)] on 'published' and 'updatedAt'

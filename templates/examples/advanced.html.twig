@@ -1,0 +1,25 @@
+{% extends '@F0skaAutoGridTest/base.html.twig' %}
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
+
+{% block title %}Advanced Examples - AutoGrid{% endblock %}
+
+{% block content %}
+    {{ agt.infoBlock('Demonstrated features:', [
+        'Secure-by-default access control (<code>DisallowActions</code>/<code>Fields</code>)',
+        'Granular <strong>Permissions</strong> based on roles or context',
+        'Organized forms using <strong>Fieldsets</strong>',
+        'Multi-criteria <strong>Advanced Filter</strong>',
+        '<strong>Value Decoration</strong> (Prefix on ID)',
+        'Grid truncation for long text fields',
+        '<strong>Responsive Column Sizing</strong> (<code>col-*</code> classes on columns)',
+        'Custom field templates & Associated fields',
+        'DQL hard-coded filters (<code>queryExpression</code>)',
+        'Pre-filled grid state (filters/sorting) from controller',
+        'Instance-specific <code>gridId</code> for context-aware logic',
+        'Manual form field customization (Email/Nickname)',
+        'JSON array handling with multi-select filtering'
+    ]) }}
+
+    {{ ag_render(grid1) }}
+    <div class="mt-5">{{ ag_render(grid2) }}</div>
+{% endblock %}
