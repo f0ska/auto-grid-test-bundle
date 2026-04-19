@@ -21,31 +21,21 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AdvancedController extends AbstractController
 {
-    #[Route('/advanced-1/{tagId}', name: 'auto_grid_test_advanced_1', requirements: ['id' => '\d+'])]
-    public function one(AutoGridFactory $factory, ?int $tagId = null): Response
+    #[Route('/advanced/{userId}', name: 'auto_grid_test_advanced')]
+    public function index(AutoGridFactory $factory, ?int $userId = null): Response
     {
-        $params = $tagId ? ['filter' => ['tags' => $tagId]] : [];
-        $grid = $factory->create(AdvancedArticleExample::class, initialParameters: $params);
-        return $grid->getResponse() ?? $this->render(
-            '@F0skaAutoGridTest/examples/advanced_1.html.twig',
-            ['grid' => $grid]
-        );
-    }
+        $grid1 = $factory->create(AdvancedArticleExample::class);
 
-    #[Route('/advanced-2/{id}', name: 'auto_grid_test_advanced_2', requirements: ['id' => '\d+'])]
-    public function two(AutoGridFactory $factory, ?int $id = null): Response
-    {
         $action = 'create';
         $params = [];
-        if ($id !== null) {
+        if ($userId !== null) {
             $action = 'view';
-            $params['id'] = $id;
+            $params['id'] = $userId;
         }
 
         $where = 'advancedUserExample.banned = :banned';
         $bind = new ArrayCollection([new Parameter('banned', 0)]);
-
-        $grid = $factory->create(
+        $grid2 = $factory->create(
             entityClass: AdvancedUserExample::class,
             gridId: 'advanced2',
             queryExpression: $where,
@@ -54,9 +44,17 @@ final class AdvancedController extends AbstractController
             initialParameters: $params
         );
 
-        return $grid->getResponse() ?? $this->render(
-            '@F0skaAutoGridTest/examples/advanced_2.html.twig',
-            ['grid' => $grid]
-        );
+        if ($grid1->getResponse()) {
+            return $grid1->getResponse();
+        }
+
+        if ($grid2->getResponse()) {
+            return $grid2->getResponse();
+        }
+
+        return $this->render('@F0skaAutoGridTest/examples/advanced.html.twig', [
+            'grid1' => $grid1,
+            'grid2' => $grid2
+        ]);
     }
 }

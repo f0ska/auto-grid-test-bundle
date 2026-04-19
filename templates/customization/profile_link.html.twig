@@ -1,20 +1,19 @@
-{% set choices = ag_field_value(entity, field) %}
-{% set user = choices is iterable ? (choices|first) : choices %}
-{% set label = ag_choice_labels(choices, field)|first %}
-{% set value = ag_choice_values(choices, field)|first %}
-{% if (choices is empty) %}
+{% set user = value is iterable ? (value|first) : value %}
+{% set label = labels|first %}
+{% set id = values|first %}
+{% if (value is empty) %}
     -
 {% elseif user.banned %}
     {{ label }}
 {% else %}
     {% set currentTheme = agt_current_theme()|default('auto-grid') %}
     {% if currentTheme == 'auto-grid-bulma' %}
-        <a href="{{ path('auto_grid_test_advanced_2', {id: value}) }}" class="is-link">{{ label }}</a>
+        <a href="{{ path('auto_grid_test_advanced', {userId: id, _fragment: 'autogrid2'}) }}" class="is-link">{{ label }}</a>
     {% elseif currentTheme == 'auto-grid-foundation' %}
-        <a href="{{ path('auto_grid_test_advanced_2', {id: value}) }}" class="secondary">{{ label }}</a>
+        <a href="{{ path('auto_grid_test_advanced', {userId: id, _fragment: 'autogrid2'}) }}" class="secondary">{{ label }}</a>
     {% elseif currentTheme == 'auto-grid-flowbite' %}
-        <a href="{{ path('auto_grid_test_advanced_2', {id: value}) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ label }}</a>
+        <a href="{{ path('auto_grid_test_advanced', {userId: id, _fragment: 'autogrid2'}) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">{{ label }}</a>
     {% else %}
-        <a href="{{ path('auto_grid_test_advanced_2', {id: value}) }}">{{ label }}</a>
+        <a href="{{ path('auto_grid_test_advanced', {userId: id, _fragment: 'autogrid2'}) }}">{{ label }}</a>
     {% endif %}
 {% endif %}

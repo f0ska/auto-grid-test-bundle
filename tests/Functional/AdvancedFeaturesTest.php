@@ -25,7 +25,7 @@ class AdvancedFeaturesTest extends WebTestCase
         $this->assertNotNull($entity);
 
         // 2. Load the detail view (which also uses fieldsets)
-        $crawler = $client->request('GET', '/auto-grid/advanced-1');
+        $crawler = $client->request('GET', '/auto-grid/advanced');
         $viewUrl = $crawler->filter('tr:contains("' . $entity->getTitle() . '") a[href*="agAction=view"]')->attr('href');
         $crawler = $client->request('GET', $viewUrl);
         $this->assertResponseIsSuccessful();
@@ -39,7 +39,7 @@ class AdvancedFeaturesTest extends WebTestCase
     public function testValueDecoration(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/auto-grid/advanced-1');
+        $crawler = $client->request('GET', '/auto-grid/advanced');
         $this->assertResponseIsSuccessful();
 
         // 1. Verify ValuePrefix ("#") on ID column
@@ -57,7 +57,7 @@ class AdvancedFeaturesTest extends WebTestCase
         $authorEmail = $entity->getAuthor()->getEmail();
 
         // 2. Load grid
-        $crawler = $client->request('GET', '/auto-grid/advanced-1');
+        $crawler = $client->request('GET', '/auto-grid/advanced');
         $this->assertResponseIsSuccessful();
 
         // 3. Verify that the author's email (from AssociatedField) is visible in the row

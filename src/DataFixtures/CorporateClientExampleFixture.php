@@ -24,7 +24,7 @@ class CorporateClientExampleFixture extends Fixture
         $populator = new Populator($generator, $manager); // @phpstan-ignore argument.type
         $populator->addEntity(CorporateClientExample::class, $generator->numberBetween(50, 100), [
             'status' => fn() => $generator->randomElement(['active', 'pending', 'inactive', 'archived']),
-            'revenue' => fn() => (string) $generator->randomFloat(2, 100000, 999999999),
+            'revenue' => fn() => (string) $generator->randomFloat(2, 100000, 1000000),
             'name' => fn() => $generator->company(),
             'contactEmail' => fn() => $generator->companyEmail(),
         ]);
