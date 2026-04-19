@@ -5,14 +5,12 @@
 
 {% block content %}
     {% set config = agt_theme_config() %}
-    <div class="{{ config.navbar.containerClass|default('container') }}">
-        {{ agt.infoBlock('Demonstrated features:', [
-            'Overriding default action URLs with <strong>Custom Routes</strong>',
-            'Bulk operations using <strong>Mass Actions</strong>',
-            'Data export functionality (e.g. CSV generation)',
-            'Event-driven logic processing via <code>EventSubscriber</code>'
-        ]) }}
+    {{ agt.infoBlock('Demonstrated features:', [
+        'Overriding default action URLs with <strong>Custom Routes</strong>',
+        'Bulk operations using <strong>Mass Actions</strong>',
+        'Data export functionality (e.g. CSV generation)',
+        'Event-driven logic processing via <code>EventSubscriber</code>'
+    ]) }}
 
-        {{ ag_render(grid) }}
-    </div>
+    {{ ag_render(grid) }}
 {% endblock %}

@@ -17,10 +17,14 @@ use F0ska\AutoGridBundle\Attribute\Entity\Title;
 use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormOptions;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormType;
+use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
 use F0ska\AutoGridBundle\Attribute\EntityField\Label;
 use F0ska\AutoGridBundle\Attribute\EntityField\Position;
 use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\ValuePrefix;
+use F0ska\AutoGridBundle\Attribute\EntityField\ViewService;
+use F0ska\AutoGridBundle\Attribute\EntityField\VirtualColumn;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Repository\CorporateClientExampleRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -41,6 +45,7 @@ class CorporateClientExample
     #[ORM\Column]
     #[Position(1)]
     #[Label("ID")]
+    #[Permission(action: 'grid', allow: false)]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 255)]
@@ -48,12 +53,14 @@ class CorporateClientExample
     #[Label("Company Name")]
     #[Sortable]
     #[Filterable]
+    #[GridTruncate(25)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Position(3)]
     #[Label("Primary Contact")]
     #[Filterable]
+    #[GridTruncate(25)]
     private ?string $contactEmail = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 12, scale: 2)]
@@ -64,18 +71,24 @@ class CorporateClientExample
     private ?string $revenue = null;
 
     #[ORM\Column(length: 20)]
-    #[Position(5)]
+    #[Position(6)]
     #[Label("Account Status")]
     #[FormType(ChoiceType::class)]
     #[FormOptions(['choices' => self::STATUSES])]
-    #[Filterable] // Automatically inherits ChoiceType and options from the form attributes
+    #[Filterable]
     private string $status = "active";
 
     #[ORM\Column]
-    #[Position(6)]
+    #[Position(7)]
     #[Label("Last Audit")]
     #[Sortable]
     private ?\DateTimeImmutable $lastAuditAt = null;
+
+    #[VirtualColumn]
+    #[Position(5)]
+    #[ValuePrefix("$ ")]
+    #[ViewService('F0ska\AutoGridTestBundle\View\TaxViewServiceExample')]
+    private ?string $tax = null;
 
     public function getId(): ?int
     {
@@ -138,6 +151,18 @@ class CorporateClientExample
     public function setLastAuditAt(\DateTimeImmutable $lastAuditAt): static
     {
         $this->lastAuditAt = $lastAuditAt;
+
+        return $this;
+    }
+
+    public function getTax(): ?string
+    {
+        return $this->tax;
+    }
+
+    public function setTax(?string $tax): static
+    {
+        $this->tax = $tax;
 
         return $this;
     }
