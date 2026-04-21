@@ -11,7 +11,12 @@
 namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
+use F0ska\AutoGridBundle\Attribute\EntityField\Label;
+use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
+use F0ska\AutoGridBundle\Attribute\EntityField\VirtualColumn;
 use F0ska\AutoGridBundle\Attribute\Permission;
+use F0ska\AutoGridBundle\Condition\RangeCondition;
 use F0ska\AutoGridTestBundle\Repository\BlogUserExampleRepository;
 
 #[ORM\Entity(repositoryClass: BlogUserExampleRepository::class)]
@@ -34,6 +39,12 @@ class BlogUserExample
 
     #[ORM\Column]
     private ?bool $banned = false;
+
+    #[VirtualColumn(dql: "SELECT COUNT(a.id) FROM F0ska\AutoGridTestBundle\Entity\BlogArticleExample a WHERE a.author = {this}")]
+    #[Label("Articles Count")]
+    #[Sortable]
+    #[Filterable(condition: RangeCondition::class)]
+    private ?int $articlesCount = null;
 
     public function getId(): ?int
     {
@@ -84,6 +95,18 @@ class BlogUserExample
     public function setBanned(?bool $banned): static
     {
         $this->banned = $banned;
+
+        return $this;
+    }
+
+    public function getArticlesCount(): ?int
+    {
+        return $this->articlesCount;
+    }
+
+    public function setArticlesCount(?int $articlesCount): self
+    {
+        $this->articlesCount = $articlesCount;
 
         return $this;
     }
