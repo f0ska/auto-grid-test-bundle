@@ -26,6 +26,7 @@ use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\VirtualColumn;
 use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridBundle\Condition\AssociationCondition; // Changed from InCondition
+use F0ska\AutoGridBundle\Condition\RangeCondition;
 use F0ska\AutoGridTestBundle\Repository\BlogArticleExampleRepository;
 
 #[ORM\Entity(repositoryClass: BlogArticleExampleRepository::class)]
@@ -84,7 +85,7 @@ class BlogArticleExample
     #[VirtualColumn(dql: "SELECT COUNT(c.id) FROM F0ska\AutoGridTestBundle\Entity\BlogArticleCommentExample c WHERE c.article = {this}")]
     #[Label("Comments Count")]
     #[Sortable]
-    #[Filterable]
+    #[Filterable(condition: RangeCondition::class)]
     private ?int $commentsCount = null;
 
     public function __construct()

@@ -10,6 +10,7 @@
 
 namespace F0ska\AutoGridTestBundle\Tests\Functional;
 
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class VirtualDqlTest extends WebTestCase
@@ -27,36 +28,98 @@ class VirtualDqlTest extends WebTestCase
         // Check if "Author Articles" column exists
         $this->assertSelectorExists('th:contains("Author Articles")');
 
-        // Verify that the values are hydrated (assuming fixtures have some data)
-        // We look for a cell under "Comments Count"
-        $commentsCountCell = $crawler->filter('table')->first()->filter('td')->eq(5); // Adjust index if needed
-        $this->assertNotEmpty($commentsCountCell->text());
+        $articlesTable = $this->findTableByHeader($crawler, 'Comments Count');
+        $commentsCountValues = $this->extractColumnValues($articlesTable, 'Comments Count');
+        $authorArticlesValues = $this->extractColumnValues($articlesTable, 'Author Articles');
+
+        $this->assertNotEmpty($commentsCountValues);
+        $this->assertNotEmpty($authorArticlesValues);
     }
 
     public function testVirtualDqlSorting(): void
     {
         $client = static::createClient();
-        
-        // Sort by comments count ascending
-        $client->request('GET', '/auto-grid/relations', ['articles' => ['order' => ['commentsCount' => 'asc']]]);
+        $crawler = $client->request('GET', '/auto-grid/relations');
         $this->assertResponseIsSuccessful();
-        
-        // Sort by comments count descending
-        $client->request('GET', '/auto-grid/relations', ['articles' => ['order' => ['commentsCount' => 'desc']]]);
+
+        $sortCommentsAscLink = $crawler
+            ->filter('a[href*="agId=articles"][href*="agParams%5Border%5D%5BcommentsCount%5D=asc"]')
+            ->first();
+        $this->assertGreaterThan(0, $sortCommentsAscLink->count(), 'Comments Count sort link not found.');
+
+        $crawler = $client->request('GET', $sortCommentsAscLink->link()->getUri());
         $this->assertResponseIsSuccessful();
+        $commentsCountValues = $this->extractColumnValues($this->findTableByHeader($crawler, 'Comments Count'), 'Comments Count');
+        $this->assertSame($commentsCountValues, $this->sortedValues($commentsCountValues, 'asc'));
+
+        $crawler = $client->request('GET', '/auto-grid/relations');
+        $this->assertResponseIsSuccessful();
+        $sortAuthorArticlesAscLink = $crawler
+            ->filter('a[href*="agId=articles"][href*="agParams%5Border%5D%5Bauthor:articlesCount%5D=asc"]')
+            ->first();
+        $this->assertGreaterThan(0, $sortAuthorArticlesAscLink->count(), 'Author Articles sort link not found.');
+
+        $crawler = $client->request('GET', $sortAuthorArticlesAscLink->link()->getUri());
+        $this->assertResponseIsSuccessful();
+        $authorArticlesValues = $this->extractColumnValues($this->findTableByHeader($crawler, 'Author Articles'), 'Author Articles');
+        $this->assertSame($authorArticlesValues, $this->sortedValues($authorArticlesValues, 'asc'));
     }
 
-    public function testVirtualDqlFiltering(): void
+    private function findTableByHeader(Crawler $crawler, string $header): Crawler
     {
-        $client = static::createClient();
-        
-        // Filter by comments count
-        $client->request('GET', '/auto-grid/relations', ['articles' => ['filter' => ['commentsCount' => '0']]]);
-        $this->assertResponseIsSuccessful();
-        
-        // Filter by range on articlesCount (Virtual DQL field)
-        // RangeCondition expects 'min' and 'max' keys if correctly configured by GuesserService
-        $client->request('GET', '/auto-grid/relations', ['users' => ['filter' => ['articlesCount' => ['min' => '0', 'max' => '10']]]]);
-        $this->assertResponseIsSuccessful();
+        foreach ($crawler->filter('table')->each(fn(Crawler $table): Crawler => $table) as $table) {
+            if ($table->filter(sprintf('th:contains("%s")', $header))->count() > 0) {
+                return $table;
+            }
+        }
+
+        $this->fail(sprintf('Table with header "%s" not found.', $header));
+    }
+
+    /**
+     * @return list<int>
+     */
+    private function extractColumnValues(Crawler $table, string $header): array
+    {
+        $columnIndex = $this->findColumnIndex($table, $header);
+        $values = [];
+
+        foreach ($table->filter('tbody tr')->each(fn(Crawler $row): Crawler => $row) as $row) {
+            if ($row->filter('td')->count() <= $columnIndex) {
+                continue;
+            }
+            $text = trim($row->filter('td')->eq($columnIndex)->text());
+            $values[] = (int) $text;
+        }
+
+        return $values;
+    }
+
+    private function findColumnIndex(Crawler $table, string $header): int
+    {
+        foreach ($table->filter('thead th')->each(fn(Crawler $column): Crawler => $column) as $index => $column) {
+            if (str_contains(trim($column->text()), $header)) {
+                return $index;
+            }
+        }
+
+        $this->fail(sprintf('Column "%s" not found.', $header));
+    }
+
+    /**
+     * @param list<int> $values
+     * @return list<int>
+     */
+    private function sortedValues(array $values, string $direction): array
+    {
+        $sorted = $values;
+
+        if ($direction === 'asc') {
+            sort($sorted);
+            return $sorted;
+        }
+
+        rsort($sorted);
+        return $sorted;
     }
 }
