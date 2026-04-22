@@ -21,12 +21,11 @@ class VirtualDqlTest extends WebTestCase
         $crawler = $client->request('GET', '/auto-grid/relations');
 
         $this->assertResponseIsSuccessful();
-        
-        // Check if "Comments Count" column exists
+
         $this->assertSelectorExists('th:contains("Comments Count")');
-        
-        // Check if "Author Articles" column exists
         $this->assertSelectorExists('th:contains("Author Articles")');
+        $this->assertSelectorNotExists('form[name^="filter-commentsCount-"]');
+        $this->assertSelectorNotExists('form[name^="filter-articlesCount-"]');
 
         $articlesTable = $this->findTableByHeader($crawler, 'Comments Count');
         $commentsCountValues = $this->extractColumnValues($articlesTable, 'Comments Count');
