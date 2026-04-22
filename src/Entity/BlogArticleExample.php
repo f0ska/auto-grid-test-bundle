@@ -23,6 +23,7 @@ use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
 use F0ska\AutoGridBundle\Attribute\EntityField\Label;
 use F0ska\AutoGridBundle\Attribute\EntityField\Position;
 use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
+use F0ska\AutoGridBundle\Attribute\EntityField\VirtualColumn;
 use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridBundle\Condition\AssociationCondition; // Changed from InCondition
 use F0ska\AutoGridTestBundle\Repository\BlogArticleExampleRepository;
@@ -68,6 +69,7 @@ class BlogArticleExample
     #[ORM\JoinColumn(nullable: false)]
     #[AssociatedField(name: 'username', label: 'Author', position: 10)]
     #[AssociatedField(name: 'email', label: 'Author Email', position: 11)]
+    #[AssociatedField(name: 'articlesCount', label: 'Author Articles', position: 12)]
     #[Permission(allow: false)] // Hide the author object itself
     private ?BlogUserExample $author = null;
 
@@ -78,6 +80,11 @@ class BlogArticleExample
     #[Label("Tags")]
     #[Filterable(condition: AssociationCondition::class, formOptions: ['multiple' => true])] // Changed condition
     private Collection $tags;
+
+    #[VirtualColumn(dql: "SELECT COUNT(c.id) FROM F0ska\AutoGridTestBundle\Entity\BlogArticleCommentExample c WHERE c.article = {this}")]
+    #[Label("Comments Count")]
+    #[Sortable]
+    private ?int $commentsCount = null;
 
     public function __construct()
     {
@@ -184,6 +191,18 @@ class BlogArticleExample
     public function removeTag(BlogArticleTagExample $tag): static
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getCommentsCount(): ?int
+    {
+        return $this->commentsCount;
+    }
+
+    public function setCommentsCount(?int $commentsCount): self
+    {
+        $this->commentsCount = $commentsCount;
 
         return $this;
     }
