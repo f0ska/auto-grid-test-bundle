@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace F0ska\AutoGridTestBundle\Tests\Functional;
 
 use F0ska\AutoGridTestBundle\Entity\BasicExample;
@@ -67,5 +69,18 @@ class SortAndPaginationTest extends WebTestCase
 
         // Verify 50 rows are displayed
         $this->assertCount(50, $crawler->filter('table tbody tr'), 'Did not find 50 rows after changing limit.');
+    }
+
+    public function testInvalidPaginationLimitFallsBackToDefault(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/?agId=basic-example&agAction=grid&agParams[limit]=999');
+        $this->assertResponseIsSuccessful();
+
+        $this->assertCount(
+            10,
+            $crawler->filter('table tbody tr'),
+            'Invalid pagination limit should fall back to the default page size.'
+        );
     }
 }

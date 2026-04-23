@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace F0ska\AutoGridTestBundle\Controller;
 
 use F0ska\AutoGridBundle\Factory\AutoGridFactory;

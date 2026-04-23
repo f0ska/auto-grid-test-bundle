@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace F0ska\AutoGridTestBundle\Tests\Functional;
 
 use Symfony\Component\DomCrawler\Crawler;
@@ -64,6 +66,33 @@ class VirtualDqlTest extends WebTestCase
         $this->assertSame($authorArticlesValues, $this->sortedValues($authorArticlesValues, 'asc'));
     }
 
+    public function testArticleGridColumnOrderPreservesAssociatedSubfieldPositions(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/relations');
+        $this->assertResponseIsSuccessful();
+
+        $articlesTable = $this->findTableByHeader($crawler, 'Comments Count');
+        $headers = $this->extractHeaders($articlesTable);
+
+        $this->assertLessThan(
+            $this->findHeaderIndex($headers, 'title'),
+            $this->findHeaderIndex($headers, 'id'),
+            'ID column should stay before Title because of its negative position.'
+        );
+
+        $this->assertFalse(
+            $this->hasHeader($headers, 'author email'),
+            'Author Email should stay hidden in the articles grid because of grid-specific permissions.'
+        );
+
+        $this->assertLessThan(
+            $this->findHeaderIndex($headers, 'author articles'),
+            $this->findHeaderIndex($headers, 'author'),
+            'Associated subfield "Author" should appear before "Author Articles".'
+        );
+    }
+
     private function findTableByHeader(Crawler $crawler, string $header): Crawler
     {
         foreach ($crawler->filter('table')->each(fn(Crawler $table): Crawler => $table) as $table) {
@@ -96,13 +125,45 @@ class VirtualDqlTest extends WebTestCase
 
     private function findColumnIndex(Crawler $table, string $header): int
     {
-        foreach ($table->filter('thead th')->each(fn(Crawler $column): Crawler => $column) as $index => $column) {
-            if (str_contains(trim($column->text()), $header)) {
+        return $this->findHeaderIndex($this->extractHeaders($table), strtolower($header));
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function extractHeaders(Crawler $table): array
+    {
+        return $table
+            ->filter('thead th')
+            ->each(fn(Crawler $column): string => strtolower(trim($column->text())));
+    }
+
+    /**
+     * @param list<string> $headers
+     */
+    private function findHeaderIndex(array $headers, string $needle): int
+    {
+        foreach ($headers as $index => $header) {
+            if (str_contains($header, strtolower($needle))) {
                 return $index;
             }
         }
 
-        $this->fail(sprintf('Column "%s" not found.', $header));
+        $this->fail(sprintf('Column "%s" not found.', $needle));
+    }
+
+    /**
+     * @param list<string> $headers
+     */
+    private function hasHeader(array $headers, string $needle): bool
+    {
+        foreach ($headers as $header) {
+            if (str_contains($header, strtolower($needle))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

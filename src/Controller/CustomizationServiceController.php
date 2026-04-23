@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace F0ska\AutoGridTestBundle\Controller;
 
 use F0ska\AutoGridBundle\Factory\AutoGridFactory;
@@ -22,6 +24,21 @@ final class CustomizationServiceController extends AbstractController
     public function index(AutoGridFactory $factory): Response
     {
         $grid = $factory->create(BasicExample::class, 'random-column-order');
+        return $grid->getResponse() ?? $this->render(
+            '@F0skaAutoGridTest/examples/customization_service.html.twig',
+            ['grid' => $grid]
+        );
+    }
+
+    #[Route('/customization-service-error', name: 'auto_grid_test_customization_service_error')]
+    public function error(AutoGridFactory $factory): Response
+    {
+        $grid = $factory->create(
+            entityClass: BasicExample::class,
+            gridId: 'customization-user-message',
+            customization: ['throw_message' => 'Customization says no']
+        );
+
         return $grid->getResponse() ?? $this->render(
             '@F0skaAutoGridTest/examples/customization_service.html.twig',
             ['grid' => $grid]
