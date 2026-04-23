@@ -27,4 +27,19 @@ final class CustomizationServiceController extends AbstractController
             ['grid' => $grid]
         );
     }
+
+    #[Route('/customization-service-error', name: 'auto_grid_test_customization_service_error')]
+    public function error(AutoGridFactory $factory): Response
+    {
+        $grid = $factory->create(
+            entityClass: BasicExample::class,
+            gridId: 'customization-user-message',
+            customization: ['throw_message' => 'Customization says no']
+        );
+
+        return $grid->getResponse() ?? $this->render(
+            '@F0skaAutoGridTest/examples/customization_service.html.twig',
+            ['grid' => $grid]
+        );
+    }
 }

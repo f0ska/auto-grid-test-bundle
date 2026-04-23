@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace F0ska\AutoGridTestBundle\Customization;
 
 use F0ska\AutoGridBundle\Customization\CustomizationInterface;
+use F0ska\AutoGridBundle\Exception\GridUserMessageException;
 use F0ska\AutoGridBundle\Model\AutoGrid;
 use F0ska\AutoGridBundle\Model\Parameters;
 
@@ -20,6 +21,10 @@ class CustomizationExample implements CustomizationInterface
 {
     public function execute(AutoGrid $autoGrid, Parameters $parameters): void
     {
+        if (!empty($parameters->customization['throw_message'])) {
+            throw new GridUserMessageException($parameters->customization['throw_message']);
+        }
+
         if ($autoGrid->getId() === 'random-column-order') {
             $fields = [];
             $keys = array_keys($parameters->fields);
