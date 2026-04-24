@@ -19,10 +19,10 @@ class Extension extends AbstractExtension
             'label' => 'Bootstrap 5',
             'icon' => 'bootstrap5',
             'css' => [
-                ['href' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css', 'integrity' => 'LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr', 'crossorigin' => 'anonymous'],
+                ['href' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css'],
             ],
             'js' => [
-                ['href' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js', 'integrity' => 'ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q', 'crossorigin' => 'anonymous'],
+                ['href' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js'],
             ],
             'infoBlock' => [
                 'wrapper' => 'alert alert-secondary border shadow-sm mb-4',
@@ -41,11 +41,11 @@ class Extension extends AbstractExtension
             'label' => 'Bootstrap 4',
             'icon' => 'bootstrap4',
             'css' => [
-                ['href' => 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css', 'integrity' => 'xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N', 'crossorigin' => 'anonymous'],
+                ['href' => 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'],
             ],
             'js' => [
-                ['href' => 'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js', 'integrity' => '1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs', 'crossorigin' => 'anonymous'],
-                ['href' => 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js', 'integrity' => 'Fy6S3B9q64WdZWQUjU4+vX1OKdaEAiXoiHU7VzF1eH8rL2cMhctTvVTLkJ13NP7F', 'crossorigin' => 'anonymous'],
+                ['href' => 'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js'],
+                ['href' => 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js'],
             ],
             'infoBlock' => [
                 'wrapper' => 'alert alert-secondary border shadow-sm mb-4',
