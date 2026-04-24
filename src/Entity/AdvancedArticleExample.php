@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
 use Doctrine\ORM\Mapping\PreUpdate;
+use F0ska\AutoGridBundle\Attribute\Entity\ActionButtonDisplay;
 use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
 use F0ska\AutoGridBundle\Attribute\Entity\PageLimits;
@@ -47,7 +48,8 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[Permission('grid')]
 #[Permission('view')]
 #[Permission('advanced_filter')]
-#[Permission('edit', gridId: 'specific_grid_id')]
+#[Permission('edit')]
+#[ActionButtonDisplay('edit', displayOnGrid: false)]
 #[AdvancedFilter(true)]
 #[Fieldset(name: 'Content Info')]
 #[Fieldset(name: 'Metatags')]
