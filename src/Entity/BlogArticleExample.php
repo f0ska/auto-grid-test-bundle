@@ -38,11 +38,13 @@ class BlogArticleExample
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Position(-100)]
+    #[Permission('grid', allow: false, gridId: 'articles')]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 64)]
     #[Filterable]
     #[Sortable]
+    #[Position(-1)]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -53,12 +55,14 @@ class BlogArticleExample
     #[ORM\Column]
     #[Filterable]
     #[Sortable]
+    #[Position(9)]
     private ?bool $published = null;
 
     #[ORM\Column]
     #[Permission('create', allow: false)]
     #[Permission('edit', allow: false)]
     #[Sortable(direction: 'desc')]
+    #[Permission('grid', allow: false, gridId: 'articles')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
@@ -71,7 +75,6 @@ class BlogArticleExample
     #[ORM\JoinColumn(nullable: false)]
     #[AssociatedField(name: 'username', label: 'Author', position: 10)]
     #[AssociatedField(name: 'email', label: 'Author Email', position: 11)]
-    #[AssociatedField(name: 'articlesCount', label: 'Author Posts', position: 12)]
     #[Permission(allow: false)] // Hide the author object itself
     private ?BlogUserExample $author = null;
 
@@ -86,6 +89,7 @@ class BlogArticleExample
     #[VirtualColumn(dql: "SELECT COUNT(c.id) FROM F0ska\AutoGridTestBundle\Entity\BlogArticleCommentExample c WHERE c.article = {this}")]
     #[Label("Comments")]
     #[Sortable]
+    #[Position(0)]
     private ?int $commentsCount = null;
 
     public function __construct()

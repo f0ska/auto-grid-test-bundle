@@ -6,11 +6,13 @@
     
     {% if currentTheme == 'auto-grid-bulma' %}
         {% set customBtnClass = 'button is-small is-success' %}
+    {% elseif currentTheme == 'auto-grid-bootstrap4' %}
+        {% set customBtnClass = customBtnClass ~ ' ml-1' %}
     {% elseif currentTheme == 'auto-grid-foundation' %}
         {% set customBtnClass = 'button small success' %}
     {% elseif currentTheme == 'auto-grid-flowbite' %}
-        {% set customBtnClass = 'text-white bg-green-700 hover:bg-green-800 font-medium rounded-lg text-xs px-2 py-1' %}
+        {% set customBtnClass = 'inline-flex h-8 w-8 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-gray-500 transition hover:border-amber-300 hover:bg-white hover:text-amber-600 focus:outline-none' %}
     {% endif %}
 
-    <button class="{{ customBtnClass }} custom-action-btn" onclick="alert('{{ entity.name|default(entity.title|default('Entity')) }}')">&#128512;</button>
+    <button type="button" class="{{ customBtnClass }} custom-action-btn" onclick="alert('{{ entity.name|default(entity.title|default('Entity')) }}')" title="Custom action">&#128512;</button>
 {% endblock %}

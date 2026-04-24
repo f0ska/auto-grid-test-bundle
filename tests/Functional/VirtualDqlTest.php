@@ -25,16 +25,12 @@ class VirtualDqlTest extends WebTestCase
         $this->assertResponseIsSuccessful();
 
         $this->assertSelectorExists('th:contains("Comments")');
-        $this->assertSelectorExists('th:contains("Author Posts")');
         $this->assertSelectorNotExists('form[name^="filter-commentsCount-"]');
-        $this->assertSelectorNotExists('form[name^="filter-articlesCount-"]');
 
         $articlesTable = $this->findTableByHeader($crawler, 'Comments');
         $commentsCountValues = $this->extractColumnValues($articlesTable, 'Comments');
-        $authorArticlesValues = $this->extractColumnValues($articlesTable, 'Author Posts');
 
         $this->assertNotEmpty($commentsCountValues);
-        $this->assertNotEmpty($authorArticlesValues);
     }
 
     public function testVirtualDqlSorting(): void
@@ -52,18 +48,6 @@ class VirtualDqlTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $commentsCountValues = $this->extractColumnValues($this->findTableByHeader($crawler, 'Comments'), 'Comments');
         $this->assertSame($commentsCountValues, $this->sortedValues($commentsCountValues, 'asc'));
-
-        $crawler = $client->request('GET', '/auto-grid/relations');
-        $this->assertResponseIsSuccessful();
-        $sortAuthorArticlesAscLink = $crawler
-            ->filter('a[href*="agId=articles"][href*="agParams%5Border%5D%5Bauthor:articlesCount%5D=asc"]')
-            ->first();
-        $this->assertGreaterThan(0, $sortAuthorArticlesAscLink->count(), 'Author Posts sort link not found.');
-
-        $crawler = $client->request('GET', $sortAuthorArticlesAscLink->link()->getUri());
-        $this->assertResponseIsSuccessful();
-        $authorArticlesValues = $this->extractColumnValues($this->findTableByHeader($crawler, 'Author Posts'), 'Author Posts');
-        $this->assertSame($authorArticlesValues, $this->sortedValues($authorArticlesValues, 'asc'));
     }
 
     public function testArticleGridColumnOrderPreservesAssociatedSubfieldPositions(): void
@@ -76,20 +60,35 @@ class VirtualDqlTest extends WebTestCase
         $headers = $this->extractHeaders($articlesTable);
 
         $this->assertLessThan(
+            $this->findHeaderIndex($headers, 'comments'),
             $this->findHeaderIndex($headers, 'title'),
-            $this->findHeaderIndex($headers, 'id'),
-            'ID column should stay before Title because of its negative position.'
+            'Comments should appear immediately after Title for a more natural scan order.'
         );
 
         $this->assertFalse(
-            $this->hasHeader($headers, 'author email'),
+            $this->hasHeaderExactly($headers, 'author email'),
             'Author Email should stay hidden in the articles grid because of grid-specific permissions.'
         );
 
-        $this->assertLessThan(
-            $this->findHeaderIndex($headers, 'author posts'),
+        $this->assertFalse(
+            $this->hasHeaderExactly($headers, 'id'),
+            'ID should stay hidden in the articles grid.'
+        );
+
+        $this->assertFalse(
+            $this->hasHeaderExactly($headers, 'created at'),
+            'Created at should stay hidden in the articles grid.'
+        );
+
+        $this->assertFalse(
+            $this->hasHeaderExactly($headers, 'author posts'),
+            'Author Posts should stay hidden in the articles grid.'
+        );
+
+        $this->assertGreaterThan(
             $this->findHeaderIndex($headers, 'author'),
-            'Associated subfield "Author" should appear before "Author Posts".'
+            $this->findHeaderIndex($headers, 'published'),
+            'Published should be placed after the content-related columns.'
         );
     }
 
@@ -164,6 +163,14 @@ class VirtualDqlTest extends WebTestCase
         }
 
         return false;
+    }
+
+    /**
+     * @param list<string> $headers
+     */
+    private function hasHeaderExactly(array $headers, string $needle): bool
+    {
+        return in_array(strtolower($needle), $headers, true);
     }
 
     /**
