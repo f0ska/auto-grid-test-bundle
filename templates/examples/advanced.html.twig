@@ -6,11 +6,12 @@
 {% block content %}
     {{ agt.infoBlock('Demonstrated features:', [
         'Secure-by-default access control (<code>DisallowActions</code>/<code>Fields</code>)',
-        'Granular <strong>Permissions</strong> based on roles or context',
+        'Granular <strong>Permissions</strong> based on roles or context using <code>#[Permission]</code>',
+        'Action visibility control with <code>#[ActionButtonDisplay]</code> (edit hidden on grid, available from view)',
         'Organized forms using <strong>Fieldsets</strong>',
         'Multi-criteria <strong>Advanced Filter</strong>',
-        '<strong>Value Decoration</strong> (Prefix on ID)',
-        'Grid truncation for long text fields',
+        '<strong>Value Decoration</strong> with <code>#[ValuePrefix]</code> (Prefix on ID)',
+        'Grid truncation for long text fields via <code>#[GridTruncate]</code>',
         '<strong>Responsive Column Sizing</strong> (<code>col-*</code> classes on columns)',
         'Custom field templates & Associated fields',
         'DQL hard-coded filters (<code>queryExpression</code>)',
