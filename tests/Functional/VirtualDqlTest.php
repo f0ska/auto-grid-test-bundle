@@ -24,14 +24,14 @@ class VirtualDqlTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
 
-        $this->assertSelectorExists('th:contains("Comments Count")');
-        $this->assertSelectorExists('th:contains("Author Articles")');
+        $this->assertSelectorExists('th:contains("Comments")');
+        $this->assertSelectorExists('th:contains("Author Posts")');
         $this->assertSelectorNotExists('form[name^="filter-commentsCount-"]');
         $this->assertSelectorNotExists('form[name^="filter-articlesCount-"]');
 
-        $articlesTable = $this->findTableByHeader($crawler, 'Comments Count');
-        $commentsCountValues = $this->extractColumnValues($articlesTable, 'Comments Count');
-        $authorArticlesValues = $this->extractColumnValues($articlesTable, 'Author Articles');
+        $articlesTable = $this->findTableByHeader($crawler, 'Comments');
+        $commentsCountValues = $this->extractColumnValues($articlesTable, 'Comments');
+        $authorArticlesValues = $this->extractColumnValues($articlesTable, 'Author Posts');
 
         $this->assertNotEmpty($commentsCountValues);
         $this->assertNotEmpty($authorArticlesValues);
@@ -46,11 +46,11 @@ class VirtualDqlTest extends WebTestCase
         $sortCommentsAscLink = $crawler
             ->filter('a[href*="agId=articles"][href*="agParams%5Border%5D%5BcommentsCount%5D=asc"]')
             ->first();
-        $this->assertGreaterThan(0, $sortCommentsAscLink->count(), 'Comments Count sort link not found.');
+        $this->assertGreaterThan(0, $sortCommentsAscLink->count(), 'Comments sort link not found.');
 
         $crawler = $client->request('GET', $sortCommentsAscLink->link()->getUri());
         $this->assertResponseIsSuccessful();
-        $commentsCountValues = $this->extractColumnValues($this->findTableByHeader($crawler, 'Comments Count'), 'Comments Count');
+        $commentsCountValues = $this->extractColumnValues($this->findTableByHeader($crawler, 'Comments'), 'Comments');
         $this->assertSame($commentsCountValues, $this->sortedValues($commentsCountValues, 'asc'));
 
         $crawler = $client->request('GET', '/auto-grid/relations');
@@ -58,11 +58,11 @@ class VirtualDqlTest extends WebTestCase
         $sortAuthorArticlesAscLink = $crawler
             ->filter('a[href*="agId=articles"][href*="agParams%5Border%5D%5Bauthor:articlesCount%5D=asc"]')
             ->first();
-        $this->assertGreaterThan(0, $sortAuthorArticlesAscLink->count(), 'Author Articles sort link not found.');
+        $this->assertGreaterThan(0, $sortAuthorArticlesAscLink->count(), 'Author Posts sort link not found.');
 
         $crawler = $client->request('GET', $sortAuthorArticlesAscLink->link()->getUri());
         $this->assertResponseIsSuccessful();
-        $authorArticlesValues = $this->extractColumnValues($this->findTableByHeader($crawler, 'Author Articles'), 'Author Articles');
+        $authorArticlesValues = $this->extractColumnValues($this->findTableByHeader($crawler, 'Author Posts'), 'Author Posts');
         $this->assertSame($authorArticlesValues, $this->sortedValues($authorArticlesValues, 'asc'));
     }
 
@@ -72,7 +72,7 @@ class VirtualDqlTest extends WebTestCase
         $crawler = $client->request('GET', '/auto-grid/relations');
         $this->assertResponseIsSuccessful();
 
-        $articlesTable = $this->findTableByHeader($crawler, 'Comments Count');
+        $articlesTable = $this->findTableByHeader($crawler, 'Comments');
         $headers = $this->extractHeaders($articlesTable);
 
         $this->assertLessThan(
@@ -87,9 +87,9 @@ class VirtualDqlTest extends WebTestCase
         );
 
         $this->assertLessThan(
-            $this->findHeaderIndex($headers, 'author articles'),
+            $this->findHeaderIndex($headers, 'author posts'),
             $this->findHeaderIndex($headers, 'author'),
-            'Associated subfield "Author" should appear before "Author Articles".'
+            'Associated subfield "Author" should appear before "Author Posts".'
         );
     }
 

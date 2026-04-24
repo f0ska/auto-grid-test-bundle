@@ -14,6 +14,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
 use F0ska\AutoGridTestBundle\Repository\BlogArticleCommentExampleRepository;
 
 #[ORM\Entity(repositoryClass: BlogArticleCommentExampleRepository::class)]
@@ -30,9 +31,11 @@ class BlogArticleCommentExample
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[GridTruncate(22)]
     private ?BlogArticleExample $article = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[GridTruncate(24)]
     private ?string $comment = null;
 
     public function getId(): ?int

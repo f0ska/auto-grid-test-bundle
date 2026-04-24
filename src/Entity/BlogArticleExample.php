@@ -71,7 +71,7 @@ class BlogArticleExample
     #[ORM\JoinColumn(nullable: false)]
     #[AssociatedField(name: 'username', label: 'Author', position: 10)]
     #[AssociatedField(name: 'email', label: 'Author Email', position: 11)]
-    #[AssociatedField(name: 'articlesCount', label: 'Author Articles', position: 12)]
+    #[AssociatedField(name: 'articlesCount', label: 'Author Posts', position: 12)]
     #[Permission(allow: false)] // Hide the author object itself
     private ?BlogUserExample $author = null;
 
@@ -84,7 +84,7 @@ class BlogArticleExample
     private Collection $tags;
 
     #[VirtualColumn(dql: "SELECT COUNT(c.id) FROM F0ska\AutoGridTestBundle\Entity\BlogArticleCommentExample c WHERE c.article = {this}")]
-    #[Label("Comments Count")]
+    #[Label("Comments")]
     #[Sortable]
     private ?int $commentsCount = null;
 

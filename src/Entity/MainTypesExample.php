@@ -14,6 +14,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Repository\MainTypesExampleRepository;
 
 #[ORM\Entity(repositoryClass: MainTypesExampleRepository::class)]
@@ -22,12 +23,14 @@ class MainTypesExample
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Permission('grid', allow: false)]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column(length: 255)]
     private ?string $stringType = null;
 
     #[ORM\Column(type: Types::ASCII_STRING, length: 255)]
+    #[Permission('grid', allow: false)]
     private $asciiStringType = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -40,9 +43,11 @@ class MainTypesExample
     private ?int $integerType = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
+    #[Permission('grid', allow: false)]
     private ?int $smallintType = null;
 
     #[ORM\Column(type: Types::BIGINT)]
+    #[Permission('grid', allow: false)]
     private ?string $bigintType = null;
 
     #[ORM\Column]
