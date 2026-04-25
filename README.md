@@ -26,7 +26,7 @@ To run the demo application or execute the test suite, follow these steps:
     ```
 
 4.  **Access Demos**:
-    Navigate to the `/auto-grid` route path in your browser.
+    Open `/auto-grid` in your browser. This is the main demo entry page for the default Bootstrap 5 template, with navigation to the other examples and a template switcher.
 
 5.  **Run Tests**:
     ```shell
@@ -39,4 +39,4 @@ To run the demo application or execute the test suite, follow these steps:
 
 *   **Environment Agnostic**: This bundle is designed to work in any standard Symfony environment (`dev`, `test`, etc.). 
 *   **Functional Testing**: The test suite uses `WebTestCase`. Ensure your test environment is correctly configured with a database (e.g., in `phpunit.xml` or `.env.test`) to allow these tests to run successfully.
-*   **Autoloading**: If you are integrating this bundle into an existing project, ensure the `F0ska\AutoGridTestBundle\Tests` namespace is registered in your `composer.json` `autoload-dev` section.
+*   **Autoloading**: If you are integrating this bundle into an existing project, ensure the `F0ska\AutoGridTestBundle\Tests\` namespace is registered in your `composer.json` `autoload-dev` section.

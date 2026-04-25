@@ -9,7 +9,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "F0ska\\AutoGridTestBundle\\": "tests/"
+            "F0ska\\AutoGridTestBundle\\Tests\\": "tests/"
         }
     },
     "require": {
