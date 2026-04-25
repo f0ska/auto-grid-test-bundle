@@ -15,7 +15,7 @@ To run the demo application or execute the test suite, follow these steps:
 
 2.  **Load Test Data (Fixtures)**:
     ```shell
-    php bin/console doctrine:fixtures:load --no-interaction
+    php bin/console doctrine:fixtures:load --append
     ```
 
 3.  **Register Routes**:
