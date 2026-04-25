@@ -2,10 +2,14 @@
     -
 {% else %}
     {% set currentTheme = agt_current_theme()|default('auto-grid') %}
+    {% set isBootstrap4 = currentTheme == 'auto-grid-bootstrap4' or app.request.pathinfo starts with '/auto-grid-bootstrap4/' %}
     {% set containerClass = 'd-flex flex-wrap gap-1' %}
     {% set badgeClass = 'badge bg-secondary text-decoration-none' %}
 
-    {% if currentTheme == 'auto-grid-bulma' %}
+    {% if isBootstrap4 %}
+        {% set containerClass = 'd-flex flex-wrap align-items-center' %}
+        {% set badgeClass = 'badge badge-info text-white text-decoration-none mr-1 mb-1 px-2 py-1' %}
+    {% elseif currentTheme == 'auto-grid-bulma' %}
         {% set containerClass = 'tags' %}
         {% set badgeClass = 'tag is-info' %}
     {% elseif currentTheme == 'auto-grid-foundation' %}

@@ -66,7 +66,7 @@ class AttributeParserServiceTest extends KernelTestCase
 
         $this->assertSame('username', $fieldAttributes['author']['fields']['username']['name']);
         $this->assertSame('Author', $fieldAttributes['author']['fields']['username']['label']);
-        $this->assertSame('Author Articles', $fieldAttributes['author']['fields']['articlesCount']['label']);
+        $this->assertArrayNotHasKey('articlesCount', $fieldAttributes['author']['fields']);
 
         $this->assertTrue($fieldAttributes['commentsCount']['virtual_column']['allowed']);
         $this->assertTrue($fieldAttributes['commentsCount']['can_sort']);

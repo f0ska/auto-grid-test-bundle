@@ -14,6 +14,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Repository\DateTimeTypesExampleRepository;
 
 #[ORM\Entity(repositoryClass: DateTimeTypesExampleRepository::class)]
@@ -22,30 +23,35 @@ class DateTimeTypesExample
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Permission('grid', allow: false)]
     private ?int $id = null; // @phpstan-ignore property.unusedType
 
     #[ORM\Column]
     private ?\DateTime $datetimeType = null;
 
     #[ORM\Column]
+    #[Permission('grid', allow: false)]
     private ?\DateTimeImmutable $datetimeImmutableType = null;
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
     private ?\DateTime $datetimetzType = null;
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
+    #[Permission('grid', allow: false)]
     private ?\DateTimeImmutable $datetimetzImmutableType = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateType = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[Permission('grid', allow: false)]
     private ?\DateTimeImmutable $dateImmutableType = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTime $timeType = null;
 
     #[ORM\Column(type: Types::TIME_IMMUTABLE)]
+    #[Permission('grid', allow: false)]
     private ?\DateTimeImmutable $timeImmutableType = null;
 
     #[ORM\Column]
