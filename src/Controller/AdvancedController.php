@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class AdvancedController extends AbstractController
 {
-    #[Route('/advanced/{userId}', name: 'auto_grid_test_advanced')]
+    #[Route('/advanced/{userId}', name: 'auto_grid_test_advanced', defaults: ['userId' => null])]
     public function index(AutoGridFactory $factory, ?int $userId = null): Response
     {
         $grid1 = $factory->create(AdvancedArticleExample::class);
