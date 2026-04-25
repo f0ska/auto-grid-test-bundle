@@ -154,20 +154,6 @@ class VirtualDqlTest extends WebTestCase
     /**
      * @param list<string> $headers
      */
-    private function hasHeader(array $headers, string $needle): bool
-    {
-        foreach ($headers as $header) {
-            if (str_contains($header, strtolower($needle))) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @param list<string> $headers
-     */
     private function hasHeaderExactly(array $headers, string $needle): bool
     {
         return in_array(strtolower($needle), $headers, true);
