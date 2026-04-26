@@ -13,9 +13,11 @@ declare(strict_types=1);
 namespace F0ska\AutoGridTestBundle\EventSubscriber;
 
 use DateTimeInterface;
+use F0ska\AutoGridBundle\Event\EntityEvent;
 use F0ska\AutoGridBundle\Event\ExportEvent;
 use F0ska\AutoGridBundle\Event\MassEvent;
 use F0ska\AutoGridBundle\Event\SaveEvent;
+use F0ska\AutoGridTestBundle\Entity\BasicExample;
 use F0ska\AutoGridTestBundle\Entity\BlogUserExample;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,23 +27,24 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ExampleSubscriber implements EventSubscriberInterface
 {
-    private RequestStack $requestStack;
-    private UrlGeneratorInterface $urlGenerator;
-
-    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator)
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly UrlGeneratorInterface $urlGenerator
+    )
     {
-        $this->requestStack = $requestStack;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            SaveEvent::EVENT_NAME . '.advanced2' => 'onAdvanced2Save',
+            EntityEvent::CREATE_EVENT_NAME                    => 'onBasicCreate',
+            EntityEvent::EDIT_EVENT_NAME                      => 'onBasicEdit',
+            EntityEvent::VIEW_EVENT_NAME                      => 'onBasicView',
+            SaveEvent::EVENT_NAME . '.advanced2'              => 'onAdvanced2Save',
             SaveEvent::EVENT_NAME . '.my-custom-form-example' => 'onMyCustomFormExample',
-            MassEvent::EVENT_NAME => 'onMassAction',
+            MassEvent::EVENT_NAME                             => 'onMassAction',
             MassEvent::EVENT_NAME . '.custom_action_redirect' => ['onCustomRedirectMassAction', 10],
-            ExportEvent::EVENT_NAME . '.export_example' => 'onExportExample',
+            ExportEvent::EVENT_NAME . '.export_example'       => 'onExportExample',
         ];
     }
 
@@ -51,6 +54,38 @@ class ExampleSubscriber implements EventSubscriberInterface
         $entity = $event->getEntity();
         $entity->setLastIp($this->requestStack->getCurrentRequest()->getClientIp());
         $entity->setBanned($entity->isBanned() ?? false);
+    }
+
+    public function onBasicCreate(EntityEvent $event): void
+    {
+        $entity = $event->getEntity();
+        if (!$entity instanceof BasicExample) {
+            return;
+        }
+
+        $entity->setDescription('Prepared by create event');
+    }
+
+    public function onBasicEdit(EntityEvent $event): void
+    {
+        $entity = $event->getEntity();
+        if (!$entity instanceof BasicExample) {
+            return;
+        }
+
+        $entity->setDescription('Prepared by edit event');
+    }
+
+    public function onBasicView(EntityEvent $event): void
+    {
+        $entity = $event->getEntity();
+        if (!$entity instanceof BasicExample) {
+            return;
+        }
+
+        /** @var FlashBagAwareSessionInterface $session */
+        $session = $this->requestStack->getSession();
+        $session->getFlashBag()->add('info', sprintf('Viewed "%s"', $entity->getName()));
     }
 
     public function onMassAction(MassEvent $event): void

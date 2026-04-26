@@ -42,6 +42,7 @@ class CrudTest extends WebTestCase
         $entityManager = self::getContainer()->get('doctrine')->getManager();
         $entity = $entityManager->getRepository(BasicExample::class)->findOneBy(['name' => 'CRUD Test Item']);
         $this->assertNotNull($entity, 'Entity was not found in DB after creation.');
+        $this->assertSame('Prepared by create event', $entity->getDescription());
         $entityId = $entity->getId();
 
         // 2. FILTER & VIEW
@@ -59,6 +60,7 @@ class CrudTest extends WebTestCase
         $crawler = $client->request('GET', $viewUrl);
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('body', 'CRUD Test Item');
+        $this->assertSelectorTextContains('body', 'Viewed "CRUD Test Item"');
 
         // 3. EDIT
         $editUrl = $crawler->filter('a[href*="agAction=edit"]')->attr('href');
@@ -76,6 +78,7 @@ class CrudTest extends WebTestCase
         $entityManager->clear();
         $entity = $entityManager->getRepository(BasicExample::class)->find($entityId);
         $this->assertEquals('CRUD Test Item UPDATED', $entity->getName());
+        $this->assertSame('Prepared by edit event', $entity->getDescription());
 
         // 4. DELETE
         // Filter again for the updated name
