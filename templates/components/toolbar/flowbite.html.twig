@@ -2,10 +2,11 @@
 
 <nav class="bg-gray-900 text-white fixed w-full top-0 z-50">
     <div class="max-w-screen-2xl mx-auto px-4">
-        <div class="flex items-center justify-center h-16">
-            <div class="hidden md:flex md:space-x-4">
+        <div class="flex items-center justify-center h-14">
+            <div class="hidden md:flex md:space-x-2">
                 {% for item in navItems %}
-                    <a class="block py-2 px-3 rounded {{ agt_is_nav_active(item.route) ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}"
+                    <a class="block py-1.5 px-2.5 rounded-md font-medium transition-colors {{ agt_is_nav_active(item.route) ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white' }}"
+                       style="font-size: 0.94rem;"
                    href="{{ agt_theme_url(null, item.route) }}">
                     {{ item.label }}
                 </a>
@@ -13,7 +14,7 @@
         </div>
         <div class="md:hidden hidden" id="mobile-menu">
             {% for item in navItems %}
-                <a class="block py-2 px-4 text-gray-300 hover:bg-gray-700 hover:text-white"
+                <a class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-800 hover:text-white"
                    href="{{ agt_theme_url(null, item.route) }}">
                     {{ item.label }}
                 </a>
@@ -27,7 +28,6 @@
         height: 24px !important;
     }
     body {
-        padding-top: 64px !important;
+        padding-top: 56px !important;
     }
 </style>
-

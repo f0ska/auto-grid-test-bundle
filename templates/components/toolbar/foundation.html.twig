@@ -1,20 +1,18 @@
 {% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
 
-<div class="top-bar is-sticky" id="example-menu" data-responsive-toggle="example-menu" data-hide-for="medium" style="position: fixed; top: 0; width: 100%; z-index: 1000; padding-top: 0; padding-bottom: 0;">
-    <div class="grid-container" style="max-width: 1440px; padding-left: 2rem; padding-right: 2rem;">
+<div class="top-bar autogrid-foundation-toolbar" id="example-menu">
+    <div class="grid-container">
         <div class="top-bar-left">
-            <div class="top-bar-right">
-                <ul class="menu">
-                    {% for item in navItems %}
-                        <li>
-                            <a class="{{ agt_is_nav_active(item.route) ? 'is-active' }}"
-                               href="{{ agt_theme_url(null, item.route) }}">
-                                {{ item.label }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+            <ul class="dropdown menu align-middle autogrid-foundation-toolbar-menu" data-dropdown-menu data-disable-hover="true" data-click-open="false">
+                {% for item in navItems %}
+                    <li>
+                        <a class="{{ agt_is_nav_active(item.route) ? 'is-active' }}"
+                           href="{{ agt_theme_url(null, item.route) }}">
+                            {{ item.label }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
@@ -23,9 +21,11 @@
         width: 24px !important;
         height: 24px !important;
     }
+
     body {
-        padding-top: 70px !important;
+        padding-top: 5.5rem !important;
     }
+
     #main-content-wrapper {
         max-width: 1440px !important;
         margin-left: auto !important;
@@ -33,12 +33,90 @@
         padding-left: 2rem !important;
         padding-right: 2rem !important;
     }
-    .menu .is-active {
-        background-color: rgba(0, 0, 0, 0.1);
+
+    .autogrid-foundation-toolbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 0;
+        background: #1f1f1f;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
     }
-    .menu a {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
+
+    .autogrid-foundation-toolbar .grid-container {
+        max-width: 1440px;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .autogrid-foundation-toolbar .top-bar-left {
+        width: 100%;
+        background: transparent !important;
+    }
+
+    .autogrid-foundation-toolbar-menu {
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        background: transparent !important;
+    }
+
+    .autogrid-foundation-toolbar .top-bar-left,
+    .autogrid-foundation-toolbar .top-bar-right,
+    .autogrid-foundation-toolbar ul,
+    .autogrid-foundation-toolbar li {
+        background: transparent !important;
+    }
+
+    .autogrid-foundation-toolbar-menu,
+    .autogrid-foundation-toolbar-menu > li,
+    .autogrid-foundation-toolbar-menu > li > a {
+        background: transparent !important;
+    }
+
+    .autogrid-foundation-toolbar-menu > li > a {
+        padding: 1.05rem 0.95rem;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 0.92rem;
+        font-weight: 600;
+        line-height: 1.2;
+        border-bottom: 3px solid transparent;
+        transition: color 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .autogrid-foundation-toolbar-menu > li > a:hover,
+    .autogrid-foundation-toolbar-menu > li > a:focus {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.07);
+    }
+
+    .autogrid-foundation-toolbar-menu > li > a.is-active {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.10);
+        border-bottom-color: #1779ba;
+        box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: 639px) {
+        body {
+            padding-top: 7.5rem !important;
+        }
+
+        .autogrid-foundation-toolbar .grid-container,
+        #main-content-wrapper {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+        }
+
+        .autogrid-foundation-toolbar-menu {
+            gap: 0.2rem;
+        }
+
+        .autogrid-foundation-toolbar-menu > li > a {
+            padding: 0.8rem 0.7rem;
+            font-size: 0.85rem;
+        }
     }
 </style>
 {% set mainContentClass = 'grid-container mt-5' %}

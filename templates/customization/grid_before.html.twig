@@ -1,0 +1,30 @@
+{% set theme = agt_current_theme() %}
+{% set config = agt_theme_config() %}
+{% set wrapperClass = theme == 'auto-grid-flowbite'
+    ? 'mb-4 rounded-xl border border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-sm text-gray-600'
+    : (theme == 'auto-grid-bulma'
+        ? 'message is-light mb-4'
+        : (theme == 'auto-grid-foundation'
+            ? 'callout secondary mb-4'
+            : 'alert alert-light border mb-4')) %}
+{% set titleClass = theme == 'auto-grid-flowbite'
+    ? 'mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500'
+    : (theme == 'auto-grid-bulma'
+        ? 'message-header'
+        : (theme == 'auto-grid-foundation'
+            ? 'text-uppercase text-gray-600'
+            : 'small text-uppercase text-muted fw-bold')) %}
+{% set bodyClass = theme == 'auto-grid-bulma'
+    ? 'message-body'
+    : '' %}
+
+<div class="autogrid-slot-before {{ wrapperClass }}">
+    <div class="{{ titleClass }}">Before Slot</div>
+    <div class="{{ bodyClass }}">
+        <span class="font-weight-bold fw-semibold">{{ attributes.title|trans }}</span>
+        <span class="mx-1">·</span>
+        <span>{{ action|title }}</span>
+        <span class="mx-1">·</span>
+        <span>{{ agId }}</span>
+    </div>
+</div>

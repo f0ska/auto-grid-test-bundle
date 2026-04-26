@@ -16,6 +16,7 @@ use F0ska\AutoGridBundle\Service\AttributeParserService;
 use F0ska\AutoGridTestBundle\Entity\AdvancedArticleExample;
 use F0ska\AutoGridTestBundle\Entity\BlogArticleExample;
 use F0ska\AutoGridTestBundle\Entity\CorporateClientExample;
+use F0ska\AutoGridTestBundle\Entity\CustomFormExample;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class AttributeParserServiceTest extends KernelTestCase
@@ -84,6 +85,21 @@ class AttributeParserServiceTest extends KernelTestCase
         $this->assertSame(
             'F0ska\\AutoGridTestBundle\\View\\TaxViewServiceExample',
             $fieldAttributes['tax']['view_service']
+        );
+    }
+
+    public function testParsesBaseTemplateBeforeAndAfterSlots(): void
+    {
+        $attributes = $this->parse(CustomFormExample::class);
+        $entityAttributes = $attributes->getEntityAttributes();
+
+        $this->assertSame(
+            '@F0skaAutoGridTest/customization/grid_before.html.twig',
+            $entityAttributes['template']['before']
+        );
+        $this->assertSame(
+            '@F0skaAutoGridTest/customization/grid_after.html.twig',
+            $entityAttributes['template']['after']
         );
     }
 

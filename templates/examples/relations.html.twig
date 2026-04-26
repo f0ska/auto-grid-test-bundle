@@ -11,8 +11,10 @@
         'Tighter relation column previews using per-field <code>#[GridTruncate]</code>'
     ]) }}
 
-    {{ ag_render(articles) }}
-    <div class="mt-5">{{ ag_render(users) }}</div>
-    <div class="mt-5">{{ ag_render(tags) }}</div>
-    <div class="mt-5">{{ ag_render(comments) }}</div>
+    <div class="autogrid-demo-stack">
+        <div class="autogrid-demo-item">{{ ag_render(articles) }}</div>
+        <div class="autogrid-demo-item">{{ ag_render(users) }}</div>
+        <div class="autogrid-demo-item">{{ ag_render(tags) }}</div>
+        <div class="autogrid-demo-item">{{ ag_render(comments) }}</div>
+    </div>
 {% endblock %}

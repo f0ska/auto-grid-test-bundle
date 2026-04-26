@@ -26,6 +26,6 @@ class CustomizationServiceTest extends WebTestCase
 
         // 2. Verify that the customization service changed the title
         // In CustomizationExample.php: $parameters->attributes['title'] = 'The order of the columns is random...'
-        $this->assertSelectorTextContains('h1, h2, h3, h4, .card-title, caption', 'The order of the columns is random');
+        $this->assertSelectorTextContains('.autogrid', 'The order of the columns is random');
     }
 }

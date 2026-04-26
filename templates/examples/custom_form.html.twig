@@ -7,7 +7,8 @@
     {{ agt.infoBlock('Demonstrated features:', [
         'Replacing default forms with <strong>Custom Symfony Form Types</strong> (e.g., for image uploads). View the image in the View action.',
         'Customizing individual fields with <code>#[FormType]</code> & <code>#[FormOptions]</code>',
-        '<strong>Automatic Filter Configuration</strong>: Filters automatically inherit choice lists and form types from the main form configuration'
+        '<strong>Automatic Filter Configuration</strong>: Filters automatically inherit choice lists and form types from the main form configuration',
+        'Base template slot injection with <code>#[Template(TemplateArea::BEFORE)]</code> and <code>#[Template(TemplateArea::AFTER)]</code>'
     ]) }}
 
     {{ ag_render(grid) }}
