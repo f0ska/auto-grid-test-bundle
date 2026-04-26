@@ -67,6 +67,10 @@ class CustomFormExample
     #[Filterable] // Smart Filter Fallback should pick up ChoiceType and options
     private ?string $status = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Permission('grid', allow: false)]
+    private ?string $note = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -115,6 +119,18 @@ class CustomFormExample
     public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): static
+    {
+        $this->note = $note;
 
         return $this;
     }

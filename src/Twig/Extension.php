@@ -11,9 +11,6 @@ use Twig\TwigFunction;
 
 class Extension extends AbstractExtension
 {
-    private RequestStack $requestStack;
-    private UrlGeneratorInterface $urlGenerator;
-
     private const THEMES = [
         'auto-grid' => [
             'label' => 'Bootstrap 5',
@@ -135,10 +132,11 @@ class Extension extends AbstractExtension
         ],
     ];
 
-    public function __construct(RequestStack $requestStack, UrlGeneratorInterface $urlGenerator)
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly UrlGeneratorInterface $urlGenerator
+    )
     {
-        $this->requestStack = $requestStack;
-        $this->urlGenerator = $urlGenerator;
     }
 
     public function getFunctions(): array
