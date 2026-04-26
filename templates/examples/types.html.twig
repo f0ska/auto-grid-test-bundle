@@ -13,8 +13,10 @@
         'Selective grid visibility using field-level <code>#[Permission(\'grid\', allow: false)]</code>'
     ]) }}
 
-    {{ ag_render(main) }}
-    <div class="mt-5">{{ ag_render(other) }}</div>
-    <div class="mt-5">{{ ag_render(dates) }}</div>
-    <div class="mt-5">{{ ag_render(array) }}</div>
+    <div class="autogrid-demo-stack">
+        <div class="autogrid-demo-item">{{ ag_render(main) }}</div>
+        <div class="autogrid-demo-item">{{ ag_render(other) }}</div>
+        <div class="autogrid-demo-item">{{ ag_render(dates) }}</div>
+        <div class="autogrid-demo-item">{{ ag_render(array) }}</div>
+    </div>
 {% endblock %}
