@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\Entity\ActionRoute;
 use F0ska\AutoGridBundle\Attribute\EntityField\Label;
 use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\VirtualColumn;
@@ -20,6 +21,7 @@ use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Repository\BlogUserExampleRepository;
 
 #[ORM\Entity(repositoryClass: BlogUserExampleRepository::class)]
+#[ActionRoute(action: 'view', route: 'auto_grid_test_relations_user_view', parameters: ['_theme'])]
 class BlogUserExample
 {
     #[ORM\Id]

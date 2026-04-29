@@ -12,13 +12,19 @@ declare(strict_types=1);
 
 namespace F0ska\AutoGridTestBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Parameter;
 use F0ska\AutoGridBundle\Factory\AutoGridFactory;
+use F0ska\AutoGridBundle\Model\AutoGrid;
+use F0ska\AutoGridBundle\ValueObject\AutoGridMode;
 use F0ska\AutoGridTestBundle\Entity\BlogArticleCommentExample;
 use F0ska\AutoGridTestBundle\Entity\BlogArticleExample;
 use F0ska\AutoGridTestBundle\Entity\BlogArticleTagExample;
 use F0ska\AutoGridTestBundle\Entity\BlogUserExample;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class RelationsController extends AbstractController
@@ -54,6 +60,105 @@ final class RelationsController extends AbstractController
                 'tags' => $tags,
                 'comments' => $comments,
                 'users' => $users,
+            ]
+        );
+    }
+
+    #[Route('/relations/users/{id}/view', name: 'auto_grid_test_relations_user_view')]
+    public function userView(int $id, AutoGridFactory $factory, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUserEntity($id, $entityManager);
+        $grid = $factory->create(
+            BlogUserExample::class,
+            gridId: 'user-profile-view',
+            initialAction: 'view',
+            initialParameters: ['id' => $id],
+            mode: AutoGridMode::Embedded
+        );
+
+        return $this->renderUserProfile($user, 'view', $grid);
+    }
+
+    #[Route('/relations/users/{id}/edit', name: 'auto_grid_test_relations_user_edit')]
+    public function userEdit(int $id, AutoGridFactory $factory, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUserEntity($id, $entityManager);
+        $grid = $factory->create(
+            BlogUserExample::class,
+            gridId: 'user-profile-edit',
+            initialAction: 'edit',
+            initialParameters: ['id' => $id],
+            mode: AutoGridMode::Embedded
+        );
+
+        if ($grid->getResponse()) {
+            return $grid->getResponse();
+        }
+
+        return $this->renderUserProfile($user, 'view', $grid, 'form-user-profile-edit');
+    }
+
+    #[Route('/relations/users/{id}/articles', name: 'auto_grid_test_relations_user_articles')]
+    public function userArticles(int $id, AutoGridFactory $factory, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUserEntity($id, $entityManager);
+        $grid = $factory->create(
+            BlogArticleExample::class,
+            gridId: 'user-profile-articles',
+            queryExpression: 'blogArticleExample.author = :user',
+            queryParameters: new ArrayCollection([new Parameter('user', $user)]),
+            mode: AutoGridMode::Embedded
+        );
+
+        if ($grid->getResponse()) {
+            return $grid->getResponse();
+        }
+
+        return $this->renderUserProfile($user, 'articles', $grid);
+    }
+
+    #[Route('/relations/users/{id}/comments', name: 'auto_grid_test_relations_user_comments')]
+    public function userComments(int $id, AutoGridFactory $factory, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUserEntity($id, $entityManager);
+        $grid = $factory->create(
+            BlogArticleCommentExample::class,
+            gridId: 'user-profile-comments',
+            queryExpression: 'blogArticleCommentExample.author = :user',
+            queryParameters: new ArrayCollection([new Parameter('user', $user)]),
+            mode: AutoGridMode::Embedded
+        );
+
+        if ($grid->getResponse()) {
+            return $grid->getResponse();
+        }
+
+        return $this->renderUserProfile($user, 'comments', $grid);
+    }
+
+    private function getUserEntity(int $id, EntityManagerInterface $entityManager): BlogUserExample
+    {
+        $user = $entityManager->getRepository(BlogUserExample::class)->find($id);
+        if (!$user instanceof BlogUserExample) {
+            throw new NotFoundHttpException('User not found.');
+        }
+
+        return $user;
+    }
+
+    private function renderUserProfile(
+        BlogUserExample $user,
+        string $activeTab,
+        AutoGrid $grid,
+        ?string $formId = null
+    ): Response {
+        return $this->render(
+            '@F0skaAutoGridTest/examples/user_profile.html.twig',
+            [
+                'user' => $user,
+                'activeTab' => $activeTab,
+                'grid' => $grid,
+                'formId' => $formId,
             ]
         );
     }
