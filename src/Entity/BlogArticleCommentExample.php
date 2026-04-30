@@ -14,7 +14,9 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\EntityField\AssociatedField;
 use F0ska\AutoGridBundle\Attribute\EntityField\GridTruncate;
+use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Repository\BlogArticleCommentExampleRepository;
 
 #[ORM\Entity(repositoryClass: BlogArticleCommentExampleRepository::class)]
@@ -27,6 +29,8 @@ class BlogArticleCommentExample
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[AssociatedField(name: 'username', label: 'Author')]
+    #[Permission(allow: false)]
     private ?BlogUserExample $author = null;
 
     #[ORM\ManyToOne]

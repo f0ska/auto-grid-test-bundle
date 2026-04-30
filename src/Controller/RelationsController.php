@@ -12,9 +12,7 @@ declare(strict_types=1);
 
 namespace F0ska\AutoGridTestBundle\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\Parameter;
 use F0ska\AutoGridBundle\Factory\AutoGridFactory;
 use F0ska\AutoGridBundle\Model\AutoGrid;
 use F0ska\AutoGridBundle\ValueObject\AutoGridMode;
@@ -105,9 +103,8 @@ final class RelationsController extends AbstractController
         $grid = $factory->create(
             BlogArticleExample::class,
             gridId: 'user-profile-articles',
-            queryExpression: 'blogArticleExample.author = :user',
-            queryParameters: new ArrayCollection([new Parameter('user', $user)]),
-            mode: AutoGridMode::Embedded
+            mode: AutoGridMode::Embedded,
+            context: ['author' => $user]
         );
 
         if ($grid->getResponse()) {
@@ -124,9 +121,8 @@ final class RelationsController extends AbstractController
         $grid = $factory->create(
             BlogArticleCommentExample::class,
             gridId: 'user-profile-comments',
-            queryExpression: 'blogArticleCommentExample.author = :user',
-            queryParameters: new ArrayCollection([new Parameter('user', $user)]),
-            mode: AutoGridMode::Embedded
+            mode: AutoGridMode::Embedded,
+            context: ['author' => $user]
         );
 
         if ($grid->getResponse()) {
