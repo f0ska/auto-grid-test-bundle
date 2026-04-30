@@ -122,8 +122,9 @@
 
     {{ agt.infoBlock('Embedded tabbed profile:', [
         'The user grid opens <code>view</code> on a dedicated Symfony route via <code>#[ActionRoute]</code>.',
-        'The profile shell owns the page title, tabs, back/edit/save buttons, and create buttons for related grids.',
-        'Each tab renders an embedded AutoGrid instance, so row actions, filters, sorting, pagination, and forms still work.',
+        'The profile shell owns the page title, tabs, back button, and create/save buttons for related grids.',
+        'Edit profile links back to the default users grid <code>edit</code> action, keeping the demo focused on built-in behavior.',
+        'Related tabs render embedded AutoGrid instances, so row actions, filters, sorting, pagination, and shell-submitted create forms still work.',
         'The current theme is passed through route parameters, so tab links stay inside the selected demo theme.'
     ]) }}
 
@@ -146,7 +147,9 @@
                             </a>
                         {% endif %}
                         {% if activeTab == 'view' and formId is null %}
-                            <a class="{{ ui.btnSoft }}" href="{{ path('auto_grid_test_relations_user_edit', routeParams) }}">
+                            <a class="{{ ui.btnSoft }}"
+                               href="{{ path('auto_grid_test_relations', { agId: 'users', agAction: 'edit', 'agParams': {id: user.id}, _theme: themeParam }) }}"
+                            >
                                 Edit profile
                             </a>
                         {% endif %}

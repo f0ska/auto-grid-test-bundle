@@ -63,7 +63,7 @@ class EmbeddedModeTest extends WebTestCase
         $this->assertSelectorTextContains('body', 'Back to articles');
     }
 
-    public function testEmbeddedEditFormCanBeSubmittedFromShell(): void
+    public function testProfileEditUsesDefaultUsersGridAction(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/auto-grid/relations');
@@ -71,11 +71,14 @@ class EmbeddedModeTest extends WebTestCase
 
         $crawler = $client->request('GET', $profileUrl);
         $editUrl = $crawler->selectLink('Edit profile')->link()->getUri();
+        $this->assertStringContainsString('/relations', $editUrl);
+        $this->assertStringContainsString('agId=users', $editUrl);
+        $this->assertStringContainsString('agAction=edit', $editUrl);
 
         $crawler = $client->request('GET', $editUrl);
         $this->assertResponseIsSuccessful();
-        $this->assertSame(1, $crawler->filter('button[form="form-user-profile-edit"]')->count());
-        $this->assertSame(1, $crawler->filter('form[id="form-user-profile-edit"]')->count());
+        $this->assertSame(1, $crawler->filter('form[id="form-users"]')->count());
+        $this->assertSame(0, $crawler->filter('form[id="form-user-profile-edit"]')->count());
     }
 
     public function testEmbeddedSubgridCreateFormCanBeSubmittedFromShell(): void

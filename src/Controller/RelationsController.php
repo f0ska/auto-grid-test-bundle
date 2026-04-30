@@ -33,7 +33,7 @@ final class RelationsController extends AbstractController
         $articles = $factory->create(BlogArticleExample::class, gridId: 'articles');
         $tags = $factory->create(BlogArticleTagExample::class);
         $comments = $factory->create(BlogArticleCommentExample::class);
-        $users = $factory->create(BlogUserExample::class);
+        $users = $factory->create(BlogUserExample::class, gridId: 'users');
 
         if ($articles->getResponse()) {
             return $articles->getResponse();
@@ -75,25 +75,6 @@ final class RelationsController extends AbstractController
         );
 
         return $this->renderUserProfile($user, 'view', $grid);
-    }
-
-    #[Route('/relations/users/{id}/edit', name: 'auto_grid_test_relations_user_edit')]
-    public function userEdit(int $id, AutoGridFactory $factory, EntityManagerInterface $entityManager): Response
-    {
-        $user = $this->getUserEntity($id, $entityManager);
-        $grid = $factory->create(
-            BlogUserExample::class,
-            gridId: 'user-profile-edit',
-            initialAction: 'edit',
-            initialParameters: ['id' => $id],
-            mode: AutoGridMode::Embedded
-        );
-
-        if ($grid->getResponse()) {
-            return $grid->getResponse();
-        }
-
-        return $this->renderUserProfile($user, 'view', $grid, 'form-user-profile-edit');
     }
 
     #[Route('/relations/users/{id}/articles', name: 'auto_grid_test_relations_user_articles')]
