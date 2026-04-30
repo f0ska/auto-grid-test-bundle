@@ -1,0 +1,207 @@
+{% extends '@F0skaAutoGridTest/base.html.twig' %}
+{% import '@F0skaAutoGridTest/components/theme_switcher.html.twig' as agt %}
+
+{% block title %}User Profile - AutoGrid{% endblock %}
+
+{% block content %}
+    {% set currentTheme = agt_current_theme() %}
+    {% set themeKeyMap = {
+        'auto-grid': 'bootstrap5',
+        'auto-grid-bootstrap4': 'bootstrap4',
+        'auto-grid-bulma': 'bulma',
+        'auto-grid-foundation': 'foundation',
+        'auto-grid-flowbite': 'flowbite'
+    } %}
+    {% set theme = themeKeyMap[currentTheme] ?? 'bootstrap5' %}
+    {% set themeParam = app.request.attributes.get('_theme') %}
+    {% set routeParams = { id: user.id, _theme: themeParam } %}
+    {% set relationRouteParams = { _theme: themeParam } %}
+    {% set requestAction = app.request.query.get('agAction') ?? app.request.attributes.get('agAction') ?? 'grid' %}
+    {% set subgridIds = {
+        articles: 'user-profile-articles',
+        comments: 'user-profile-comments'
+    } %}
+    {% set activeGridId = subgridIds[activeTab]|default(null) %}
+    {% set isSubgridAction = activeGridId and requestAction in ['view', 'edit', 'create'] %}
+    {% set activeFormId = formId ?? (activeGridId and requestAction in ['edit', 'create'] ? 'form-' ~ activeGridId : null) %}
+    {% set tabs = [
+        { code: 'view', label: 'Profile', route: 'auto_grid_test_relations_user_view' },
+        { code: 'articles', label: 'Articles', route: 'auto_grid_test_relations_user_articles' },
+        { code: 'comments', label: 'Comments', route: 'auto_grid_test_relations_user_comments' }
+    ] %}
+    {% set tabRoutes = {
+        view: 'auto_grid_test_relations_user_view',
+        articles: 'auto_grid_test_relations_user_articles',
+        comments: 'auto_grid_test_relations_user_comments'
+    } %}
+    {% set activeTabRoute = tabRoutes[activeTab]|default(null) %}
+
+    {% set ui = {
+        bootstrap5: {
+            shell: 'rounded-4 border bg-white shadow-sm overflow-hidden',
+            shellHeader: 'p-4 pb-0',
+            headerRow: 'd-flex flex-wrap align-items-center justify-content-between gap-3',
+            eyebrow: 'text-uppercase small fw-semibold text-secondary mb-1',
+            title: 'h3 mb-1',
+            muted: 'text-muted',
+            actions: 'd-flex flex-wrap gap-2',
+            btnBack: 'btn btn-sm btn-outline-secondary',
+            btnPrimary: 'btn btn-sm btn-primary',
+            btnSoft: 'btn btn-sm btn-outline-primary',
+            tabs: 'nav nav-tabs mt-4 mb-0',
+            tab: 'nav-link',
+            tabActive: 'nav-link active',
+            content: 'p-4'
+        },
+        bootstrap4: {
+            shell: 'rounded border bg-white shadow-sm overflow-hidden',
+            shellHeader: 'p-4 pb-0',
+            headerRow: 'd-flex flex-wrap align-items-center justify-content-between',
+            eyebrow: 'text-uppercase small font-weight-bold text-secondary mb-1',
+            title: 'h3 mb-1',
+            muted: 'text-muted',
+            actions: 'd-flex flex-wrap',
+            btnBack: 'btn btn-sm btn-outline-secondary mr-2 mb-2',
+            btnPrimary: 'btn btn-sm btn-primary mr-2 mb-2',
+            btnSoft: 'btn btn-sm btn-outline-primary mr-2 mb-2',
+            tabs: 'nav nav-tabs mt-4 mb-0',
+            tab: 'nav-link',
+            tabActive: 'nav-link active',
+            content: 'p-4'
+        },
+        bulma: {
+            shell: 'box',
+            shellHeader: '',
+            headerRow: 'is-flex is-flex-wrap-wrap is-justify-content-space-between is-align-items-center',
+            eyebrow: 'is-size-7 has-text-grey has-text-weight-semibold is-uppercase mb-1',
+            title: 'title is-4 mb-1',
+            muted: 'has-text-grey',
+            actions: 'buttons are-small mb-0',
+            btnBack: 'button is-light',
+            btnPrimary: 'button is-primary',
+            btnSoft: 'button is-link is-light',
+            tabs: 'tabs is-boxed mt-5 mb-0',
+            tab: '',
+            tabActive: 'is-active',
+            content: 'pt-5'
+        },
+        foundation: {
+            shell: 'callout',
+            shellHeader: '',
+            headerRow: 'grid-x grid-margin-x align-middle',
+            eyebrow: 'text-uppercase small text-secondary margin-bottom-1',
+            title: 'h3 margin-bottom-0',
+            muted: 'text-secondary',
+            actions: 'button-group small align-right',
+            btnBack: 'button secondary hollow',
+            btnPrimary: 'button primary',
+            btnSoft: 'button primary hollow',
+            tabs: 'menu tabs',
+            tabsStyle: 'margin-top: 1.75rem;',
+            tab: 'tabs-title',
+            tabActive: 'is-active',
+            content: 'padding-top-2'
+        },
+        flowbite: {
+            shell: 'overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm',
+            shellHeader: 'p-6 pb-0',
+            headerRow: 'flex flex-wrap items-center justify-between gap-4',
+            eyebrow: 'mb-1 text-xs font-semibold uppercase tracking-wide text-gray-500',
+            title: 'mb-1 text-2xl font-semibold text-gray-900',
+            muted: 'text-sm text-gray-500',
+            actions: 'flex flex-wrap gap-2',
+            btnBack: 'inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100',
+            btnPrimary: 'inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-sm font-medium text-white hover:bg-blue-800',
+            btnSoft: 'inline-flex items-center rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100',
+            tabs: 'flex flex-wrap mt-5 text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400',
+            tab: 'inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300',
+            tabActive: 'inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500',
+            content: 'p-4 sm:p-6'
+        }
+    }[theme] %}
+
+    {{ agt.infoBlock('Embedded tabbed profile:', [
+        'The user grid opens <code>view</code> on a dedicated Symfony route via <code>#[ActionRoute]</code>.',
+        'The profile shell owns the page title, tabs, back button, and create/save buttons for related grids.',
+        'Edit profile links back to the default users grid <code>edit</code> action, keeping the demo focused on built-in behavior.',
+        'Related tabs render embedded AutoGrid instances, so row actions, filters, sorting, pagination, and shell-submitted create forms still work.',
+        'The current theme is passed through route parameters, so tab links stay inside the selected demo theme.'
+    ]) }}
+
+    <section class="{{ ui.shell }}">
+        <div class="{{ ui.shellHeader }}">
+            <div class="{{ ui.headerRow }}">
+                <div class="{{ theme == 'foundation' ? 'cell medium-6' }}">
+                    <div class="{{ ui.eyebrow }}">Embedded AutoGrid profile</div>
+                    <h1 class="{{ ui.title }}">User profile: {{ user.username }}</h1>
+                    <div class="{{ ui.muted }}">{{ user.email }}</div>
+                </div>
+                <div class="{{ theme == 'foundation' ? 'cell medium-6' }}">
+                    <div class="{{ ui.actions }}">
+                        <a class="{{ ui.btnBack }}" href="{{ path('auto_grid_test_relations', relationRouteParams) }}">
+                            Back to relations
+                        </a>
+                        {% if isSubgridAction and activeTabRoute %}
+                            <a class="{{ ui.btnBack }}" href="{{ path(activeTabRoute, routeParams) }}">
+                                Back to {{ activeTab }}
+                            </a>
+                        {% endif %}
+                        {% if activeTab == 'view' and formId is null %}
+                            <a class="{{ ui.btnSoft }}"
+                               href="{{ path('auto_grid_test_relations', { agId: 'users', agAction: 'edit', 'agParams': {id: user.id}, _theme: themeParam }) }}"
+                            >
+                                Edit profile
+                            </a>
+                        {% endif %}
+                        {% if activeFormId %}
+                            <button class="{{ ui.btnPrimary }}" type="submit" form="{{ activeFormId }}">
+                                Save
+                            </button>
+                        {% endif %}
+                        {% if activeTab == 'articles' and not isSubgridAction %}
+                            <a class="{{ ui.btnSoft }}"
+                               href="{{ path('auto_grid_test_relations_user_articles', routeParams|merge({ agId: activeGridId, agAction: 'create' })) }}"
+                            >New article</a>
+                        {% endif %}
+                        {% if activeTab == 'comments' and not isSubgridAction %}
+                            <a class="{{ ui.btnSoft }}"
+                               href="{{ path('auto_grid_test_relations_user_comments', routeParams|merge({ agId: activeGridId, agAction: 'create' })) }}"
+                            >New comment</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if theme == 'bulma' %}
+                <nav class="{{ ui.tabs }}" aria-label="User profile sections">
+                    <ul>
+                        {% for tab in tabs %}
+                            <li class="{{ activeTab == tab.code ? ui.tabActive }}">
+                                <a href="{{ path(tab.route, routeParams) }}">{{ tab.label }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            {% elseif theme == 'foundation' %}
+                <ul class="{{ ui.tabs }}" style="{{ ui.tabsStyle }}" aria-label="User profile sections">
+                    {% for tab in tabs %}
+                        <li class="{{ ui.tab }} {{ activeTab == tab.code ? ui.tabActive }}">
+                            <a href="{{ path(tab.route, routeParams) }}">{{ tab.label }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <nav class="{{ ui.tabs }}" aria-label="User profile sections">
+                    {% for tab in tabs %}
+                        <a class="{{ activeTab == tab.code ? ui.tabActive : ui.tab }}"
+                           href="{{ path(tab.route, routeParams) }}"
+                        >{{ tab.label }}</a>
+                    {% endfor %}
+                </nav>
+            {% endif %}
+        </div>
+        <div class="{{ ui.content }}">
+            {{ ag_render(grid) }}
+        </div>
+    </section>
+{% endblock %}
