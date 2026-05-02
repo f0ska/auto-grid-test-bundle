@@ -86,8 +86,55 @@ class CrudTest extends WebTestCase
         $crawler = $client->getCrawler();
 
         $row = $crawler->filter('tr:contains("CRUD Test Item UPDATED")');
-        $deleteUrl = $row->filter('a[href*="agAction=delete"]')->attr('href');
-        $client->request('GET', $deleteUrl);
+        $client->request('GET', sprintf('/auto-grid/?agId=basic-example&agAction=delete&agParams[id]=%d', $entityId));
+        $this->assertResponseIsSuccessful();
+
+        $entityManager->clear();
+        $entity = $entityManager->getRepository(BasicExample::class)->find($entityId);
+        $this->assertNotNull($entity, 'Entity should not be deleted by a GET delete request.');
+
+        $crawler = $client->request('GET', '/auto-grid/');
+        $filterForm = $crawler->filter('form[name^="filter-id-"]')->form();
+        $client->submit($filterForm, [$filterForm->getName() . '[id]' => $entityId]);
+        $client->followRedirect();
+        $crawler = $client->getCrawler();
+
+        $row = $crawler->filter('tr:contains("CRUD Test Item UPDATED")');
+        $deleteForm = $crawler->filter('form[name^="delete-"]')->first();
+        $deleteFormName = $deleteForm->attr('name');
+        $deleteButton = $row->filter(sprintf('button[name="%s[id]"]', $deleteFormName))->first();
+        $this->assertGreaterThan(0, $deleteButton->count(), 'Delete button was not rendered.');
+
+        $client->request('POST', $deleteForm->attr('action'), [
+            $deleteFormName => [
+                '_token' => 'invalid-token',
+                'id' => $deleteButton->attr('value'),
+            ],
+        ]);
+        $this->assertResponseIsSuccessful();
+
+        $entityManager->clear();
+        $entity = $entityManager->getRepository(BasicExample::class)->find($entityId);
+        $this->assertNotNull($entity, 'Entity should not be deleted when CSRF token is invalid.');
+
+        $crawler = $client->request('GET', '/auto-grid/');
+        $filterForm = $crawler->filter('form[name^="filter-id-"]')->form();
+        $client->submit($filterForm, [$filterForm->getName() . '[id]' => $entityId]);
+        $client->followRedirect();
+        $crawler = $client->getCrawler();
+
+        $row = $crawler->filter('tr:contains("CRUD Test Item UPDATED")');
+        $deleteForm = $crawler->filter('form[name^="delete-"]')->first();
+        $deleteFormName = $deleteForm->attr('name');
+        $deleteButton = $row->filter(sprintf('button[name="%s[id]"]', $deleteFormName))->first();
+        $deleteToken = $deleteForm->filter(sprintf('input[name="%s[_token]"]', $deleteFormName))->attr('value');
+
+        $client->request('POST', $deleteForm->attr('action'), [
+            $deleteFormName => [
+                '_token' => $deleteToken,
+                'id' => $deleteButton->attr('value'),
+            ],
+        ]);
 
         $client->followRedirect();
         $this->assertResponseIsSuccessful();

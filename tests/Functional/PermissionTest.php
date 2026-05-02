@@ -24,7 +24,7 @@ class PermissionTest extends WebTestCase
 
         // AdvancedArticleExample uses DisallowActionsByDefault
         $this->assertSelectorNotExists('a[href*="agAction=create"]', 'Create button should be disallowed.');
-        $this->assertSelectorNotExists('a[href*="agAction=delete"]', 'Delete button should be disallowed.');
+        $this->assertSelectorNotExists('button[name^="delete-"]', 'Delete button should be disallowed.');
     }
 
     public function testFieldsAreDisallowedByDefault(): void
