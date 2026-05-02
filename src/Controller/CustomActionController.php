@@ -15,9 +15,13 @@ namespace F0ska\AutoGridTestBundle\Controller;
 use F0ska\AutoGridBundle\Factory\AutoGridFactory;
 use F0ska\AutoGridTestBundle\Entity\CustomActionExample;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CustomActionController extends AbstractController
 {
@@ -26,6 +30,7 @@ class CustomActionController extends AbstractController
     {
         $grid = $factory->create(
             CustomActionExample::class,
+            gridId: 'custom-action',
             routePrefix: 'auto_grid_test_custom_action_'
         );
         return $grid->getResponse() ?? $this->render(
@@ -55,10 +60,20 @@ class CustomActionController extends AbstractController
         return $this->redirectToRoute('auto_grid_test_custom_action');
     }
 
-    #[Route('/custom-action-delete/{id}', name: 'auto_grid_test_custom_action_delete')]
-    public function delete(int $id): Response
+    #[Route('/custom-action-delete', name: 'auto_grid_test_custom_action_delete', methods: ['POST'])]
+    public function delete(FormFactoryInterface $formFactory, Request $request): Response
     {
-        $this->addFlash('danger', "Greetings from the \"DELETE\" action #$id");
+        $form = $formFactory->createNamedBuilder('delete-custom-action')
+            ->setMethod('POST')
+            ->add('id', HiddenType::class, ['constraints' => [new NotBlank()]])
+            ->getForm()
+            ->handleRequest($request)
+        ;
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $id = (int) $form->get('id')->getData();
+            $this->addFlash('danger', "Greetings from the \"DELETE\" action #$id");
+        }
         return $this->redirectToRoute('auto_grid_test_custom_action');
     }
 
