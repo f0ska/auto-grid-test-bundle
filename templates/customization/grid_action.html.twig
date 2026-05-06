@@ -3,16 +3,16 @@
 {% block autogrid_grid_row_custom_action %}
     {% set customBtnClass = 'btn btn-sm btn-success' %}
     {% set currentTheme = agt_current_theme()|default('auto-grid') %}
-    
+
     {% if currentTheme == 'auto-grid-bulma' %}
         {% set customBtnClass = 'button is-small is-success' %}
-    {% elseif currentTheme == 'auto-grid-bootstrap4' %}
-        {% set customBtnClass = customBtnClass ~ ' ml-1' %}
     {% elseif currentTheme == 'auto-grid-foundation' %}
         {% set customBtnClass = 'button small success' %}
     {% elseif currentTheme == 'auto-grid-flowbite' %}
         {% set customBtnClass = 'inline-flex h-8 w-8 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-gray-500 transition hover:border-amber-300 hover:bg-white hover:text-amber-600 focus:outline-none' %}
     {% endif %}
 
-    <button type="button" class="{{ customBtnClass }} custom-action-btn" onclick="alert('{{ entity.name|default(entity.title|default('Entity')) }}')" title="Custom action">&#128512;</button>
+    {% if ag_run(agIsRowActionGranted, 'custom_action', entity) %}
+        <button type="button" class="{{ customBtnClass }} custom-action-btn" onclick="alert('{{ entity.name|default(entity.title|default('Entity')) }}')" title="Custom action">&#128512;</button>
+    {% endif %}
 {% endblock %}

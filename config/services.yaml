@@ -11,12 +11,15 @@ services:
 
     F0ska\AutoGridTestBundle\Customization\:
         resource: '../src/Customization/*'
-        tags: [ { name: 'autogrid.customization', priority: 0 } ]
         autowire: true
-        public: true
+        autoconfigure: true
 
     F0ska\AutoGridTestBundle\View\:
         resource: '../src/View/*'
-        tags: [ 'autogrid.view_service' ]
         autowire: true
-        public: true
+        autoconfigure: true
+
+    F0ska\AutoGridTestBundle\RowActionPermission\:
+        resource: '../src/RowActionPermission/*'
+        autowire: true
+        autoconfigure: true
