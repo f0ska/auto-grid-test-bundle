@@ -15,6 +15,7 @@ namespace F0ska\AutoGridTestBundle\Tests\Functional;
 use F0ska\AutoGridTestBundle\Entity\CorporateClientExample;
 use F0ska\AutoGridTestBundle\Entity\CustomFormExample;
 use F0ska\AutoGridTestBundle\Service\CustomFormSearchService;
+use F0ska\AutoGridBundle\ActionParameter\SearchParameter;
 use F0ska\AutoGridBundle\Model\Parameters;
 use F0ska\AutoGridBundle\Service\ParametersService;
 use F0ska\AutoGridBundle\Service\QueryFieldResolver;
@@ -33,6 +34,8 @@ class SearchTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSame(1, $crawler->filter('form[name^="search-"]')->count());
+        $this->assertSame('1', $crawler->filter('form[name^="search-"] input[name$="[term]"]')->attr('minlength'));
+        $this->assertSame('255', $crawler->filter('form[name^="search-"] input[name$="[term]"]')->attr('maxlength'));
     }
 
     public function testSearchFormDoesNotRenderWhenSearchActionIsDenied(): void
@@ -132,6 +135,26 @@ class SearchTest extends WebTestCase
         $this->assertSelectorTextContains(self::ERROR_SELECTOR, 'Invalid request parameter');
     }
 
+    public function testSearchTermLengthUsesMultibyteCharacters(): void
+    {
+        $term = str_repeat('ї', 255);
+        $parameter = new SearchParameter();
+
+        $this->assertSame(['term' => $term], $parameter->normalize(
+            ['term' => $term],
+            $this->createParameters(
+                [
+                    'searchable' => [
+                        'fields' => ['name'],
+                        'min_length' => 1,
+                        'max_length' => 255,
+                    ],
+                ],
+                ['search' => true]
+            )
+        ));
+    }
+
     public function testSearchPermissionBlocksDirectAction(): void
     {
         $client = static::createClient();
@@ -194,16 +217,16 @@ class SearchTest extends WebTestCase
         $this->assertContains($kept->getId(), $negatedIds);
     }
 
-    private function createParameters(): Parameters
+    private function createParameters(array $attributes = [], array $permissions = []): Parameters
     {
         return new Parameters(
             [
                 'agId' => 'test',
                 'action' => 'grid',
                 'route' => [],
-                'permissions' => [],
+                'permissions' => $permissions,
                 'request' => [],
-                'attributes' => [],
+                'attributes' => $attributes,
                 'query' => [],
             ],
             $this->createMock(ParametersService::class),
