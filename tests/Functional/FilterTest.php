@@ -17,6 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FilterTest extends WebTestCase
 {
+    private const ERROR_SELECTOR = '.alert-danger, .callout.alert, .message.is-danger';
+
     public function testTextFiltering(): void
     {
         $client = static::createClient();
@@ -93,5 +95,43 @@ class FilterTest extends WebTestCase
 
         $crawler = $client->getCrawler();
         $this->assertEquals(1, $crawler->filter('table tbody tr')->count());
+    }
+
+    public function testUnknownFilterFieldIsRejected(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/');
+        $agId = $this->getAgIdFromFilterForm($crawler->filter('form[name^="filter-name-"]')->attr('action'));
+
+        $client->request(
+            'GET',
+            sprintf('/auto-grid/?agId=%s&agAction=grid&agParams[filter][missingField]=value', $agId)
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains(self::ERROR_SELECTOR, 'Invalid request parameter');
+    }
+
+    public function testExistingNonFilterableFieldIsRejected(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/');
+        $agId = $this->getAgIdFromFilterForm($crawler->filter('form[name^="filter-name-"]')->attr('action'));
+
+        $client->request(
+            'GET',
+            sprintf('/auto-grid/?agId=%s&agAction=grid&agParams[filter][description]=value', $agId)
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains(self::ERROR_SELECTOR, 'Invalid request parameter');
+    }
+
+    private function getAgIdFromFilterForm(string $action): string
+    {
+        parse_str((string) parse_url($action, PHP_URL_QUERY), $query);
+
+        $this->assertArrayHasKey('agId', $query);
+        return (string) $query['agId'];
     }
 }
