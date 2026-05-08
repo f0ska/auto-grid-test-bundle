@@ -24,8 +24,7 @@ use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
 use F0ska\AutoGridBundle\Condition\RangeCondition;
 use F0ska\AutoGridBundle\ValueObject\TemplateArea;
-use F0ska\AutoGridTestBundle\RowActionPermission\CustomActionExampleCustomPermission;
-use F0ska\AutoGridTestBundle\RowActionPermission\CustomActionExampleDeletePermission;
+use F0ska\AutoGridTestBundle\RowActionPermission\CustomActionExampleEnabledPermission;
 use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 
 #[ORM\Entity(repositoryClass: CustomActionExampleRepository::class)]
@@ -37,8 +36,8 @@ use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 #[MassAction('Another Custom Mass Action')]
 #[MassAction(name: 'Custom Action with Custom Redirect', code: 'custom_action_redirect')]
 #[ExportAction(name: 'Export Action Example', code: 'export_example')]
-#[RowActionPermission(service: CustomActionExampleDeletePermission::class, actions: ['delete'], effect: RowActionPermission::Deny)]
-#[RowActionPermission(service: CustomActionExampleCustomPermission::class, actions: ['custom_action'])]
+#[RowActionPermission(service: CustomActionExampleEnabledPermission::class, actions: ['delete'], effect: RowActionPermission::Deny)]
+#[RowActionPermission(service: CustomActionExampleEnabledPermission::class, actions: ['custom_action'])]
 #[Template(area: TemplateArea::GRID_COLUMN_VALUE_ACTION, templatePath: '@F0skaAutoGridTest/customization/grid_action.html.twig')]
 class CustomActionExample
 {

@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace F0ska\AutoGridTestBundle\RowActionPermission;
 
-use F0ska\AutoGridBundle\RowActionPermission\RowActionPermissionInterface;
 use F0ska\AutoGridBundle\Model\Parameters;
+use F0ska\AutoGridBundle\RowActionPermission\RowActionPermissionInterface;
 use F0ska\AutoGridTestBundle\Entity\CustomActionExample;
 
-final class CustomActionExampleDeletePermission implements RowActionPermissionInterface
+final class CustomActionExampleEnabledPermission implements RowActionPermissionInterface
 {
     public function isGranted(string $action, object $entity, Parameters $parameters): bool
     {
