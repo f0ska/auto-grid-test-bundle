@@ -56,14 +56,13 @@ class CorporateClientExample
     #[Position(2)]
     #[Label("Company Name")]
     #[Sortable]
-    #[Filterable]
+    #[Filterable(additionalFields: ['contactEmail'])]
     #[GridTruncate(25)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Position(3)]
     #[Label("Primary Contact")]
-    #[Filterable]
     #[GridTruncate(25)]
     private ?string $contactEmail = null;
 

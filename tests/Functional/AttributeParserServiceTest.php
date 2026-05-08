@@ -86,6 +86,7 @@ class AttributeParserServiceTest extends KernelTestCase
             'F0ska\\AutoGridTestBundle\\View\\TaxViewServiceExample',
             $fieldAttributes['tax']['view_service']
         );
+        $this->assertSame(['contactEmail'], $fieldAttributes['name']['filterable']['additional_fields']);
     }
 
     public function testParsesBaseTemplateBeforeAndAfterSlots(): void

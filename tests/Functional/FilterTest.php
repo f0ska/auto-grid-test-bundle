@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace F0ska\AutoGridTestBundle\Tests\Functional;
 
 use F0ska\AutoGridTestBundle\Entity\BasicExample;
+use F0ska\AutoGridTestBundle\Entity\CorporateClientExample;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class FilterTest extends WebTestCase
@@ -125,6 +126,77 @@ class FilterTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(self::ERROR_SELECTOR, 'Invalid request parameter');
+    }
+
+    public function testVisibleFilterMatchesAdditionalConfiguredField(): void
+    {
+        $client = static::createClient();
+        $entityManager = self::getContainer()->get('doctrine')->getManager();
+        $needle = 'stage3b-' . uniqid() . '@example.test';
+        $entity = (new CorporateClientExample())
+            ->setName('Stage 3B Additional Field')
+            ->setContactEmail($needle)
+            ->setRevenue('100.00')
+            ->setStatus('active')
+            ->setLastAuditAt(new \DateTimeImmutable());
+
+        $entityManager->persist($entity);
+        $entityManager->flush();
+
+        $crawler = $client->request('GET', '/auto-grid/corporate');
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(0, $crawler->filter('form[name^="filter-contactEmail-"]')->count());
+
+        $form = $crawler->filter('form[name^="filter-name-"]')->form();
+        $client->submit($form, [
+            $form->getName() . '[name]' => $needle,
+        ]);
+        $crawler = $client->followRedirect();
+
+        $this->assertResponseIsSuccessful();
+        $this->assertGreaterThan(0, $crawler->filter('table tbody tr:contains("Stage 3B Additional Field")')->count());
+    }
+
+    public function testAdditionalFilterFieldCombinesWithOtherFilters(): void
+    {
+        $client = static::createClient();
+        $entityManager = self::getContainer()->get('doctrine')->getManager();
+        $needle = 'stage3b-and-' . uniqid() . '@example.test';
+        $entity = (new CorporateClientExample())
+            ->setName('Stage 3B Combined Filter')
+            ->setContactEmail($needle)
+            ->setRevenue('100.00')
+            ->setStatus('active')
+            ->setLastAuditAt(new \DateTimeImmutable());
+
+        $entityManager->persist($entity);
+        $entityManager->flush();
+
+        $crawler = $client->request('GET', '/auto-grid/corporate');
+        $agId = $this->getAgIdFromFilterForm($crawler->filter('form[name^="filter-name-"]')->attr('action'));
+
+        $client->request(
+            'GET',
+            sprintf(
+                '/auto-grid/corporate?agId=%s&agAction=grid&agParams[filter][name]=%s&agParams[filter][status]=inactive',
+                $agId,
+                urlencode($needle)
+            )
+        );
+        $this->assertResponseIsSuccessful();
+        $this->assertSame(0, $client->getCrawler()->filter('table tbody tr:contains("Stage 3B Combined Filter")')->count());
+
+        $client->request(
+            'GET',
+            sprintf(
+                '/auto-grid/corporate?agId=%s&agAction=grid&agParams[filter][name]=%s&agParams[filter][status]=active',
+                $agId,
+                urlencode($needle)
+            )
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertGreaterThan(0, $client->getCrawler()->filter('table tbody tr:contains("Stage 3B Combined Filter")')->count());
     }
 
     private function getAgIdFromFilterForm(string $action): string
