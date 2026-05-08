@@ -15,6 +15,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use F0ska\AutoGridBundle\Attribute\Entity\ActionFormType;
+use F0ska\AutoGridBundle\Attribute\Entity\Searchable;
 use F0ska\AutoGridBundle\Attribute\Entity\Template;
 use F0ska\AutoGridBundle\Attribute\EntityField\Filterable;
 use F0ska\AutoGridBundle\Attribute\EntityField\FormOptions;
@@ -24,6 +25,7 @@ use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridBundle\ValueObject\TemplateArea;
 use F0ska\AutoGridTestBundle\Form\CustomFormExampleType;
 use F0ska\AutoGridTestBundle\Repository\CustomFormExampleRepository;
+use F0ska\AutoGridTestBundle\Service\CustomFormSearchService;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 #[ORM\Entity(repositoryClass: CustomFormExampleRepository::class)]
@@ -31,6 +33,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 #[Template(area: TemplateArea::BEFORE, templatePath: '@F0skaAutoGridTest/customization/grid_before.html.twig')]
 #[Template(area: TemplateArea::AFTER, templatePath: '@F0skaAutoGridTest/customization/grid_after.html.twig')]
 #[ORM\Index(name: 'custom_form_status_idx', columns: ['status'])]
+#[Searchable(fields: ['title', 'note'], service: CustomFormSearchService::class)]
 class CustomFormExample
 {
     public const STATUS_NEW      = 'new';
