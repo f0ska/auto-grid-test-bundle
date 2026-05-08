@@ -25,6 +25,7 @@ use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\Fieldset;
 use F0ska\AutoGridBundle\Attribute\Entity\PageLimits;
 use F0ska\AutoGridBundle\Attribute\Entity\RedirectOnSubmit;
+use F0ska\AutoGridBundle\Attribute\Entity\Searchable;
 use F0ska\AutoGridBundle\Attribute\EntityField\AddToFieldset;
 use F0ska\AutoGridBundle\Attribute\EntityField\AssociatedField;
 use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
@@ -51,6 +52,7 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[Permission('edit')]
 #[ActionButtonDisplay('edit', displayOnGrid: false)]
 #[AdvancedFilter(true)]
+#[Searchable(fields: ['title', 'content'])]
 #[Fieldset(name: 'Content Info')]
 #[Fieldset(name: 'Metatags')]
 #[Fieldset(name: 'Full Content')]
