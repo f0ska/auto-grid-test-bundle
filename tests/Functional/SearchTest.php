@@ -107,17 +107,26 @@ class SearchTest extends WebTestCase
     {
         $client = static::createClient();
         $entityManager = self::getContainer()->get('doctrine')->getManager();
-        $entity = $entityManager->getRepository(CorporateClientExample::class)->findOneBy([]);
+        $name = 'Search ' . bin2hex(random_bytes(4));
+        $entity = (new CorporateClientExample())
+            ->setName($name)
+            ->setContactEmail($name . '@example.test')
+            ->setRevenue('100.00')
+            ->setStatus('active')
+            ->setLastAuditAt(new \DateTimeImmutable());
 
-        $this->assertNotNull($entity);
+        $entityManager->persist($entity);
+        $entityManager->flush();
+        $entityManager->clear();
+
         $crawler = $client->request('GET', '/auto-grid/corporate');
         $form = $crawler->filter('form[name^="search-"]')->form();
 
-        $client->submit($form, [$form->getName() . '[term]' => $entity->getName()]);
+        $client->submit($form, [$form->getName() . '[term]' => $name]);
         $crawler = $client->followRedirect();
 
         $this->assertResponseIsSuccessful();
-        $this->assertGreaterThan(0, $crawler->filter('table tbody tr:contains("' . $entity->getName() . '")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('table tbody tr:contains("' . $name . '")')->count());
     }
 
     public function testInvalidSearchParamsAreRejected(): void

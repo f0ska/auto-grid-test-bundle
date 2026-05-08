@@ -14,6 +14,7 @@ namespace F0ska\AutoGridTestBundle\Tests\Functional;
 
 use F0ska\AutoGridTestBundle\Entity\BlogArticleCommentExample;
 use F0ska\AutoGridTestBundle\Entity\BlogArticleExample;
+use F0ska\AutoGridTestBundle\Entity\BlogUserExample;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class EmbeddedModeTest extends WebTestCase
@@ -43,9 +44,24 @@ class EmbeddedModeTest extends WebTestCase
     public function testEmbeddedGridKeepsRowActionsButMovesCreateButtonToShell(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/auto-grid/relations');
-        $profileUrl = $crawler->filter('a[href*="/relations/users/"][href*="/view"]')->first()->attr('href');
+        $entityManager = self::getContainer()->get('doctrine')->getManager();
+        $user = (new BlogUserExample())
+            ->setEmail('embedded-row-actions-' . bin2hex(random_bytes(4)) . '@example.test')
+            ->setUsername('embedded-row-actions-' . bin2hex(random_bytes(4)))
+            ->setLastIp('127.0.0.1')
+            ->setBanned(false);
+        $article = (new BlogArticleExample())
+            ->setTitle('Embedded row actions')
+            ->setContent('Embedded row actions fixture.')
+            ->setPublished(true)
+            ->setAuthor($user);
 
+        $entityManager->persist($user);
+        $entityManager->persist($article);
+        $entityManager->flush();
+        $entityManager->clear();
+
+        $profileUrl = sprintf('/auto-grid/relations/users/%d/view', $user->getId());
         $crawler = $client->request('GET', $profileUrl);
         $articlesUrl = $crawler->selectLink('Articles')->link()->getUri();
 
