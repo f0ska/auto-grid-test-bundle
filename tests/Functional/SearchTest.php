@@ -135,6 +135,18 @@ class SearchTest extends WebTestCase
         $this->assertSelectorTextContains(self::ERROR_SELECTOR, 'Invalid request parameter');
     }
 
+    public function testInvalidSearchFormShowsValidationError(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/custom-form');
+        $form = $crawler->filter('form[name^="search-"]')->form();
+
+        $client->submit($form, [$form->getName() . '[term]' => 'ab']);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains(self::ERROR_SELECTOR, 'This value is too short');
+    }
+
     public function testSearchTermLengthUsesMultibyteCharacters(): void
     {
         $term = str_repeat('ї', 255);

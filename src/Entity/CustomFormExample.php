@@ -33,7 +33,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 #[Template(area: TemplateArea::BEFORE, templatePath: '@F0skaAutoGridTest/customization/grid_before.html.twig')]
 #[Template(area: TemplateArea::AFTER, templatePath: '@F0skaAutoGridTest/customization/grid_after.html.twig')]
 #[ORM\Index(name: 'custom_form_status_idx', columns: ['status'])]
-#[Searchable(fields: ['title', 'note'], service: CustomFormSearchService::class)]
+#[Searchable(fields: ['title', 'note'], service: CustomFormSearchService::class, minLength: 3)]
 class CustomFormExample
 {
     public const STATUS_NEW      = 'new';
