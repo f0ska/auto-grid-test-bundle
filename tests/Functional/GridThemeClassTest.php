@@ -39,6 +39,7 @@ class GridThemeClassTest extends WebTestCase
             'bootstrap 4' => ['/auto-grid-bootstrap4/corporate', ['table', 'table-hover', 'table-striped', 'table-sm']],
             'bulma' => ['/auto-grid-bulma/corporate', ['table', 'is-fullwidth', 'is-hoverable', 'is-striped', 'is-narrow']],
             'foundation' => ['/auto-grid-foundation/corporate', ['hover', 'table-sm']],
+            'flowbite' => ['/auto-grid-flowbite/corporate', ['w-full', 'text-sm', 'text-left', 'text-gray-500', 'table-sm', 'is-narrow']],
         ];
     }
 

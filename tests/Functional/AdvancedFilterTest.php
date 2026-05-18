@@ -17,6 +17,22 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AdvancedFilterTest extends WebTestCase
 {
+    public function testBootstrap5AdvancedFilterUsesDefaultBackdrop(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/advanced');
+
+        $this->assertResponseIsSuccessful();
+
+        $modal = $crawler->filter('.modal[id^="adv"]')->first();
+        $button = $crawler->filter('button[data-bs-toggle="modal"][data-bs-target^="#adv"]')->first();
+
+        $this->assertGreaterThan(0, $modal->count());
+        $this->assertGreaterThan(0, $button->count());
+        $this->assertNull($modal->attr('data-bs-backdrop'));
+        $this->assertNull($button->attr('data-bs-backdrop'));
+    }
+
     public function testAdvancedFiltering(): void
     {
         $client = static::createClient();
