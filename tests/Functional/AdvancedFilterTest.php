@@ -17,10 +17,27 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AdvancedFilterTest extends WebTestCase
 {
-    public function testBootstrap5AdvancedFilterCanRenderCollapsedInlineBlock(): void
+    public function testBootstrap5AdvancedFilterUsesModalByDefault(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/auto-grid/advanced');
+
+        $this->assertResponseIsSuccessful();
+
+        $modal = $crawler->filter('.modal[id^="adv"]')->first();
+        $button = $crawler->filter('button[data-bs-toggle="modal"][data-bs-target^="#adv"]')->first();
+
+        $this->assertGreaterThan(0, $modal->count());
+        $this->assertGreaterThan(0, $button->count());
+        $this->assertNull($modal->attr('data-bs-backdrop'));
+        $this->assertNull($button->attr('data-bs-backdrop'));
+        $this->assertSame(0, $crawler->filter('details.card form[name^="filter-"]')->count());
+    }
+
+    public function testCorporateDashboardCanRenderCollapsedInlineAdvancedFilter(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/corporate');
 
         $this->assertResponseIsSuccessful();
 
@@ -30,6 +47,11 @@ class AdvancedFilterTest extends WebTestCase
         $this->assertSame(0, $crawler->filter('.modal[id^="adv"]')->count());
         $this->assertSame(0, $crawler->filter('button[data-bs-toggle="modal"][data-bs-target^="#adv"]')->count());
         $this->assertNull($crawler->filter('details.card')->first()->attr('open'));
+        $content = $client->getResponse()->getContent();
+        $this->assertGreaterThan(
+            strpos($content, 'name="search-'),
+            strpos($content, '<details class="card')
+        );
     }
 
     public function testAdvancedFiltering(): void
@@ -65,6 +87,5 @@ class AdvancedFilterTest extends WebTestCase
         // 5. Verify results
         $crawler = $client->getCrawler();
         $this->assertGreaterThan(0, $crawler->filter('table tbody tr:contains("' . $searchTitle . '")')->count());
-        $this->assertSame('', $crawler->filter('details.card')->first()->attr('open'));
     }
 }

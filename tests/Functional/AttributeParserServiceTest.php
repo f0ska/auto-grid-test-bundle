@@ -34,8 +34,7 @@ class AttributeParserServiceTest extends KernelTestCase
         $this->assertSame('Content Info', $entityAttributes['fieldset']['content_info']['name']);
         $this->assertSame('Metatags', $entityAttributes['fieldset']['metatags']['name']);
         $this->assertSame('Full Content', $entityAttributes['fieldset']['full_content']['name']);
-        $this->assertSame('inline', $entityAttributes['advanced_filter']['display']);
-        $this->assertTrue($entityAttributes['advanced_filter']['collapsed']);
+        $this->assertSame('modal', $entityAttributes['advanced_filter']['display']);
 
         $this->assertContains('title', $entityAttributes['fieldset']['content_info']['fields']);
         $this->assertContains('author', $entityAttributes['fieldset']['content_info']['fields']);
@@ -78,8 +77,11 @@ class AttributeParserServiceTest extends KernelTestCase
     public function testParsesVirtualColumnWithoutDqlAsPureVirtualField(): void
     {
         $attributes = $this->parse(CorporateClientExample::class);
+        $entityAttributes = $attributes->getEntityAttributes();
         $fieldAttributes = $attributes->getFieldAttributes();
 
+        $this->assertSame('inline', $entityAttributes['advanced_filter']['display']);
+        $this->assertTrue($entityAttributes['advanced_filter']['collapsed']);
         $this->assertContains('tax', $attributes->getPureVirtualFieldNames());
         $this->assertTrue($fieldAttributes['tax']['virtual_column']['allowed']);
         $this->assertSame(5, $fieldAttributes['tax']['position']);

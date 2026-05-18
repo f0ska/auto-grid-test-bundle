@@ -51,7 +51,7 @@ use F0ska\AutoGridTestBundle\Repository\AdvancedArticleExampleRepository;
 #[Permission('advanced_filter')]
 #[Permission('edit')]
 #[ActionButtonDisplay('edit', displayOnGrid: false)]
-#[AdvancedFilter(display: 'inline')]
+#[AdvancedFilter]
 #[Searchable(fields: ['title', 'content'])]
 #[Fieldset(name: 'Content Info')]
 #[Fieldset(name: 'Metatags')]
