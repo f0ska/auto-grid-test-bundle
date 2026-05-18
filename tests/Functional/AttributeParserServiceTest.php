@@ -34,6 +34,8 @@ class AttributeParserServiceTest extends KernelTestCase
         $this->assertSame('Content Info', $entityAttributes['fieldset']['content_info']['name']);
         $this->assertSame('Metatags', $entityAttributes['fieldset']['metatags']['name']);
         $this->assertSame('Full Content', $entityAttributes['fieldset']['full_content']['name']);
+        $this->assertSame('inline', $entityAttributes['advanced_filter']['display']);
+        $this->assertTrue($entityAttributes['advanced_filter']['collapsed']);
 
         $this->assertContains('title', $entityAttributes['fieldset']['content_info']['fields']);
         $this->assertContains('author', $entityAttributes['fieldset']['content_info']['fields']);
