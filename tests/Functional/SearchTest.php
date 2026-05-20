@@ -83,6 +83,22 @@ class SearchTest extends WebTestCase
         $this->assertStringNotContainsString('contactEmail', $location);
     }
 
+    public function testSearchActionReindexesSelectedFields(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/corporate');
+        $form = $crawler->filter('form[name^="search-"]')->form();
+        $this->untickSearchField($form, 0);
+
+        $client->submit($form, [$form->getName() . '[term]' => 'invoice']);
+
+        $this->assertTrue($client->getResponse()->isRedirect());
+        $location = $client->getResponse()->headers->get('Location') ?? '';
+        $this->assertStringContainsString('agParams%5Bsearch%5D%5Bterm%5D=invoice', $location);
+        $this->assertStringContainsString('agParams%5Bsearch%5D%5Bfields%5D%5B0%5D=contactEmail', $location);
+        $this->assertStringNotContainsString('agParams%5Bsearch%5D%5Bfields%5D%5B1%5D', $location);
+    }
+
     public function testEmptySearchRemovesSearchState(): void
     {
         $client = static::createClient();
