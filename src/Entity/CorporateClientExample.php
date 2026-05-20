@@ -36,7 +36,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 #[Title("Corporate Clients Dashboard")]
 #[HtmlClass('table-sm is-narrow')]
 #[AdvancedFilter(display: 'inline')]
-#[Searchable(fields: ['name', 'contactEmail'])]
+#[Searchable(fields: ['name', 'contactEmail'], fieldSelector: true)]
 class CorporateClientExample
 {
     private const STATUSES = [
