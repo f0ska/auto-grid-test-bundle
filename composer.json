@@ -19,6 +19,6 @@
         "symfony/mime": "^6.4 || ^7.0 || ^8.0",
         "doctrine/doctrine-fixtures-bundle": "^3.6 || ^4.0",
         "fakerphp/faker": "^1.24",
-        "f0ska/auto-grid-bundle": "^2.9"
+        "f0ska/auto-grid-bundle": "^2.11"
     }
 }
