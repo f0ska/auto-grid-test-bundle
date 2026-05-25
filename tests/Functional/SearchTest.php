@@ -22,6 +22,8 @@ use F0ska\AutoGridBundle\Service\QueryFieldResolver;
 use F0ska\AutoGridBundle\Service\RowActionPermissionService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
+use Symfony\Component\DomCrawler\Form;
 
 class SearchTest extends WebTestCase
 {
@@ -36,6 +38,10 @@ class SearchTest extends WebTestCase
         $this->assertSame(1, $crawler->filter('form[name^="search-"]')->count());
         $this->assertSame('1', $crawler->filter('form[name^="search-"] input[name$="[term]"]')->attr('minlength'));
         $this->assertSame('255', $crawler->filter('form[name^="search-"] input[name$="[term]"]')->attr('maxlength'));
+        $this->assertSame(2, $crawler->filter('form[name^="search-"] input[type="checkbox"][name$="[fields][]"]')->count());
+        $this->assertSame(2, $crawler->filter('form[name^="search-"] input[type="checkbox"][name$="[fields][]"][checked]')->count());
+        $this->assertGreaterThan(0, $crawler->filter('form[name^="search-"]:contains("Company Name")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('form[name^="search-"]:contains("Primary Contact")')->count());
     }
 
     public function testSearchFormDoesNotRenderWhenSearchActionIsDenied(): void
@@ -59,6 +65,38 @@ class SearchTest extends WebTestCase
         $location = $client->getResponse()->headers->get('Location') ?? '';
         $this->assertStringContainsString('agAction=grid', $location);
         $this->assertStringContainsString('agParams%5Bsearch%5D%5Bterm%5D=invoice', $location);
+    }
+
+    public function testSearchActionRedirectsWithSelectedFields(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/corporate');
+        $form = $crawler->filter('form[name^="search-"]')->form();
+        $this->untickSearchField($form, 1);
+
+        $client->submit($form, [$form->getName() . '[term]' => 'invoice']);
+
+        $this->assertTrue($client->getResponse()->isRedirect());
+        $location = $client->getResponse()->headers->get('Location') ?? '';
+        $this->assertStringContainsString('agParams%5Bsearch%5D%5Bterm%5D=invoice', $location);
+        $this->assertStringContainsString('agParams%5Bsearch%5D%5Bfields%5D%5B0%5D=name', $location);
+        $this->assertStringNotContainsString('contactEmail', $location);
+    }
+
+    public function testSearchActionReindexesSelectedFields(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/corporate');
+        $form = $crawler->filter('form[name^="search-"]')->form();
+        $this->untickSearchField($form, 0);
+
+        $client->submit($form, [$form->getName() . '[term]' => 'invoice']);
+
+        $this->assertTrue($client->getResponse()->isRedirect());
+        $location = $client->getResponse()->headers->get('Location') ?? '';
+        $this->assertStringContainsString('agParams%5Bsearch%5D%5Bterm%5D=invoice', $location);
+        $this->assertStringContainsString('agParams%5Bsearch%5D%5Bfields%5D%5B0%5D=contactEmail', $location);
+        $this->assertStringNotContainsString('agParams%5Bsearch%5D%5Bfields%5D%5B1%5D', $location);
     }
 
     public function testEmptySearchRemovesSearchState(): void
@@ -129,6 +167,41 @@ class SearchTest extends WebTestCase
         $this->assertGreaterThan(0, $crawler->filter('table tbody tr:contains("' . $name . '")')->count());
     }
 
+    public function testSearchCanBeLimitedToSelectedFields(): void
+    {
+        $client = static::createClient();
+        $entityManager = self::getContainer()->get('doctrine')->getManager();
+        $needle = 'fs-' . bin2hex(random_bytes(4));
+        $nameMatch = (new CorporateClientExample())
+            ->setName('Name ' . $needle)
+            ->setContactEmail('name-control@example.test')
+            ->setRevenue('100.00')
+            ->setStatus('active')
+            ->setLastAuditAt(new \DateTimeImmutable());
+        $emailMatch = (new CorporateClientExample())
+            ->setName('Email control')
+            ->setContactEmail($needle . '@example.test')
+            ->setRevenue('100.00')
+            ->setStatus('active')
+            ->setLastAuditAt(new \DateTimeImmutable());
+
+        $entityManager->persist($nameMatch);
+        $entityManager->persist($emailMatch);
+        $entityManager->flush();
+        $entityManager->clear();
+
+        $crawler = $client->request('GET', '/auto-grid/corporate');
+        $form = $crawler->filter('form[name^="search-"]')->form();
+        $this->untickSearchField($form, 1);
+
+        $client->submit($form, [$form->getName() . '[term]' => $needle]);
+        $crawler = $client->followRedirect();
+
+        $this->assertResponseIsSuccessful();
+        $this->assertGreaterThan(0, $crawler->filter('table tbody tr:contains("Name ' . $needle . '")')->count());
+        $this->assertSame(0, $crawler->filter('table tbody tr:contains("' . $needle . '@example.test")')->count());
+    }
+
     public function testInvalidSearchParamsAreRejected(): void
     {
         $client = static::createClient();
@@ -142,6 +215,21 @@ class SearchTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains(self::ERROR_SELECTOR, 'Invalid request parameter');
+    }
+
+    public function testInvalidSearchFieldsAreRejected(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/corporate');
+        $agId = $this->getAgIdFromForm($crawler, 'form[name^="search-"]');
+
+        $client->request(
+            'GET',
+            sprintf('/auto-grid/corporate?agId=%s&agAction=grid&agParams[search][term]=invoice&agParams[search][fields][]=unknown', $agId)
+        );
+
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains(self::ERROR_SELECTOR, 'unknown search field "unknown"');
     }
 
     public function testInvalidSearchFormShowsValidationError(): void
@@ -169,6 +257,41 @@ class SearchTest extends WebTestCase
                         'fields' => ['name'],
                         'min_length' => 1,
                         'max_length' => 255,
+                    ],
+                ],
+                ['search' => true]
+            )
+        ));
+    }
+
+    public function testSearchParameterNormalizesSelectedFieldsStrictly(): void
+    {
+        $parameter = new SearchParameter();
+
+        $this->assertSame(['term' => 'invoice', 'fields' => ['name']], $parameter->normalize(
+            ['term' => ' invoice ', 'fields' => ['name', 'name']],
+            $this->createParameters(
+                [
+                    'searchable' => [
+                        'fields' => ['name', 'contactEmail'],
+                        'min_length' => 1,
+                        'max_length' => 255,
+                        'field_selector' => true,
+                    ],
+                ],
+                ['search' => true]
+            )
+        ));
+
+        $this->assertSame(['term' => 'invoice'], $parameter->normalize(
+            ['term' => 'invoice', 'fields' => []],
+            $this->createParameters(
+                [
+                    'searchable' => [
+                        'fields' => ['name', 'contactEmail'],
+                        'min_length' => 1,
+                        'max_length' => 255,
+                        'field_selector' => true,
                     ],
                 ],
                 ['search' => true]
@@ -262,5 +385,15 @@ class SearchTest extends WebTestCase
 
         $this->assertArrayHasKey('agId', $query);
         return (string) $query['agId'];
+    }
+
+    private function untickSearchField(Form $form, int $index): void
+    {
+        $field = $form[sprintf('%s[fields][%d]', $form->getName(), $index)];
+        if (!$field instanceof ChoiceFormField) {
+            throw new \LogicException('Expected a checkbox search field.');
+        }
+
+        $field->untick();
     }
 }

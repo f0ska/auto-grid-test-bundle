@@ -14,6 +14,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\HtmlClass;
 use F0ska\AutoGridBundle\Attribute\Entity\Searchable;
 use F0ska\AutoGridBundle\Attribute\Entity\Title;
@@ -34,7 +35,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 #[ORM\Entity(repositoryClass: CorporateClientExampleRepository::class)]
 #[Title("Corporate Clients Dashboard")]
 #[HtmlClass('table-sm is-narrow')]
-#[Searchable(fields: ['name', 'contactEmail'])]
+#[AdvancedFilter(display: 'inline')]
+#[Searchable(fields: ['name', 'contactEmail'], fieldSelector: true)]
 class CorporateClientExample
 {
     private const STATUSES = [
