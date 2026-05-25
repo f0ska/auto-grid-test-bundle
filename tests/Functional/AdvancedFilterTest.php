@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AdvancedFilterTest extends WebTestCase
 {
-    public function testBootstrap5AdvancedFilterUsesDefaultBackdrop(): void
+    public function testBootstrap5AdvancedFilterUsesModalByDefault(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/auto-grid/advanced');
@@ -31,6 +31,27 @@ class AdvancedFilterTest extends WebTestCase
         $this->assertGreaterThan(0, $button->count());
         $this->assertNull($modal->attr('data-bs-backdrop'));
         $this->assertNull($button->attr('data-bs-backdrop'));
+        $this->assertSame(0, $crawler->filter('details.card form[name^="filter-"]')->count());
+    }
+
+    public function testCorporateDashboardCanRenderCollapsedInlineAdvancedFilter(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/auto-grid/corporate');
+
+        $this->assertResponseIsSuccessful();
+
+        $inlineFilter = $crawler->filter('details.card form[name^="filter-"]');
+
+        $this->assertGreaterThan(0, $inlineFilter->count());
+        $this->assertSame(0, $crawler->filter('.modal[id^="adv"]')->count());
+        $this->assertSame(0, $crawler->filter('button[data-bs-toggle="modal"][data-bs-target^="#adv"]')->count());
+        $this->assertNull($crawler->filter('details.card')->first()->attr('open'));
+        $content = $client->getResponse()->getContent();
+        $this->assertGreaterThan(
+            strpos($content, 'name="search-'),
+            strpos($content, '<details class="card')
+        );
     }
 
     public function testAdvancedFiltering(): void
