@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace F0ska\AutoGridTestBundle\Tests\Functional;
 
+use F0ska\AutoGridBundle\Model\FieldParameter;
+use F0ska\AutoGridBundle\Twig\Extension as AutoGridExtension;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -55,5 +57,26 @@ class GridThemeClassTest extends WebTestCase
         $this->assertStringContainsString('odd:bg-white', $rowClass);
         $this->assertStringContainsString('even:bg-gray-50', $rowClass);
         $this->assertStringContainsString('hover:bg-gray-100', $rowClass);
+    }
+
+    public function testColumnHtmlClassHelperCanAppendOrOverrideThemeDefaults(): void
+    {
+        static::createClient();
+
+        $extension = static::getContainer()->get(AutoGridExtension::class);
+        $field = new FieldParameter([
+            'attributes' => [
+                'column_html_class' => [
+                    'column' => 'w-25',
+                    'header' => 'text-end',
+                ],
+            ],
+        ]);
+
+        $this->assertSame('align-middle w-25 text-end', $extension->agColumnClass($field, 'header', 'align-middle'));
+
+        $field->attributes['column_html_class']['override'] = true;
+
+        $this->assertSame('w-25 text-end', $extension->agColumnClass($field, 'header', 'align-middle'));
     }
 }

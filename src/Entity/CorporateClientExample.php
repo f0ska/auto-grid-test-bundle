@@ -75,7 +75,7 @@ class CorporateClientExample
     #[Label("Annual Revenue")]
     #[ValuePrefix("$ ")]
     #[Sortable]
-    #[ColumnHtmlClass(columnClass: 'align-middle text-end text-right has-text-right')]
+    #[ColumnHtmlClass(columnClass: 'text-end text-right has-text-right')]
     private ?string $revenue = null;
 
     #[ORM\Column(length: 20)]
@@ -97,7 +97,7 @@ class CorporateClientExample
     #[Position(5)]
     #[ValuePrefix("$ ")]
     #[ViewService('F0ska\AutoGridTestBundle\View\TaxViewServiceExample')]
-    #[ColumnHtmlClass(columnClass: 'align-middle text-end text-right has-text-right')]
+    #[ColumnHtmlClass(columnClass: 'text-end text-right has-text-right')]
     private ?string $tax = null;
 
     public function getId(): ?int
