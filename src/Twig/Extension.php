@@ -109,10 +109,10 @@ class Extension extends AbstractExtension
             'label' => 'Flowbite',
             'icon' => 'flowbite',
             'css' => [
-                ['href' => 'https://cdn.jsdelivr.net/npm/tailwindcss@4.0.17/index.min.css'],
                 ['href' => 'https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.css'],
             ],
             'js' => [
+                ['href' => 'https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'],
                 ['href' => 'https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js'],
             ],
             'infoBlock' => [

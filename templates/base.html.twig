@@ -10,7 +10,7 @@
     'auto-grid-flowbite': 'flowbite'
 } %}
 {% set themeToolbarTemplate = '@F0skaAutoGridTest/components/toolbar/' ~ (themeKeyMap[currentTheme] ?? 'bootstrap5') ~ '.html.twig' %}
-{% set mainContentClass = themeKeyMap[currentTheme] == 'foundation' ? 'grid-container mt-5' : (themeKeyMap[currentTheme] == 'flowbite' ? 'max-w-screen-2xl mx-auto px-6 pt-5' : (themeKeyMap[currentTheme] == 'bootstrap4' ? 'container autogrid-bs4-demo-container mt-5' : 'container mt-5')) %}
+{% set mainContentClass = themeKeyMap[currentTheme] == 'foundation' ? 'grid-container mt-5' : (themeKeyMap[currentTheme] == 'flowbite' ? 'max-w-screen-2xl mx-auto px-6 pt-8' : (themeKeyMap[currentTheme] == 'bootstrap4' ? 'container autogrid-bs4-demo-container mt-5' : (themeKeyMap[currentTheme] == 'bulma' ? 'container mt-5 pt-5' : 'container mt-5'))) %}
 
 {% set navItems = [
     { route: 'auto_grid_test_basic', label: 'Basic example' },

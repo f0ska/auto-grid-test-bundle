@@ -14,6 +14,7 @@ namespace F0ska\AutoGridTestBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use F0ska\AutoGridBundle\Attribute\Entity\AdvancedFilter;
 use F0ska\AutoGridBundle\Attribute\Entity\RowActionPermission;
 use F0ska\AutoGridBundle\Attribute\Entity\ActionRoute;
 use F0ska\AutoGridBundle\Attribute\Entity\ExportAction;
@@ -28,6 +29,7 @@ use F0ska\AutoGridTestBundle\RowActionPermission\CustomActionExampleEnabledPermi
 use F0ska\AutoGridTestBundle\Repository\CustomActionExampleRepository;
 
 #[ORM\Entity(repositoryClass: CustomActionExampleRepository::class)]
+#[AdvancedFilter(display: 'inline')]
 #[ActionRoute('create')]
 #[ActionRoute('edit')]
 #[ActionRoute('view')]

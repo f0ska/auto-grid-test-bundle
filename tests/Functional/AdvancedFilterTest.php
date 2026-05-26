@@ -31,7 +31,7 @@ class AdvancedFilterTest extends WebTestCase
         $this->assertGreaterThan(0, $button->count());
         $this->assertNull($modal->attr('data-bs-backdrop'));
         $this->assertNull($button->attr('data-bs-backdrop'));
-        $this->assertSame(0, $crawler->filter('details.card form[name^="filter-"]')->count());
+        $this->assertSame(0, $crawler->filter('details form[name^="filter-"]')->count());
     }
 
     public function testCorporateDashboardCanRenderCollapsedInlineAdvancedFilter(): void
@@ -41,16 +41,16 @@ class AdvancedFilterTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
 
-        $inlineFilter = $crawler->filter('details.card form[name^="filter-"]');
+        $inlineFilter = $crawler->filter('details form[name^="filter-"]');
 
         $this->assertGreaterThan(0, $inlineFilter->count());
         $this->assertSame(0, $crawler->filter('.modal[id^="adv"]')->count());
         $this->assertSame(0, $crawler->filter('button[data-bs-toggle="modal"][data-bs-target^="#adv"]')->count());
-        $this->assertNull($crawler->filter('details.card')->first()->attr('open'));
+        $this->assertNull($crawler->filter('details')->first()->attr('open'));
         $content = $client->getResponse()->getContent();
         $this->assertGreaterThan(
             strpos($content, 'name="search-'),
-            strpos($content, '<details class="card')
+            strpos($content, '<details class="autogrid-inline-details mb-0"')
         );
     }
 

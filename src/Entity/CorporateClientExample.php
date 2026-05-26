@@ -28,6 +28,8 @@ use F0ska\AutoGridBundle\Attribute\EntityField\Sortable;
 use F0ska\AutoGridBundle\Attribute\EntityField\ValuePrefix;
 use F0ska\AutoGridBundle\Attribute\EntityField\ViewService;
 use F0ska\AutoGridBundle\Attribute\EntityField\VirtualColumn;
+use F0ska\AutoGridBundle\Attribute\EntityField\ColumnHtmlClass;
+use F0ska\AutoGridBundle\Attribute\EntityField\ViewTemplate;
 use F0ska\AutoGridBundle\Attribute\Permission;
 use F0ska\AutoGridTestBundle\Repository\CorporateClientExampleRepository;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -73,6 +75,7 @@ class CorporateClientExample
     #[Label("Annual Revenue")]
     #[ValuePrefix("$ ")]
     #[Sortable]
+    #[ColumnHtmlClass(columnClass: 'text-end text-right has-text-right')]
     private ?string $revenue = null;
 
     #[ORM\Column(length: 20)]
@@ -81,6 +84,7 @@ class CorporateClientExample
     #[FormType(ChoiceType::class)]
     #[FormOptions(['choices' => self::STATUSES])]
     #[Filterable]
+    #[ViewTemplate('@F0skaAutoGridTest/customization/status_badge.html.twig')]
     private string $status = "active";
 
     #[ORM\Column]
@@ -93,6 +97,7 @@ class CorporateClientExample
     #[Position(5)]
     #[ValuePrefix("$ ")]
     #[ViewService('F0ska\AutoGridTestBundle\View\TaxViewServiceExample')]
+    #[ColumnHtmlClass(columnClass: 'text-end text-right has-text-right')]
     private ?string $tax = null;
 
     public function getId(): ?int

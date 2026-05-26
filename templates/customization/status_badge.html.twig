@@ -1,0 +1,76 @@
+{% set status = value|default('')|lower %}
+{% set label = value|default('')|capitalize %}
+{% set theme = agt_current_theme()|default('auto-grid') %}
+
+{% if status is empty %}
+    -
+{% else %}
+    {% if theme == 'auto-grid-flowbite' %}
+        {% if status == 'active' %}
+            <span class="inline-flex items-center rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-800 border border-green-200">Active</span>
+        {% elseif status == 'pending' %}
+            <span class="inline-flex items-center rounded-full bg-yellow-50 px-2.5 py-0.5 text-xs font-medium text-yellow-800 border border-yellow-200">Pending</span>
+        {% elseif status == 'inactive' %}
+            <span class="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-gray-800 border border-gray-200">Inactive</span>
+        {% elseif status == 'archived' %}
+            <span class="inline-flex items-center rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-medium text-red-800 border border-red-200">Archived</span>
+        {% else %}
+            <span class="inline-flex items-center rounded-full bg-gray-50 px-2.5 py-0.5 text-xs font-medium text-gray-800 border border-gray-200">{{ label }}</span>
+        {% endif %}
+    {% elseif theme == 'auto-grid' %}
+        {# Bootstrap 5 #}
+        {% if status == 'active' %}
+            <span class="badge bg-success">Active</span>
+        {% elseif status == 'pending' %}
+            <span class="badge bg-warning text-dark">Pending</span>
+        {% elseif status == 'inactive' %}
+            <span class="badge bg-secondary">Inactive</span>
+        {% elseif status == 'archived' %}
+            <span class="badge bg-danger">Archived</span>
+        {% else %}
+            <span class="badge bg-secondary">{{ label }}</span>
+        {% endif %}
+    {% elseif theme == 'auto-grid-bootstrap4' %}
+        {# Bootstrap 4 #}
+        {% if status == 'active' %}
+            <span class="badge badge-success text-white">Active</span>
+        {% elseif status == 'pending' %}
+            <span class="badge badge-warning text-dark">Pending</span>
+        {% elseif status == 'inactive' %}
+            <span class="badge badge-secondary text-white">Inactive</span>
+        {% elseif status == 'archived' %}
+            <span class="badge badge-danger text-white">Archived</span>
+        {% else %}
+            <span class="badge badge-secondary text-white">{{ label }}</span>
+        {% endif %}
+    {% elseif theme == 'auto-grid-bulma' %}
+        {# Bulma #}
+        {% if status == 'active' %}
+            <span class="tag is-success is-light">Active</span>
+        {% elseif status == 'pending' %}
+            <span class="tag is-warning is-light">Pending</span>
+        {% elseif status == 'inactive' %}
+            <span class="tag is-light">Inactive</span>
+        {% elseif status == 'archived' %}
+            <span class="tag is-danger is-light">Archived</span>
+        {% else %}
+            <span class="tag is-light">{{ label }}</span>
+        {% endif %}
+    {% elseif theme == 'auto-grid-foundation' %}
+        {# Foundation #}
+        {% if status == 'active' %}
+            <span class="label success">Active</span>
+        {% elseif status == 'pending' %}
+            <span class="label warning">Pending</span>
+        {% elseif status == 'inactive' %}
+            <span class="label secondary">Inactive</span>
+        {% elseif status == 'archived' %}
+            <span class="label alert">Archived</span>
+        {% else %}
+            <span class="label secondary">{{ label }}</span>
+        {% endif %}
+    {% else %}
+        {# Fallback #}
+        <span>{{ label }}</span>
+    {% endif %}
+{% endif %}
